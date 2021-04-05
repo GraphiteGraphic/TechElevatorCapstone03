@@ -54,10 +54,12 @@ CREATE TABLE recipes (
 	instructions nvarchar(1000) NOT NULL,
 	type_id int NOT NULL,
 	num_servings int NOT NULL,
+	is_shared bit DEFAULT 0 NOT NULL --CHECK (is_shared = 0 or is_shared = 1),
 	--shareable?
 	CONSTRAINT PK_recipes PRIMARY KEY (recipe_id),
 	CONSTRAINT FK_recipes_userid FOREIGN KEY (user_id) REFERENCES users (user_id),
-	CONSTRAINT FK_recipes_type FOREIGN KEY (type_id) REFERENCES types (type_id)
+	CONSTRAINT FK_recipes_type FOREIGN KEY (type_id) REFERENCES types (type_id),
+	
 )
 
 CREATE TABLE recipes_ingredients(
@@ -103,7 +105,7 @@ CREATE TABLE meals_recipes (
 CREATE TABLE meal_plans (
 	meal_plan_id int IDENTITY(1,1) NOT NULL,
 	name nvarchar(50) NOT NULL,
-	time_period varchar(50) NOT NULL,
+	
 	user_id int NOT NULL,
 	CONSTRAINT PK_meal_plans PRIMARY KEY (meal_plan_id),
 	CONSTRAINT FK_meal_plans_user FOREIGN KEY (user_id) REFERENCES users (user_id),
@@ -126,5 +128,34 @@ INSERT INTO users (username, password_hash, salt, user_role) VALUES ('admin','Yh
 --INSERT INTO TIME OF DAY BREAKFAST LUNCH DINNER DESERT SNACK, INSERT INTO TYPE MAIN DISH, SIDE DISH, BEVERAGE, DESSERT, APPETIZER,
 INSERT INTO types (type) VALUES ('Main Dish'), ('Side Dish'), ('Beverage'), ('Dessert'), ('Appetizer');
 INSERT INTO time_of_day (time_of_day_name) VALUES ('Breakfast'), ('Lunch'), ('Dinner'),('Snack');
+
+--Insert dummy data 
+
+INSERT INTO recipes (user_id, recipe_name, instructions, type_id, num_servings, is_shared) 
+	VALUES (1, 'pizza', 'Open Refrigerator, get pizza, Put Pizza in Oven', 2, 1, 0 ),
+	(1, 'Peanut Butter and Jelly', 'Open peanut butter jar. Put peanut butter on one slice of bread. Open jelly jar, put jelly on another slice of bread. Put them together', 3, 2, 1)
+
+
+INSERT INTO ingredients (ingredient_name)
+	VALUES ('Mozzerella Cheese'),
+    ('Tomato'),
+	('Pepperoni'),
+	('Dough'),
+	('Peanut Butter'),
+	('Jelly'),
+	('Bread')
+
+
+INSERT INTO recipes_ingredients (recipe_id, ingredient_id, ingredient_qty, ingredient_unit)
+	VALUES (1, 1, 1, 'Oz'),
+	(1, 2, 1, 'item' ),
+	(1, 3, 10, 'Oz'),
+	(1, 4, 5, 'LB'),
+	(2, 5, 2, 'Oz'),
+	(2, 6, 2, 'Oz'),
+	(2,7, 2, 'Slices')
+
+
+
 
 GO
