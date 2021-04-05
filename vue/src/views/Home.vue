@@ -1,10 +1,7 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <p>You must be authenticated to see this</p>
-    <p>User Name: {{currentUser.username}}</p>
-    <p>User Id: {{currentUser.userId}}</p>
-    <p>Role: {{currentUser.role}}</p>
+    <router-link :to="{name: 'recipe', params: {id: recipe.id} }" v-for="recipe in recipeList" :key="recipe.id">{{recipe.name}}</router-link>
   </div>
 </template>
 
@@ -15,6 +12,15 @@ export default {
     currentUser() {
       return this.$store.state.user;
     },
+    recipeList() {
+      return this.$store.state.recipes;
+    }
   },
 };
 </script>
+
+<style scoped>
+a {
+  display: block;
+}
+</style>
