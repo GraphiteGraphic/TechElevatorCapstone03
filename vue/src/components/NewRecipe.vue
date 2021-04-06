@@ -1,5 +1,5 @@
 <template>
-  <form v-on:submit.prevent="saveRecipe">
+  <form v-on:submit.prevent="saveRecipe()">
     <div>
       <label for="Recipe Name">Recipe Name: </label>
       <input
@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     saveRecipe() {
+      this.recipe.numServings=parseInt(this.recipe.numServings);
       //service.addRecipe(this.recipe);
     },
     /*addIngredient(ingredientId, IngredientName) {
