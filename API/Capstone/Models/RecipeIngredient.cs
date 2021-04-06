@@ -12,17 +12,17 @@ namespace Capstone.Models
         public decimal Quantity { get; set; }
         public string Unit { get; set; }
         public int RecipeId { get; set; }
+        public int UserId { get; set; }
 
 
-
-        public RecipeIngredient(int ingredientId, string ingredient_name, decimal quantity, string unit, int recipeId)
+        public RecipeIngredient(int ingredientId, string ingredient_name, decimal quantity, string unit, int recipeId, int userId)
         {
             this.IngredientId = ingredientId;
             this.Ingredient_name = ingredient_name;
             this.Quantity = quantity;
             this.Unit = unit;
             this.RecipeId = recipeId;
-
+            this.UserId = userId;
         }
         public RecipeIngredient()
         {

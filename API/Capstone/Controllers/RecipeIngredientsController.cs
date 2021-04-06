@@ -21,22 +21,25 @@ namespace Capstone.Controllers
             this.recipeIngredientsDAO = recipeIngredientsDAO;
         }
 
-        [HttpGet("publicrecipes/{recipeId}")]
-        public ActionResult GetPublicRecipeIngredients(int recipeId)
+        [HttpGet("{recipeId}")]
+        public ActionResult GetRecipe(int recipeId)
         {
-            List<RecipeIngredient> listOfRecipeIngredients = recipeIngredientsDAO.GetPublicRecipeIngredients(recipeId);
-            return Ok(listOfRecipeIngredients);
-        }
+            // call recipeDAO to get list of recipes, get recipe, then check parameters
 
-        [HttpGet("myrecipes/{recipeId}")]
-        [Authorize]
-        public ActionResult GetMyRecipeIngredients(int recipeId)
-        {
             List<RecipeIngredient> listOfRecipeIngredients = recipeIngredientsDAO.GetMyRecipeIngredients(recipeId, this.UserId);
             return Ok(listOfRecipeIngredients);
+
+            //if (recipe.IsShared)
+            //{
+            //    List<RecipeIngredient> listOfRecipeIngredients = recipeIngredientsDAO.GetPublicRecipeIngredients(recipe.RecipeId);
+            //    return Ok(listOfRecipeIngredients);
+            //}
+            //else if (recipe.UserId == this.UserId)
+            //{
+            //    List<RecipeIngredient> listOfRecipeIngredients = recipeIngredientsDAO.GetMyRecipeIngredients(recipe.RecipeId, this.UserId);
+            //    return Ok(listOfRecipeIngredients);
+            //}
+            //return Forbid();
         }
-
-
-
     }
 }
