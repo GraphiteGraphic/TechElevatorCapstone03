@@ -37,5 +37,14 @@ namespace Capstone.Controllers
             List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(this.UserId);
             return Ok(privateListOfRecipe);
         }
+
+
+        [HttpPost]
+        public ActionResult AddRecipe(Recipe recipe)
+        {
+            recipe = recipeDAO.AddRecipe(recipe);
+            return Ok(recipe);
+        }
+
    }
 }

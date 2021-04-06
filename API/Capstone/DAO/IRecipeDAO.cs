@@ -7,5 +7,6 @@ namespace Capstone.DAO
     {
         List<Recipe> GetPublicRecipes();
         List<Recipe> GetPrivateRecipes(int userId);
+        Recipe AddRecipe(Recipe recipe);
     }
 }

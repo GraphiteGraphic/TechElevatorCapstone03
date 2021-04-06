@@ -10,16 +10,14 @@ namespace Capstone.Models
 
         public int UserId { get; set; } // user id, Debated on having an int for userID or an instance of User for our userId.  
         public string Instructions { get; set; }
-        public Type Type { get; set; }
+        public int Type { get; set; }
 
         public int Servings { get; set; }
 
         public bool IsShared { get; set; }
 
-       
 
-
-        public Recipe(int recipeId, string recipeName, int userId, string instructions, Type type, int servings, bool isshared)
+        public Recipe(int recipeId, string recipeName, int userId, string instructions, int type, int servings, bool isshared)
         {
             this.RecipeId = recipeId;
             this.RecipeName = recipeName;
