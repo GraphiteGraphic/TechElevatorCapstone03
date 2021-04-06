@@ -23,7 +23,7 @@ export default {
     },
   },
   created() {
-    authServices.getRecipes(this.currentUser).then((resp) => {
+    authServices.getMyRecipes(this.currentUser).then((resp) => {
       this.myRecipes = resp.data;
     });
   },

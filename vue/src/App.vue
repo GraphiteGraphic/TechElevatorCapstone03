@@ -32,7 +32,7 @@ export default {
     },
   },
   created() {
-    authServices.getRecipes(this.currentUser).then((response)=>{
+    authServices.getPublicRecipes().then((response)=>{
       this.$store.commit("SET_PUBLIC_RECIPES",response.data);
     });
   }
