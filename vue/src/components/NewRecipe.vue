@@ -73,7 +73,8 @@ export default {
         userId: Number,
         isShared: false,
         numServings: 1,
-        ingredients: [],
+        existingIngredients: [],
+        newIngredients: [],
       },
     };
   },
