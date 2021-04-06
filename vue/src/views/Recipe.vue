@@ -2,6 +2,7 @@
   <div>
     <h2>{{ recipe.recipeName }}</h2>
     <p>{{ ingredients }}</p>
+    <p v-for="num of instructions.length" :key="num"><span>{{num}}.</span> {{ instructions[num - 1] }}</p>
   </div>
 </template>
 
@@ -18,6 +19,9 @@ export default {
       return this.$store.state.recipes.find( (recipe) => {
         return this.$route.params.id == recipe.recipeId;
       })
+    },
+    instructions() {
+      return this.recipe.instructions.split('|||');
     }
   },
   created() {
@@ -27,5 +31,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+  span {
+    font-size: 500%;
+  }
 </style>

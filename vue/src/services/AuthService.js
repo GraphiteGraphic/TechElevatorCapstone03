@@ -12,10 +12,10 @@ export default {
 
   getRecipes(user) {
     if(user.token === ''){
-      return axios.get('/recipe')
+      return axios.get('/recipes')
     }
     else{
-      return axios.get('/recipe', user)
+      return axios.get('/recipes/myrecipes', user)
     }
   }
 }

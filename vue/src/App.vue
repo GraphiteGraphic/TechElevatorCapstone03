@@ -8,9 +8,14 @@
         >Login</router-link
       >
       <router-link
+        v-bind:to="{ name: 'profile' }"
+        v-if="$store.state.token !== ''"
+        >{{currentUser.username}} |</router-link
+      >
+      <router-link
         v-bind:to="{ name: 'logout' }"
         v-if="$store.state.token != ''"
-      >{{currentUser.username}} Logout</router-link
+      > Logout</router-link
       >
     </div>
     <router-view />
@@ -46,6 +51,7 @@ body {
 }
 
 a {
+    color: white;
     text-decoration: none;
 }
 

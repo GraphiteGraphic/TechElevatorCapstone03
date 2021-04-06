@@ -1,20 +1,15 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <router-link
-      :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
-      v-for="recipe in recipeList"
-      :key="recipe.recipeId"
-      :name= recipe.recipeName
-      :instructions = recipe.instructions
-      >{{ recipe.recipeName }}</router-link
-    >
+    <recipe-list :recipeList="recipeList" />
   </div>
 </template>
 
 <script>
+import RecipeList from "../components/recipeList.vue";
 export default {
   name: "home",
+  components: { RecipeList },
   computed: {
     currentUser() {
       return this.$store.state.user;
