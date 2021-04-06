@@ -30,7 +30,7 @@
         type="number"
         placeholder="Number of Servings"
         name="numServings"
-        v-model="recipe.numServings"
+        v-model="recipe.servings"
         required="true"
       />
     </div>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-//import service from "../services/AuthService.js"
+import service from "../services/AuthService.js"
 export default {
   data() {
     return {
@@ -72,16 +72,39 @@ export default {
         type: "",
         userId: Number,
         isShared: false,
-        numServings: 1,
-        existingIngredients: [],
-        newIngredients: [],
+        servings: 1,
+        //existingIngredients: [],
+        //newIngredients: [],
       },
     };
   },
   methods: {
     saveRecipe() {
       this.recipe.numServings=parseInt(this.recipe.numServings);
-      //service.addRecipe(this.recipe);
+      if (this.recipe.type==='Main Dish'){
+        this.recipe.type=1;
+      }
+      else if (this.recipe.type==='Side Dish'){
+        this.recipe.type=2;
+      }
+      else if (this.recipe.type==='Beverage'){
+        this.recipe.type=3;
+      }
+      else if (this.recipe.type==='Dessert'){
+        this.recipe.type=4;
+      }
+      else if (this.recipe.type==='Appetizer'){
+        this.recipe.type=5;
+      }
+      service.addRecipe(this.recipe).then((response)=>{
+        if(response.status===201){
+          this.$router.push({name: 'profile'});
+        }
+      }).catch((error)=>{
+        this.errorMsg = 'was not reponse.status of 201. ' + error.response.statusText;
+        alert('Error');
+      });
+      
     },
     /*addIngredient(ingredientId, IngredientName) {
         //make object that holds both ingredients and push into it

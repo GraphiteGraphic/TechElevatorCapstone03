@@ -42,8 +42,8 @@ namespace Capstone.Controllers
         [HttpPost]
         public ActionResult AddRecipe(Recipe recipe)
         {
-            recipe = recipeDAO.AddRecipe(recipe);
-            return Ok(recipe);
+            recipe = recipeDAO.AddRecipe(recipe, this.UserId);
+            return Created($"/recipes/{recipe.RecipeId}",recipe);
         }
 
    }

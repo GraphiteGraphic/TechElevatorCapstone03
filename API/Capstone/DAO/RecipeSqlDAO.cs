@@ -88,7 +88,7 @@ namespace Capstone.DAO
         }
 
 
-        public Recipe AddRecipe(Recipe recipe)
+        public Recipe AddRecipe(Recipe recipe,int userId)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(ADD_RECIPE, conn);
-                    cmd.Parameters.AddWithValue("@user_id", recipe.UserId);
+                    cmd.Parameters.AddWithValue("@user_id", userId);//recipe.UserId or just this.UserId?
                     cmd.Parameters.AddWithValue("@recipe_name", recipe.RecipeName);
                     cmd.Parameters.AddWithValue("@instructions", recipe.Instructions);
                     cmd.Parameters.AddWithValue("@type_id", recipe.Type);
