@@ -2,12 +2,12 @@
   <div class="home">
     <h1>Home</h1>
     <router-link
-      :to="{ name: 'recipe', params: { id: recipe.id } }"
+      :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
       v-for="recipe in recipeList"
-      :key="recipe.id"
-      :name= recipe.name
+      :key="recipe.recipeId"
+      :name= recipe.recipeName
       :instructions = recipe.instructions
-      >{{ recipe.name }}</router-link
+      >{{ recipe.recipeName }}</router-link
     >
   </div>
 </template>

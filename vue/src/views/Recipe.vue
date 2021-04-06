@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ recipe.name }}</h2>
+    <h2>{{ recipe.recipeName }}</h2>
     <p>{{ ingredients }}</p>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
   computed: {
     recipe() {
       return this.$store.state.recipes.find( (recipe) => {
-        return this.$route.params.id == recipe.id;
+        return this.$route.params.id == recipe.recipeId;
       })
     }
   },

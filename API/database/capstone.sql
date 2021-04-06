@@ -65,7 +65,7 @@ CREATE TABLE recipes (
 CREATE TABLE recipes_ingredients(
 	recipe_id int NOT NULL,
 	ingredient_id int NOT NULL,
-	ingredient_qty int NOT NULL,
+	ingredient_qty decimal NOT NULL,
 	ingredient_unit varchar(50) NOT NULL,
 	CONSTRAINT PK_recipes_ingredients PRIMARY KEY (recipe_id, ingredient_id),
 	CONSTRAINT FK_recipes_ingredients_ingredients FOREIGN KEY (ingredient_id) REFERENCES ingredients (ingredient_id),
@@ -130,32 +130,70 @@ INSERT INTO types (type) VALUES ('Main Dish'), ('Side Dish'), ('Beverage'), ('De
 INSERT INTO time_of_day (time_of_day_name) VALUES ('Breakfast'), ('Lunch'), ('Dinner'),('Snack');
 
 --Insert dummy data 
-
+select * from recipes
+/*
 INSERT INTO recipes (user_id, recipe_name, instructions, type_id, num_servings, is_shared) 
-	VALUES (1, 'pizza', 'Open Refrigerator, get pizza, Put Pizza in Oven', 2, 1, 0 ),
-	(1, 'Peanut Butter and Jelly', 'Open peanut butter jar. Put peanut butter on one slice of bread. Open jelly jar, put jelly on another slice of bread. Put them together', 3, 2, 1)
+	VALUES --(1, 'Brown Sugar Oatmeal Cookies', 'Preheat the oven to 350 degrees F. In the bowl of an electric mixer (or using a hand mixer), beat together the brown sugar and butter until fluffy. Beat in the vanilla. Add the eggs one at a time, scraping the bowl after each one. Mix together the flour, salt and baking soda in a medium bowl. Add it into the creamed mixture in 2 to 3 batches, mixing until just combined. Mix in the oats until just combined. Use your preferred size cookie scoop (or a regular spoon) to drop portions of dough onto baking sheets, spacing them a couple inches apart. Bake until dark and chewy, 12 to 13 minutes. If you''d like a crispier cookie, just cook a little longer! Let the cookies cool slightly on the baking sheets, then transfer onto a plate for serving.  Cook''s Note: Add 1/2 cup finely chopped nuts to the flour mixture if you''d like a nutty flavor and crunch.', 4, 24, 1),
+	(1, 'Peanut Butter and Jelly', 'Open peanut butter jar. Put peanut butter on one slice of bread. Open jelly jar, put jelly on another slice of bread. Put them together.', 3, 2, 1),
+	(1, 'Cinnamon Baked French Toast', 'For the French toast: Grease the baking pan with butter. Tear the bread into chunks, or cut into cubes, and evenly distribute in the pan. Crack the eggs in a big bowl. Whisk together the eggs, milk, cream, granulated sugar, first 1/2 cup of brown sugar, and vanilla. Pour evenly over the bread. Cover the pan tightly and store in the fridge until needed (overnight preferably). For the topping: Mix the flour, brown sugar, cinnamon, salt and some nutmeg in a separate bowl. Stir together using a fork. Add the butter and with a pastry cutter, and mix it all together until the mixture resembles fine pebbles. Store in a re-sealable plastic bag in the fridge. When you''re ready to bake the casserole, preheat the oven to 350 degrees F. Remove the casserole from the fridge and sprinkle the topping over the top. Bake for 45 minutes for a softer, more bread pudding texture or for 1 hour or more for a firmer, crisper texture. Scoop out individual portions. Top with butter and drizzle with warm pancake syrup and sprinkle with blueberries.', 1, 12, 1),
+	
 
 
 INSERT INTO ingredients (ingredient_name)
-	VALUES ('Mozzerella Cheese'),
-    ('Tomato'),
-	('Pepperoni'),
-	('Dough'),
-	('Peanut Butter'),
-	('Jelly'),
-	('Bread')
+	VALUES ('mozzerella cheese'),
+    ('tomato'),
+	('pepperoni'),
+	('dough'),
+	('peanut butter'),
+	('jelly'),
+	('bread'),
+	('all-purpose flour'),--8
+	('butter'),
+	('sourdough'),
+	('eggs'),
+	('milk'),
+	('whipping (heavy) cream'),
+	('granulated sugar'),
+	('brown sugar'),
+	('vanilla extract'),
+	('salt'),
+	('freshly grated nutmeg'),
+	('pancake syrup'),
+	('blueberries'),
+	('cinnamon'),
+	('dark brown sugar'),
+	('baking soda'),
+	('old-fashioned oats'),
 
 
 INSERT INTO recipes_ingredients (recipe_id, ingredient_id, ingredient_qty, ingredient_unit)
-	VALUES (1, 1, 1, 'Oz'),
-	(1, 2, 1, 'item' ),
-	(1, 3, 10, 'Oz'),
-	(1, 4, 5, 'LB'),
+	VALUES 
+	(1, (select ingredient_name from ingredients where ingredient_name = 'dark brown sugar'),2, 'cups'),
+	(1, (select ingredient_name from ingredients where ingredient_name = 'butter'),2, 'sticks'),
+	(1, (select ingredient_name from ingredients where ingredient_name = 'vanilla extract'),2, 'teaspoons'),
+	(1, (select ingredient_name from ingredients where ingredient_name = 'eggs'),2, 'eggs'),
+	(1, (select ingredient_name from ingredients where ingredient_name = 'all-purpose flour'),1.5, 'cups'),
+	(1, (select ingredient_name from ingredients where ingredient_name = 'salt'),1, 'teaspoon'),
+	(1, (select ingredient_name from ingredients where ingredient_name = 'baking soda'),0.5, 'teaspoon'),
+	(1, (select ingredient_name from ingredients where ingredient_name = 'old-fashioned oats'),3, 'cups'),
 	(2, 5, 2, 'Oz'),
 	(2, 6, 2, 'Oz'),
-	(2,7, 2, 'Slices')
-
-
-
-
+	(2,7, 2, 'Slices'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'butter'),0.1, 'stick for greasing'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'sourdough'),1,'loaf'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'eggs'),8,'whole eggs'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'milk'),2,'cups'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'whipping (heavy) cream'),0.5,'cup'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'granulated sugar'),0.5,'cup'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'brown sugar'),0.5,'cup'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'vanilla extract'),2,'tablespoons'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'all-purpose flour'),0.5,'cup'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'brown sugar'),0.5,'cup firmly packed'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'cinnamon'),1,'teaspoon'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'salt'),0.25,'teaspoon'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'nutmeg'),1,'pinch'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'butter'),1,'stick'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'pancake syrup'),1,'cup for serving'),
+	(3,(select ingredient_name from ingredients where ingredient_name = 'blueberries'),1,'cup for serving'),
+*/
 GO
