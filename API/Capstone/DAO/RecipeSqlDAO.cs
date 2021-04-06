@@ -10,7 +10,7 @@ namespace Capstone.DAO
 {
     public class RecipeSqlDAO : IRecipeDAO
     {
-        private const string GET_RECIPES = "select * from recipes";
+        private const string GET_RECIPES = @"select * from recipes where is_shared = 1";
         private const string GET_MY_RECIPES = "select * from recipes where user_id = @userID";
         private readonly string connectionString;
 
@@ -53,7 +53,7 @@ namespace Capstone.DAO
 
         }
 
-        public List<Recipe> GetPrivateRecipes(int userID)
+        public List<Recipe> GetPrivateRecipes(int userId)
         {
             List<Recipe> PrivateListOfRecipes = new List<Recipe>();
             try
@@ -62,7 +62,7 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(GET_MY_RECIPES, conn);
-                    cmd.Parameters.AddWithValue("@userID", userID);
+                    cmd.Parameters.AddWithValue("@userID", userId);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
