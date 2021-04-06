@@ -12,12 +12,12 @@ namespace Capstone.Controllers
 {
     [Route("/[controller]")]
     [ApiController]
-    public class RecipeController : AuthorizedControllerBase  //ControllerBase
+    public class RecipesController : AuthorizedControllerBase  //ControllerBase
     {
         private readonly IRecipeDAO recipeDAO;
-        int userId;
+        
 
-        public RecipeController(IRecipeDAO recipedao)
+        public RecipesController(IRecipeDAO recipedao)
         {
             this.recipeDAO = recipedao;
         }
@@ -30,13 +30,14 @@ namespace Capstone.Controllers
             return Ok(listOfRecipe);
         }
 
-        [Authorize]
-        [HttpGet("{userId}")]
+        
+//        [HttpGet]
 
-        public ActionResult GetPrivateRecipes(int userId)
-        {
-            List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(userId);
-            return Ok(privateListOfRecipe);
-        }
-    }
+//        public ActionResult GetPrivateRecipes(User user)
+//        {
+//            int currentUserId = int.Parse(User.FindFirst("sub").Value);
+//            List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(currentUserId);
+//            return Ok(privateListOfRecipe);
+//        }
+   }
 }
