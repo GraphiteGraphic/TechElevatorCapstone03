@@ -12,10 +12,10 @@ export default {
 
   getRecipes(user) {
     if(user.token === ''){
-      return axios.get('api url without User')
+      return axios.get('/recipe')
     }
     else{
-      return axios.get('api url IDK', user)
+      return axios.get('/recipe', user)
     }
   }
 }

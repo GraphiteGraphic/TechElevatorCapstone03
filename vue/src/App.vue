@@ -27,7 +27,9 @@ export default {
     },
   },
   created() {
-    authServices.getRecipes(this.currentUser);
+    authServices.getRecipes(this.currentUser).then((response)=>{
+      this.$store.commit("SET_PUBLIC_RECIPES",response.data);
+    });
   }
 };
 </script>

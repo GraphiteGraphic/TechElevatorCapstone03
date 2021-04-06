@@ -39,6 +39,9 @@ export default new Vuex.Store({
       state.token = '';
       state.user = {};
       axios.defaults.headers.common = {};
-    }
+    },
+    SET_PUBLIC_RECIPES(state, list){
+      state.recipes=list;
+    },
   }
 })
