@@ -20,5 +20,9 @@ export default {
 
   addRecipe(recipe) {
     return axios.post('/recipes',recipe);
+  },
+
+  getIngredients(recipe) {
+    return axios.get(`/recipeingredients/${recipe.recipeId}`);
   }
 }

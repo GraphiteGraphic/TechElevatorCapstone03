@@ -10,15 +10,16 @@
       <router-link
         v-bind:to="{ name: 'profile' }"
         v-if="$store.state.token !== ''"
-        >{{currentUser.username}} |</router-link
+        >{{ currentUser.username }} |</router-link
       >
       <router-link
         v-bind:to="{ name: 'logout' }"
         v-if="$store.state.token != ''"
-      > Logout</router-link
+      >
+        Logout</router-link
       >
     </div>
-    <router-view />
+    <router-view v-if="isLoaded" />
   </div>
 </template>
 
@@ -26,6 +27,11 @@
 import authServices from '@/services/AuthService.js';
 
 export default {
+  data() {
+    return{
+      isLoaded: false
+    }
+  },
   computed: {
     currentUser() {
       return this.$store.state.user;
@@ -34,6 +40,7 @@ export default {
   created() {
     authServices.getPublicRecipes().then((response)=>{
       this.$store.commit("SET_PUBLIC_RECIPES",response.data);
+      this.isLoaded = true;
     });
   }
 };
@@ -43,16 +50,16 @@ export default {
 body {
   text-align: center;
   color: white;
-  background-color: rgb(0, 175, 240);  
+  background-color: rgb(0, 175, 240);
 }
 
-#nav{
+#nav {
   text-align: right;
 }
 
 a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 a:visited {

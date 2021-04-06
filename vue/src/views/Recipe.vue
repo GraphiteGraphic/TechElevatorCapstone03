@@ -1,32 +1,35 @@
 <template>
   <div>
     <h2>{{ recipe.recipeName }}</h2>
-    <p>{{ ingredients }}</p>
+    <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">{{ingredient.quantity}} {{ingredient.unit}} {{ ingredient.ingredient_name }}</p>
     <p v-for="num of instructions.length" :key="num"><span>{{num}}.</span> {{ instructions[num - 1] }}</p>
   </div>
 </template>
 
 <script>
+import authServices from '../services/AuthService.js'
+
 export default {
   data() {
     return {
+      recipe: {},
       // contains name, quantity, and unit of each ingredient
       ingredients: [{}],
     };
   },
   computed: {
-    recipe() {
-      return this.$store.state.recipes.find( (recipe) => {
-        return this.$route.params.id == recipe.recipeId;
-      })
-    },
     instructions() {
       return this.recipe.instructions.split('|||');
     }
   },
   created() {
+    this.recipe = this.$store.state.recipes.find( (recipe) => {
+        return this.$route.params.id == recipe.recipeId;});
+
     //TODO: Replace following code with api call to get ingredients
-    this.ingredients = this.$store.state.recipeIngredients;
+    authServices.getIngredients(this.recipe).then( (resp) => {
+      this.ingredients = resp.data;
+    });
   },
 };
 </script>
