@@ -23,7 +23,6 @@ namespace Capstone.Controllers
         }
 
         [HttpGet]
-
         public ActionResult GetPublicRecipes()
         {
             List<Recipe> listOfRecipe = recipeDAO.GetPublicRecipes();
@@ -31,12 +30,11 @@ namespace Capstone.Controllers
         }
 
         
-       [HttpGet]
+       [HttpGet("myrecipes")]
        [Authorize]
-      public ActionResult GetPrivateRecipes(User user)
+        public ActionResult GetPrivateRecipes()
         {
-            int currentUserId = int.Parse(User.FindFirst("sub").Value);
-            List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(currentUserId);
+            List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(this.UserId);
             return Ok(privateListOfRecipe);
         }
    }
