@@ -31,13 +31,13 @@ namespace Capstone.Controllers
         }
 
         
-//        [HttpGet]
-
-//        public ActionResult GetPrivateRecipes(User user)
-//        {
-//            int currentUserId = int.Parse(User.FindFirst("sub").Value);
-//            List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(currentUserId);
-//            return Ok(privateListOfRecipe);
-//        }
+       [HttpGet]
+       [Authorize]
+      public ActionResult GetPrivateRecipes(User user)
+        {
+            int currentUserId = int.Parse(User.FindFirst("sub").Value);
+            List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(currentUserId);
+            return Ok(privateListOfRecipe);
+        }
    }
 }
