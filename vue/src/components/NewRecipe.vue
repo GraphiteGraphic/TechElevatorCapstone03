@@ -224,6 +224,15 @@ export default {
     editIngredient()
     {
       this.recipe.ingredientList[this.inputBool.ingIndex] = this.ingredient;
+      
+      //Reset newIngredient list and repopulate with potential new ingredients
+      this.recipe.newIngredients = [];
+      for(let i of this.recipe.ingredientList){
+        if(!this.allIngredients.find( (x) => { return x.ingredientName === i.ingredientName })){
+          this.recipe.newIngredients.push(i.ingredientName)
+        }
+      }
+
       this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
       this.inputBool.ingredient = true;
     },
