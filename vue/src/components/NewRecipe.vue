@@ -48,8 +48,14 @@
       />
     </div>
     <div>
-      <label for="ingredientList">Ingredients</label>
+      <div>Ingredients:</div>
+      <label for="Ingredient Quantity">Quantity: </label>
+      <input type="number" name ="Ingredient Quantity" min=1>
+      <label for="Ingredient Unit">Unit: </label>
+      <input type="text" name ="Ingredient Unit" class="unit">
+      <label for="ingredientList">Ingredient: </label>
       <input list="ingredients" name="ingredientList" id="ingredientList">
+      <button>Add Ingredient</button> 
       <datalist name="ingredients" id="ingredients">
         <option
           v-for="ingredient in allIngredients"
@@ -113,13 +119,20 @@ export default {
         userId: Number,
         isShared: false,
         servings: 1,
+        ingredientList
         //existingIngredients: [],
         //newIngredients: [],
       },
+      ingredient:{
+        quantity: 1,
+        unit: "",
+        ingredientName: ""
+      },
       ingredient: "",
       instructionSteps: [],
-      ingredientList: [],
-      allIngredients: [],
+      ingredientList: [], // Contains all ingredients in current recipe
+      allIngredients: [], // Contains all ingredients currently in db
+      newIngredients: [], // Contains ingredients not in db
     };
   },
   methods: {
@@ -157,6 +170,9 @@ export default {
           alert("Error");
         });
     },
+    // addIngredient() {
+    //   this.ingredientList.push(this.)
+    // },
     addStep() {
       this.instructionSteps.push(this.recipe.instructions);
       this.recipe.instructions = "";
@@ -196,7 +212,7 @@ form {
   display: flex;
   flex-direction: column;
   align-content: left;
-  padding: 200px;
+  padding: 100px;
   text-align: left;
 }
 .RecipeName {
@@ -204,4 +220,11 @@ form {
   font-weight: bold;
   text-align: center;
 }
+input[type=number] {
+  width: 50px;
+}
+.unit{
+  width:50px;
+}
+
 </style>
