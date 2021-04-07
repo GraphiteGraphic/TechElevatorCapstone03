@@ -15,11 +15,10 @@ namespace Capstone.Models
         public int Servings { get; set; }
 
         public bool IsShared { get; set; }
-        public List<string> IngredientList { get; set; }
+        public List<RecipeIngredient> IngredientList { get; set; }
         public List<string> NewIngredients { get; set; }
 
-
-        public Recipe(int recipeId, string recipeName, int userId, string instructions, int type, int servings, bool isshared, List<string> ingredientList, List<string> newIngredients)
+        public Recipe(int recipeId, string recipeName, int userId, string instructions, int type, int servings, bool isshared, List<RecipeIngredient> ingredientList, List<string> newIngredients)
         {
             this.RecipeId = recipeId;
             this.RecipeName = recipeName;

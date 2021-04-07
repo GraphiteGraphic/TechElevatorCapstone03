@@ -12,7 +12,7 @@ namespace Capstone.DAO
     {
         private const string GET_RECIPES = @"select * from recipes where is_shared = 1";
         private const string GET_MY_RECIPES = "select * from recipes where user_id = @userID";
-        private const string ADD_RECIPE = "Insert into recipes(user_id, recipe_name, instructions, type_id, num_servings, is_shared) VALUES(@user_id, @recipe_name, @instructions, @type_id, @num_servings, @is_shared); Select @@IDENTITY;";
+        private const string ADD_RECIPE = "Insert into recipes(user_id, recipe_name, instructions, type_id, num_servings, is_shared)VALUES(@user_id, @recipe_name, @instructions, @type_id, @num_servings, @is_shared);SELECT @@IDENTITY;";
 
         private readonly string connectionString;
 
@@ -104,9 +104,8 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@instructions", recipe.Instructions);
                     cmd.Parameters.AddWithValue("@type_id", recipe.Type);
                     cmd.Parameters.AddWithValue("@num_servings", recipe.Servings);
-                    cmd.Parameters.AddWithValue(@"is_shared", recipe.IsShared);
+                    cmd.Parameters.AddWithValue("@is_shared", recipe.IsShared);
                     recipe.RecipeId = Convert.ToInt32(cmd.ExecuteScalar());
-             
                 }
             }
 

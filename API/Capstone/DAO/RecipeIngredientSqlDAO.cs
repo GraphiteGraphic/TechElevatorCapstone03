@@ -88,7 +88,31 @@ namespace Capstone.DAO
             }
         }
 
+        public List<RecipeIngredient> AddIngredients(List<RecipeIngredient> ingredients, int recipeId)
+        {
+            try
+            {
+                List<RecipeIngredient> listOfRecipeIngredients = new List<RecipeIngredient>();
 
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+                    foreach (RecipeIngredient ingredient in ingredients)
+                    {
+                        SqlCommand cmd = new SqlCommand("INSERT INTO recipes_ingredients (recipe_id,ingredient_id,ingredient_qty,ingredient_unit) VALUES (@recipe_id, (select ingredient_id from ingredients where ingredient_name=@ingredient_name), @ingredient_qty, @ingredient_unit)", conn);
+                        cmd.Parameters.AddWithValue("@recipe_id", recipeId);
+                        cmd.Parameters.AddWithValue("@ingredient_name", ingredient.Ingredient_name);
+                        cmd.Parameters.AddWithValue("@ingredient_qty", ingredient.Quantity);
+                        cmd.Parameters.AddWithValue("@ingredient_unit", ingredient.Unit);
+                        cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch
+            {
 
+            }
+            return ingredients;
+        }
     }
 }

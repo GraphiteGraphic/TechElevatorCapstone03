@@ -7,5 +7,6 @@ namespace Capstone.DAO
     {
         List<RecipeIngredient> GetMyRecipeIngredients(int recipeId, int userId);
         List<RecipeIngredient> GetPublicRecipeIngredients(int recipeId);
+        List<RecipeIngredient> AddIngredients(List<RecipeIngredient> ingredients, int recipeId);
     }
 }
