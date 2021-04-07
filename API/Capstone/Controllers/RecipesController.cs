@@ -15,11 +15,13 @@ namespace Capstone.Controllers
     public class RecipesController : AuthorizedControllerBase  //ControllerBase
     {
         public readonly IRecipeDAO recipeDAO;
+        public readonly IIngredientDAO ingredientDAO;
         
 
-        public RecipesController(IRecipeDAO recipedao)
+        public RecipesController(IRecipeDAO recipedao, IIngredientDAO IngredientDAO)
         {
             this.recipeDAO = recipedao;
+            this.ingredientDAO = IngredientDAO;
         }
 
         [HttpGet]
@@ -42,6 +44,12 @@ namespace Capstone.Controllers
         [HttpPost]
         public ActionResult AddRecipe(Recipe recipe)
         {
+            if (recipe.NewIngredients.Count() > 0)
+            {
+                ingredientDAO.AddIngredients(recipe.NewIngredients);
+            }
+            
+
             recipe = recipeDAO.AddRecipe(recipe, this.UserId);
             return Created($"/recipes/{recipe.RecipeId}",recipe);
         }

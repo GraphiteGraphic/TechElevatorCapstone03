@@ -43,6 +43,29 @@ namespace Capstone.DAO
                 throw;
             }
         }
+
+        public List<string> AddIngredients(List<string> newIngredients)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+                    foreach (string ingredient in newIngredients)
+                    {
+                        SqlCommand cmd = new SqlCommand($"INSERT INTO ingredients (ingredient_name) VALUES (@ingredient)", conn);
+                        cmd.Parameters.AddWithValue("@ingredient", ingredient);
+                        cmd.ExecuteScalar();
+                    }
+
+                }
+            }
+            catch (SqlException)
+            {
+
+            }
+            return newIngredients;
+        }
     }
 }
 
