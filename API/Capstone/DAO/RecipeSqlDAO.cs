@@ -13,6 +13,7 @@ namespace Capstone.DAO
         private const string GET_RECIPES = @"select * from recipes where is_shared = 1";
         private const string GET_MY_RECIPES = "select * from recipes where user_id = @userID";
         private const string ADD_RECIPE = "Insert into recipes(user_id, recipe_name, instructions, type_id, num_servings, is_shared) VALUES(@user_id, @recipe_name, @instructions, @type_id, @num_servings, @is_shared); Select @@IDENTITY;";
+
         private readonly string connectionString;
 
         public RecipeSqlDAO(string dbConnectionString)

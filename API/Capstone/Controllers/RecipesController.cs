@@ -14,7 +14,7 @@ namespace Capstone.Controllers
     [ApiController]
     public class RecipesController : AuthorizedControllerBase  //ControllerBase
     {
-        private readonly IRecipeDAO recipeDAO;
+        public readonly IRecipeDAO recipeDAO;
         
 
         public RecipesController(IRecipeDAO recipedao)
