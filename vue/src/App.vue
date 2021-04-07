@@ -40,8 +40,16 @@ export default {
   created() {
     authServices.getPublicRecipes().then((response)=>{
       this.$store.commit("SET_PUBLIC_RECIPES",response.data);
-      this.isLoaded = true;
+      if (this.$store.state.token===''){
+        this.isLoaded=true;
+      }
     });
+    if (this.$store.state.token!==''){
+      authServices.getMyRecipes(this.$store.state.user).then((response)=>{
+        this.$store.commit("SET_MY_RECIPES",response.data);
+        this.isLoaded = true;
+      });
+    }
   }
 };
 </script>

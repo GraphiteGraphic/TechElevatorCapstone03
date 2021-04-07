@@ -14,17 +14,19 @@ export default {
   components: { recipeList },
   data() {
     return {
-      myRecipes: [],
     };
   },
   computed: {
     currentUser() {
       return this.$store.state.user;
     },
+    myRecipes() {
+      return this.$store.state.myRecipes;
+    },
   },
   created() {
     authServices.getMyRecipes(this.currentUser).then((resp) => {
-      this.myRecipes = resp.data;
+      this.$store.state.myRecipes = resp.data;
     });
   },
 };

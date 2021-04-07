@@ -21,6 +21,7 @@ export default new Vuex.Store({
     token: currentToken || '',
     user: currentUser || {},
     recipes: [],
+    myRecipes: [],
     recipeIngredients: [{name: 'Carrot', quantity: 2, unit: 'cup'}] 
   },
   mutations: {
@@ -43,5 +44,11 @@ export default new Vuex.Store({
     SET_PUBLIC_RECIPES(state, list){
       state.recipes=list;
     },
+    SET_MY_RECIPES(state, list){
+      state.myRecipes=list;
+    },
+    ADD_RECIPE(state, recipe){
+      state.myRecipes.push(recipe);
+    }
   }
 })

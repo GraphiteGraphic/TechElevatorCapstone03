@@ -1,6 +1,6 @@
 <template>
   <form v-on:submit.prevent="saveRecipe()">
-    <div>
+    <div class = "RecipeName">
       <label for="Recipe Name">Recipe Name: </label>
       <input
         type="text"
@@ -10,7 +10,7 @@
         required="true"
       />
     </div>
-    <div>
+    <div class = "RecipeType">
       <label for="type">Recipe Type: </label>
       <select v-model="recipe.type" name="type" required="true">
         <option>Main Dish</option>
@@ -20,11 +20,11 @@
         <option>Appetizer</option>
       </select>
     </div>
-    <div>
+    <div class = "RecipeShare">
       <label for="shared">Do you want to share this?</label>
       <input type="checkbox" v-model="recipe.isShared" name="shared" />
     </div>
-    <div>
+    <div class = "RecipeServings">
       <label for="numServings">Number of Servings: </label>
       <input
         type="number"
@@ -46,7 +46,7 @@
       </datalist>
     </div>
     -->
-    <div>
+    <div class = "RecipeInstructions">
       <label for="instructions">Recipe Instructions: </label>
       <input
         type="text"
@@ -56,8 +56,21 @@
         required="true"
         min="1"
       />
+      <button type="button" v-on:click.prevent="addStep()">Add Instruction Step</button>
     </div>
-    <button type="submit">Save Recipe</button>
+        <div class = "IngredientList">
+      <label for="ingredients">Recipe Ingredients: </label>
+      <input
+        type="text"
+        name="ingredients"
+        placeholder="Recipe Ingredients"
+        v-model="ingredient"
+        required="true"
+        min="1"
+      />
+      <button type="button" v-on:click.prevent="addIngredient()">Add Ingredient</button>
+    </div>
+    <button type="submit" class = "submitBtn">Save Recipe</button>
   </form>
 </template>
 
@@ -76,11 +89,17 @@ export default {
         //existingIngredients: [],
         //newIngredients: [],
       },
+      ingredient: '',
+      instructionSteps: [],
+      ingredientList: [],
     };
   },
   methods: {
     saveRecipe() {
+      //this parses numservings into a number
       this.recipe.numServings=parseInt(this.recipe.numServings);
+
+      //this changes recipe type from string into its respective type #
       if (this.recipe.type==='Main Dish'){
         this.recipe.type=1;
       }
@@ -96,8 +115,13 @@ export default {
       else if (this.recipe.type==='Appetizer'){
         this.recipe.type=5;
       }
+
+      //this joins all instructions to have all the breaking charater (|||) in the database
+      this.recipe.instructions = this.instructionSteps.join('|||')+'|||'+ this.recipe.instructions;
+
       service.addRecipe(this.recipe).then((response)=>{
         if(response.status===201){
+          this.$store.commit("ADD_RECIPE",response.data);
           this.$router.push({name: 'profile'});
         }
       }).catch((error)=>{
@@ -105,6 +129,14 @@ export default {
         alert('Error');
       });
       
+    },
+    addStep(){
+      this.instructionSteps.push(this.recipe.instructions);
+      this.recipe.instructions="";
+    },
+    addIngredient(){
+      this.ingredientList.push(this.ingredient);
+      this.ingredient="";
     },
     /*addIngredient(ingredientId, IngredientName) {
         //make object that holds both ingredients and push into it
@@ -116,6 +148,15 @@ export default {
 
 <style scoped>
 form {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-content: left;
+  padding: 200px;
+  text-align: left;
+}
+.RecipeName {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
 }
 </style>

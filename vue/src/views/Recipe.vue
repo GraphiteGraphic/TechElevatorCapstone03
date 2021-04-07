@@ -25,6 +25,11 @@ export default {
   created() {
     this.recipe = this.$store.state.recipes.find( (recipe) => {
         return this.$route.params.id == recipe.recipeId;});
+    if (!this.recipe){
+      this.recipe = this.$store.state.myRecipes.find((recipe)=>{
+        return this.$route.params.id == recipe.recipeId;
+      });
+    }
 
     //TODO: Replace following code with api call to get ingredients
     authServices.getIngredients(this.recipe).then( (resp) => {
