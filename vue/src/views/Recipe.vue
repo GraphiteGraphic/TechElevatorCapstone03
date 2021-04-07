@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>{{ recipe.recipeName }}</h2>
-    <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">{{ingredient.quantity}} {{ingredient.unit}} {{ ingredient.ingredient_name }}</p>
+    <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">{{ingredient.quantity}} {{ingredient.unit}} {{ ingredient.ingredientName }}</p>
     <p v-for="num of instructions.length" :key="num"><span>{{num}}.</span> {{ instructions[num - 1] }}</p>
   </div>
 </template>

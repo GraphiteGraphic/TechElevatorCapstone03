@@ -36,7 +36,7 @@ namespace Capstone.DAO
                     {
                         RecipeIngredient r = new RecipeIngredient();
                         r.IngredientId = Convert.ToInt32(reader["ingredient_id"]);
-                        r.Ingredient_name = Convert.ToString(reader["ingredient_name"]);
+                        r.IngredientName = Convert.ToString(reader["ingredient_name"]);
                         r.Quantity = Convert.ToDecimal(reader["ingredient_qty"]);
                         r.Unit = Convert.ToString(reader["ingredient_unit"]);
                         r.RecipeId = Convert.ToInt32(reader["recipe_id"]);
@@ -71,7 +71,7 @@ namespace Capstone.DAO
                     {
                         RecipeIngredient r = new RecipeIngredient();
                         r.IngredientId = Convert.ToInt32(reader["ingredient_id"]);
-                        r.Ingredient_name = Convert.ToString(reader["ingredient_name"]);
+                        r.IngredientName = Convert.ToString(reader["ingredient_name"]);
                         r.Quantity = Convert.ToDecimal(reader["ingredient_qty"]);
                         r.Unit = Convert.ToString(reader["ingredient_unit"]);
                         r.RecipeId = Convert.ToInt32(reader["recipe_id"]);
@@ -101,7 +101,7 @@ namespace Capstone.DAO
                     {
                         SqlCommand cmd = new SqlCommand("INSERT INTO recipes_ingredients (recipe_id,ingredient_id,ingredient_qty,ingredient_unit) VALUES (@recipe_id, (select ingredient_id from ingredients where ingredient_name=@ingredient_name), @ingredient_qty, @ingredient_unit)", conn);
                         cmd.Parameters.AddWithValue("@recipe_id", recipeId);
-                        cmd.Parameters.AddWithValue("@ingredient_name", ingredient.Ingredient_name);
+                        cmd.Parameters.AddWithValue("@ingredient_name", ingredient.IngredientName);
                         cmd.Parameters.AddWithValue("@ingredient_qty", ingredient.Quantity);
                         cmd.Parameters.AddWithValue("@ingredient_unit", ingredient.Unit);
                         cmd.ExecuteScalar();

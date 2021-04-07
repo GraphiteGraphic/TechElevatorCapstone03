@@ -8,7 +8,7 @@ namespace Capstone.Models
     public class RecipeIngredient
     {
         public int IngredientId { get; set; }
-        public string Ingredient_name { get; set; }
+        public string IngredientName { get; set; }
         public decimal Quantity { get; set; }
         public string Unit { get; set; }
         public int RecipeId { get; set; }
@@ -18,7 +18,7 @@ namespace Capstone.Models
         public RecipeIngredient(int ingredientId, string ingredient_name, decimal quantity, string unit, int recipeId, int userId)
         {
             this.IngredientId = ingredientId;
-            this.Ingredient_name = ingredient_name;
+            this.IngredientName = ingredient_name;
             this.Quantity = quantity;
             this.Unit = unit;
             this.RecipeId = recipeId;
