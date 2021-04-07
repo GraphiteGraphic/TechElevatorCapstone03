@@ -24,5 +24,9 @@ export default {
 
   getIngredients(recipe) {
     return axios.get(`/recipeingredients/${recipe.recipeId}`);
+  },
+
+  getAllIngredients() {
+    return axios.get('/ingredient');
   }
 }
