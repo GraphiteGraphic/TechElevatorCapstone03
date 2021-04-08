@@ -39,6 +39,7 @@ export default new Vuex.Store({
       localStorage.removeItem('user');
       state.token = '';
       state.user = {};
+      state.myRecipes = [];
       axios.defaults.headers.common = {};
     },
     SET_PUBLIC_RECIPES(state, list){

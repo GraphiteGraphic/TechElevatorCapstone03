@@ -1,21 +1,19 @@
 <template>
   <div>
     <h2>My Recipes</h2>
-    <recipe-list :recipeList="myRecipes"/>
+    <recipe-list :recipeList="myRecipes" />
     <router-link v-bind:to="{ name: 'addRecipe' }">+ Add Recipe</router-link>
+    <meal-plan />
   </div>
 </template>
 
 <script>
-import recipeList from '../components/recipeList.vue';
+import recipeList from "../components/recipeList.vue";
+import mealPlan from "../components/MealPlan.vue"
 import authServices from "../services/AuthService";
 
 export default {
-  components: { recipeList },
-  data() {
-    return {
-    };
-  },
+  components: { recipeList, mealPlan },
   computed: {
     currentUser() {
       return this.$store.state.user;
@@ -33,5 +31,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
