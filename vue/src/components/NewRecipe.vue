@@ -49,13 +49,37 @@
     </div>
     <div>
       <div>Ingredients:</div>
+      <div v-for="ingredient of recipe.ingredientList" v-bind:key="ingredient.ingredientName"> 
+        {{ingredient.quantity}}
+        {{ingredient.unit}}
+        {{ingredient.ingredientName}}.
+            <span @click="setupIngredient(recipe.ingredientList.indexOf(ingredient))">🖉</span>
+        <span @click="deleteIngredient(recipe.ingredientList.indexOf(ingredient))">🗑</span>
+      </div>
       <label for="Ingredient Quantity">Quantity: </label>
-      <input type="number" name ="Ingredient Quantity" min=1>
+      <input
+        type="number"
+        name="Ingredient Quantity"
+        min="1"
+        v-model="ingredient.quantity"
+      />
       <label for="Ingredient Unit">Unit: </label>
-      <input type="text" name ="Ingredient Unit" class="unit">
+      <input
+        type="text"
+        name="Ingredient Unit"
+        class="unit"
+        v-model="ingredient.unit"
+      />
       <label for="ingredientList">Ingredient: </label>
-      <input list="ingredients" name="ingredientList" id="ingredientList">
-      <button>Add Ingredient</button> 
+      <input
+        list="ingredients"
+        name="ingredientList"
+        id="ingredientList"
+        v-model="ingredient.ingredientName"
+      />
+      <button type="button" @click="addIngredient()" v-show="inputBool.ingredient">Add Ingredient</button>
+      <button type="button" @click="editIngredient()" v-show="!inputBool.ingredient">Edit Ingredient</button>
+
       <datalist name="ingredients" id="ingredients">
         <option
           v-for="ingredient in allIngredients"
@@ -108,9 +132,10 @@ export default {
       inputBool: {
         name: false,
         type: false,
-        instructions: false,
         addStep: true,
         stepNum: Number,
+        ingredient: true,
+        ingIndex: Number
       },
       recipe: {
         recipeName: "Untitled",
@@ -119,20 +144,16 @@ export default {
         userId: Number,
         isShared: false,
         servings: 1,
-        ingredientList
-        //existingIngredients: [],
-        //newIngredients: [],
+        ingredientList: [],
+        newIngredients: [],
       },
-      ingredient:{
+      ingredient: {
         quantity: 1,
         unit: "",
-        ingredientName: ""
+        ingredientName: "",
       },
-      ingredient: "",
       instructionSteps: [],
-      ingredientList: [], // Contains all ingredients in current recipe
       allIngredients: [], // Contains all ingredients currently in db
-      newIngredients: [], // Contains ingredients not in db
     };
   },
   methods: {
@@ -170,9 +191,7 @@ export default {
           alert("Error");
         });
     },
-    // addIngredient() {
-    //   this.ingredientList.push(this.)
-    // },
+
     addStep() {
       this.instructionSteps.push(this.recipe.instructions);
       this.recipe.instructions = "";
@@ -187,23 +206,39 @@ export default {
       this.inputBool.addStep = true;
       this.recipe.instructions = "";
     },
-    deleteStep(index){
+    deleteStep(index) {
       this.instructionSteps.splice(index, 1);
     },
-    addIngredient() {
-      this.ingredientList.push(this.ingredient);
-      this.ingredient = "";
+    deleteIngredient(index)
+    {
+      this.recipe.ingredientList.splice(index, 1);
     },
-    /*addIngredient(ingredientId, IngredientName) {
-        //make object that holds both ingredients and push into it
-      this.recipe.ingredients.push(ingredient);
-    },*/
+    addIngredient() {
+      this.recipe.ingredientList.push(this.ingredient);
+      if(!this.allIngredients.find( (x) => { return x.ingredientName === this.ingredient.ingredientName })){
+        this.recipe.newIngredients.push(this.ingredient.ingredientName)
+      }
+      this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
+      //when we click the button add what's in the text fields to ingredient list as an object, if name is not in the options add it to the ingredient array
+    },
+    editIngredient()
+    {
+      this.recipe.ingredientList[this.inputBool.ingIndex] = this.ingredient;
+      this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
+      this.inputBool.ingredient = true;
+    },
+    setupIngredient(index)
+    {
+      this.inputBool.ingIndex = index;
+      this.inputBool.ingredient = false;
+      this.ingredient = this.recipe.ingredientList[index];
+    },
   },
   created() {
-    service.getAllIngredients().then( (resp) => {
+    service.getAllIngredients().then((resp) => {
       this.allIngredients = resp.data;
-    })
-  }
+    });
+  },
 };
 </script>
 
@@ -220,11 +255,10 @@ form {
   font-weight: bold;
   text-align: center;
 }
-input[type=number] {
+input[type="number"] {
   width: 50px;
 }
-.unit{
-  width:50px;
+.unit {
+  width: 50px;
 }
-
 </style>
