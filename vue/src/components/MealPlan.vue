@@ -14,17 +14,19 @@
         v-show="visualParams.viewMode"
         >🖉</span
       >
-      <button type=button @click.prevent="saveMealPlan()">Save Changes</button>
+      <button type="button" @click.prevent="saveMealPlan()">
+        Save Changes
+      </button>
     </h2>
     <table>
       <thead>
-        <th @click="this,visualParams.dayIndex = 0">Sunday</th>
-        <th @click="this,visualParams.dayIndex = 1">Monday</th>
-        <th @click="this,visualParams.dayIndex = 2">Tuesday</th>
-        <th @click="this,visualParams.dayIndex = 3">Wednesday</th>
-        <th @click="this,visualParams.dayIndex = 4">Thursday</th>
-        <th @click="this,visualParams.dayIndex = 5">Friday</th>
-        <th @click="this,visualParams.dayIndex = 6">Saturday</th>
+        <th @click="this, (visualParams.dayIndex = 0)">Sunday</th>
+        <th @click="this, (visualParams.dayIndex = 1)">Monday</th>
+        <th @click="this, (visualParams.dayIndex = 2)">Tuesday</th>
+        <th @click="this, (visualParams.dayIndex = 3)">Wednesday</th>
+        <th @click="this, (visualParams.dayIndex = 4)">Thursday</th>
+        <th @click="this, (visualParams.dayIndex = 5)">Friday</th>
+        <th @click="this, (visualParams.dayIndex = 6)">Saturday</th>
       </thead>
       <tbody>
         <tr>
@@ -38,9 +40,13 @@
               v-for="recipe in mealPlan.MealList[i - 1].recipes"
               :key="recipe.recipeId"
             >
-              <span @click="this,visualParams.dayIndex = (i - 1); deleteRecipefromMeal(recipe)">{{
-                recipe.recipeName
-              }} 🗑</span>
+              <span
+                @click="
+                  this, (visualParams.dayIndex = i - 1);
+                  deleteRecipefromMeal(recipe);
+                "
+                >{{ recipe.recipeName }} 🗑</span
+              >
             </div>
             <span
               @click="
@@ -75,7 +81,7 @@
 
 <script>
 import RecipeList from "./recipeList.vue";
-import services from "../services/AuthService.js"
+import services from "../services/AuthService.js";
 
 export default {
   components: { RecipeList },
@@ -96,23 +102,49 @@ export default {
           "Saturday",
         ],
       },
-      mealPlan: { Name: "MyMealPlan", MealList: [{recipes:[]}, {recipes:[]}, {recipes:[]}, {recipes:[]}, {recipes:[]}, {recipes:[]}, {recipes:[]}] },
+      mealPlan: {
+        Name: "MyMealPlan",
+        MealList: [
+          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
+          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
+          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
+          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
+          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
+          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
+          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
+        ],
+        MealPlanId: 0,
+        UserId: 0,
+      },
     };
   },
   name: "meal-plan",
   computed: {
     availableRecipes() {
-      const uniqueSet = this.$store.state.recipes;
-      const privateRecipes = this.$store.state.myRecipes;
+      const publicRecipes = this.$store.state.recipes.map((el) => {
+        return el.recipeId;
+      });
+      const privateRecipes = this.$store.state.myRecipes.map((el) => {
+        return el.recipeId;
+      });
+      //this turns the array into a Set which doesn't like duplicates so it removes them, and then it turns the Set back into an array excluding any duplicates
+      let uniqueSet = publicRecipes.concat(privateRecipes);
+      uniqueSet = [...new Set(uniqueSet)];
 
-      //TODO Figure out out to create unique set of recipes. Current iteration causes duplicate bug
-      //   privateRecipes.forEach((recipe) => {
-      //     if (!recipe.isShared) {
-      //       uniqueSet.push(recipe);
-      //     }
-      //   });
-
-      return uniqueSet.concat(privateRecipes);
+      uniqueSet = uniqueSet.map((recipeId) => {
+        //if in public recipes grab recipe from $store.recipes if in private recipes grab from $store.myRecipes
+        if (publicRecipes.includes(recipeId)) {
+          return this.$store.state.recipes.find((publicRecipes) => {
+            return recipeId === publicRecipes.recipeId;
+          });
+        }
+        if (privateRecipes.includes(recipeId)) {
+          return this.$store.state.myRecipes.find((privateRecipes) => {
+            return recipeId === privateRecipes.recipeId;
+          });
+        }
+      });
+      return uniqueSet;
     },
   },
   methods: {
@@ -120,12 +152,22 @@ export default {
       this.mealPlan.MealList[this.visualParams.dayIndex].recipes.push(recipe);
     },
     deleteRecipefromMeal(recipe) {
-      let recipeIndex = this.mealPlan.MealList[this.visualParams.dayIndex].recipes.indexOf(recipe);
-      this.mealPlan.MealList[this.visualParams.dayIndex].recipes.splice(recipeIndex, 1);
+      let recipeIndex = this.mealPlan.MealList[
+        this.visualParams.dayIndex
+      ].recipes.indexOf(recipe);
+      this.mealPlan.MealList[this.visualParams.dayIndex].recipes.splice(
+        recipeIndex,
+        1
+      );
     },
     saveMealPlan() {
       services.postMealPlan(this.mealPlan);
-    }
+    },
+    getMealPlan() {
+      services.getMealPlan().then((response) => {
+        this.mealPlan = response.data();
+      });
+    },
   },
 };
 </script>
