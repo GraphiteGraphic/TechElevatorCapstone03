@@ -58,11 +58,18 @@ namespace Capstone.Controllers
             {
                 mealDAO.AddMeals(newMeals, this.UserId);
             }
+            
 
             //link mealid's with their respecitve recipeid's 
             mealRecipeDAO.AddMealRecipes(newMeals);
 
+            //post mealPlan to mealPlans to meal_plans table
+            mealPlanDAO.AddMealPlan(mealPlan, this.UserId);
 
+            //post mealPlan and meals to meal_plans_meals table
+            mealPlanDAO.AddMealstoMealPlan(mealPlan);
+
+            //return mealPlan with all new mealPlan id's (only meals with recipes in it got an id)
             return Ok(mealPlan);
             
         }
