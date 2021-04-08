@@ -80,18 +80,20 @@ CREATE TABLE recipes_users (
 	CONSTRAINT FK_recipes_users_users FOREIGN KEY (user_id) REFERENCES users (user_id)
 )
 
-CREATE TABLE time_of_day (
-	time_of_day_id int IDENTITY(1,1) NOT NULL,
-	time_of_day_name varchar(50) NOT NULL,
-	CONSTRAINT PK_time_of_day PRIMARY KEY (time_of_day_id),
-)
+--CREATE TABLE time_of_day (
+--	time_of_day_id int IDENTITY(1,1) NOT NULL,
+--	time_of_day_name varchar(50) NOT NULL,
+--	CONSTRAINT PK_time_of_day PRIMARY KEY (time_of_day_id),
+--)
 
 CREATE TABLE meals (
 	meal_id int IDENTITY(1,1) NOT NULL,
 	meal_name nvarchar(50) NOT NULL,
-	time_of_day_id int NOT NULL,
+	user_id int NOT NULL,
+	--time_of_day_id int NOT NULL,
 	CONSTRAINT PK_meals PRIMARY KEY (meal_id),
-	CONSTRAINT FK_meals_TOD FOREIGN KEY (time_of_day_id) REFERENCES time_of_day (time_of_day_id)
+	CONSTRAINT FK_meals_users FOREIGN KEY (user_id) REFERENCES users (user_id)
+	--CONSTRAINT FK_meals_TOD FOREIGN KEY (time_of_day_id) REFERENCES time_of_day (time_of_day_id)
 )
 
 CREATE TABLE meals_recipes (
@@ -127,7 +129,7 @@ INSERT INTO users (username, password_hash, salt, user_role) VALUES ('andrew','+
 
 --INSERT INTO TIME OF DAY BREAKFAST LUNCH DINNER DESERT SNACK, INSERT INTO TYPE MAIN DISH, SIDE DISH, BEVERAGE, DESSERT, APPETIZER,
 INSERT INTO types (type) VALUES ('Main Dish'), ('Side Dish'), ('Beverage'), ('Dessert'), ('Appetizer');
-INSERT INTO time_of_day (time_of_day_name) VALUES ('Breakfast'), ('Lunch'), ('Dinner'),('Snack');
+--INSERT INTO time_of_day (time_of_day_name) VALUES ('Breakfast'), ('Lunch'), ('Dinner'),('Snack');
 
 --Insert Shared Recipes / Ingredients
 INSERT INTO recipes (user_id, recipe_name, instructions, type_id, num_servings, is_shared) VALUES 

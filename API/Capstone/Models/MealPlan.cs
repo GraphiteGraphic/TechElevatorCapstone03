@@ -10,13 +10,13 @@ namespace Capstone.Models
         public int MealPlanId { get; }
 
         public string Name { get; set; }
-        public User User { get; set; }
+        public int UserId { get; set; }
 
-        public MealPlan(int mealplanid, string name, User user)
+        public MealPlan(int mealplanid, string name, int userId)
         {
             this.MealPlanId = mealplanid;
             this.Name = name;
-            this.User = user;
+            this.UserId = userId;
         }
 
 
