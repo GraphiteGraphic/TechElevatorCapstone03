@@ -107,8 +107,8 @@ CREATE TABLE meals_recipes (
 CREATE TABLE meal_plans (
 	meal_plan_id int IDENTITY(1,1) NOT NULL,
 	name nvarchar(50) NOT NULL,
-	
 	user_id int NOT NULL,
+	meal_indices varchar(20) NOT NULL,
 	CONSTRAINT PK_meal_plans PRIMARY KEY (meal_plan_id),
 	CONSTRAINT FK_meal_plans_user FOREIGN KEY (user_id) REFERENCES users (user_id),
 )

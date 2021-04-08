@@ -10,5 +10,7 @@ namespace Capstone.DAO
     {
         MealPlan AddMealPlan(MealPlan newMealPlan, int userId);
         MealPlan AddMealstoMealPlan(MealPlan newMealPlan);
+        List<MealPlan> GetMyMealPlans(int userId);
+        List<MealPlan> GetMyMealList(List<MealPlan> myMealPlans, int userId);
     }
 }

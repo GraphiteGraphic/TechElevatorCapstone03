@@ -42,8 +42,16 @@ namespace Capstone.Controllers
 
             //loop through mealplan's meal list and find meals not in the database
             List<Meal> newMeals = new List<Meal>();
-            foreach (Meal meal in mealPlan.MealList)
+            foreach (Meal meal in mealPlan.MealList) //loops through 7 times everytime
             {
+                if (meal.recipes.Count() != 0)
+                {
+                    mealPlan.indices += '1';
+                }
+                else
+                {
+                    mealPlan.indices += '0';
+                }
                 if (!mealIds.Contains(meal.MealId))
                 {
                     if (meal.recipes.Count() != 0)
@@ -71,7 +79,16 @@ namespace Capstone.Controllers
 
             //return mealPlan with all new mealPlan id's (only meals with recipes in it got an id)
             return Ok(mealPlan);
+            //meallist[1,2,1,3,1,4,1]
             
+        }
+
+        [HttpGet]
+        public ActionResult GetMyMealPlans()
+        {
+            List<MealPlan> myMealPlans = mealPlanDAO.GetMyMealPlans(this.UserId);
+            List<MealPlan> myMealPlansWithMeals = mealPlanDAO.GetMyMealList(myMealPlans, this.UserId);
+            return Ok(myMealPlans);
         }
 
     }

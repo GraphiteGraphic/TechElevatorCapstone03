@@ -12,12 +12,10 @@ namespace Capstone.Models
         public string Name { get; set; }
         public int UserId { get; set; }
         public List<Meal> MealList { get; set; }
+        public string indices { get; set; }
 
-        public MealPlan(int mealplanid, string name, int userId)
+        public MealPlan()
         {
-            this.MealPlanId = mealplanid;
-            this.Name = name;
-            this.UserId = userId;
         }
 
 
