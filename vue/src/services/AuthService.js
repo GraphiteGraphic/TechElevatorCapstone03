@@ -31,9 +31,9 @@ export default {
   },
 
   postMealPlan(mealPlan) {
-    return axios.post('/mealplan', mealPlan)
+    return axios.post('/mealplan', mealPlan);
   },
   getMealPlan(){
-
+    return axios.get('/mealplan');
   },
 }

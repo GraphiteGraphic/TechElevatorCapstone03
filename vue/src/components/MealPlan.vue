@@ -115,9 +115,8 @@ export default {
         ],
         mealPlanId: 0,
         userId: 0,
-        indices:'',
+        indices: "",
       },
-
     };
   },
   name: "meal-plan",
@@ -167,11 +166,13 @@ export default {
         this.mealPlan = response.data;
       });
     },
-    getMealPlan() {
-      services.getMealPlan().then((response) => {
+  },
+  created() {
+    services.getMealPlan().then((response) => {
+      if (response.data.length > 0) {
         this.mealPlan = response.data[response.data.length - 1];
-      });
-    },
+      }
+    });
   },
 };
 </script>
@@ -181,26 +182,22 @@ a {
   padding-left: 15px;
 }
 .entirePage {
-  display:flex;
+  display: flex;
   flex-direction: column;
 }
-table{
+table {
   border-collapse: collapse;
 }
-th{
+th {
   border-top: white 2px solid;
   border-left: white 2px solid;
   border-right: white 2px solid;
-
 }
-td{
+td {
   border-left: white 2px solid;
   border-right: white 2px solid;
   border-bottom: white 2px solid;
   margin: 0px 5px;
   min-width: 100px;
-
 }
-
-
 </style>
