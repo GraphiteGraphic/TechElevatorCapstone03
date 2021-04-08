@@ -28,5 +28,9 @@ export default {
 
   getAllIngredients() {
     return axios.get('/ingredient');
+  },
+
+  postMealPlan(mealPlan) {
+    return axios.post('/mealplan', mealPlan)
   }
 }

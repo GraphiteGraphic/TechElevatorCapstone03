@@ -3,13 +3,13 @@
     <div class="RecipeName">
       <label
         for="Recipe Name"
-        v-show="!inputBool.name"
-        @click="inputBool.name = true"
+        v-show="!visualParam.name"
+        @click="visualParam.name = true"
         >{{ recipe.recipeName }} 🖉</label
       >
       <input
-        v-show="inputBool.name"
-        @blur="inputBool.name = false"
+        v-show="visualParam.name"
+        @blur="visualParam.name = false"
         type="text"
         placeholder="Recipe Name"
         v-model="recipe.recipeName"
@@ -18,14 +18,14 @@
       />
     </div>
     <div class="RecipeType">
-      <label for="type" v-show="!inputBool.type" @click="inputBool.type = true"
+      <label for="type" v-show="!visualParam.type" @click="visualParam.type = true"
         >{{ recipe.type }} 🖉</label
       >
       <select
-        v-show="inputBool.type"
+        v-show="visualParam.type"
         v-model="recipe.type"
-        @change="inputBool.type = false"
-        @blur="inputBool.type = false"
+        @change="visualParam.type = false"
+        @blur="visualParam.type = false"
         name="type"
         required="true"
       >
@@ -54,7 +54,7 @@
         {{ingredient.unit}}
         {{ingredient.ingredientName}}.
             <span @click="setupIngredient(recipe.ingredientList.indexOf(ingredient))">🖉</span>
-        <span @click="deleteIngredient(recipe.ingredientList.indexOf(ingredient))">🗑</span>
+        <span v-show="visualParam.ingredient" @click="deleteIngredient(recipe.ingredientList.indexOf(ingredient))">🗑</span>
       </div>
       <label for="Ingredient Quantity">Quantity: </label>
       <input
@@ -77,8 +77,8 @@
         id="ingredientList"
         v-model="ingredient.ingredientName"
       />
-      <button type="button" @click="addIngredient()" v-show="inputBool.ingredient">Add Ingredient</button>
-      <button type="button" @click="editIngredient()" v-show="!inputBool.ingredient">Edit Ingredient</button>
+      <button type="button" @click="addIngredient()" v-show="visualParam.ingredient">Add Ingredient</button>
+      <button type="button" @click="editIngredient()" v-show="!visualParam.ingredient">Save Edit</button>
 
       <datalist name="ingredients" id="ingredients">
         <option
@@ -93,7 +93,7 @@
       <div v-for="i of instructionSteps.length" :key="i">
         {{ i }}. {{ instructionSteps[i - 1] }}
         <span @click="editSetup(i - 1)">🖉</span>
-        <span @click="deleteStep(i - 1)" v-show="inputBool.addStep">🗑</span>
+        <span @click="deleteStep(i - 1)" v-show="visualParam.addStep">🗑</span>
       </div>
       <input
         type="text"
@@ -102,14 +102,14 @@
         v-model="recipe.instructions"
       />
       <button
-        v-show="inputBool.addStep"
+        v-show="visualParam.addStep"
         type="button"
         v-on:click.prevent="addStep()"
       >
         Add Instruction Step
       </button>
       <button
-        v-show="!inputBool.addStep"
+        v-show="!visualParam.addStep"
         type="button"
         @click.prevent="editStep()"
       >
@@ -129,7 +129,7 @@ import service from "../services/AuthService.js";
 export default {
   data() {
     return {
-      inputBool: {
+      visualParam: {
         name: false,
         type: false,
         addStep: true,
@@ -198,12 +198,12 @@ export default {
     },
     editSetup(index) {
       this.recipe.instructions = this.instructionSteps[index];
-      this.inputBool.addStep = false;
-      this.inputBool.stepNum = index;
+      this.visualParam.addStep = false;
+      this.visualParam.stepNum = index;
     },
     editStep() {
-      this.instructionSteps[this.inputBool.stepNum] = this.recipe.instructions;
-      this.inputBool.addStep = true;
+      this.instructionSteps[this.visualParam.stepNum] = this.recipe.instructions;
+      this.visualParam.addStep = true;
       this.recipe.instructions = "";
     },
     deleteStep(index) {
@@ -223,7 +223,7 @@ export default {
     },
     editIngredient()
     {
-      this.recipe.ingredientList[this.inputBool.ingIndex] = this.ingredient;
+      this.recipe.ingredientList[this.visualParam.ingIndex] = this.ingredient;
       
       //Reset newIngredient list and repopulate with potential new ingredients
       this.recipe.newIngredients = [];
@@ -234,12 +234,12 @@ export default {
       }
 
       this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
-      this.inputBool.ingredient = true;
+      this.visualParam.ingredient = true;
     },
     setupIngredient(index)
     {
-      this.inputBool.ingIndex = index;
-      this.inputBool.ingredient = false;
+      this.visualParam.ingIndex = index;
+      this.visualParam.ingredient = false;
       this.ingredient = this.recipe.ingredientList[index];
     },
   },
