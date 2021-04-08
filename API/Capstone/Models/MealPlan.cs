@@ -7,7 +7,7 @@ namespace Capstone.Models
 {
     public class MealPlan
     {
-        public int MealPlanId { get; }
+        public int MealPlanId { get; set; }
 
         public string Name { get; set; }
         public int UserId { get; set; }
