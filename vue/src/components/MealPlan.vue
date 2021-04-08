@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="entirePage">
     <h2>
       My Meal Plan
       <span
@@ -33,11 +33,11 @@
           <td v-for="i of 7" :key="i">
             <recipe-list
               v-show="visualParams.viewMode"
-              :recipeList="mealPlan.MealList[i - 1].recipes"
+              :recipeList="mealPlan.mealList[i - 1].recipes"
             />
             <div
               v-show="!visualParams.viewMode"
-              v-for="recipe in mealPlan.MealList[i - 1].recipes"
+              v-for="recipe in mealPlan.mealList[i - 1].recipes"
               :key="recipe.recipeId"
             >
               <span
@@ -103,19 +103,21 @@ export default {
         ],
       },
       mealPlan: {
-        Name: "MyMealPlan",
-        MealList: [
-          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
-          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
-          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
-          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
-          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
-          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
-          { recipes: [], MealId: 0, MealName: "", TimeOfDay: 0, UserId: 0 },
+        name: "MyMealPlan",
+        mealList: [
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
         ],
-        MealPlanId: 0,
-        UserId: 0,
+        mealPlanId: 0,
+        userId: 0,
+        indices:'',
       },
+
     };
   },
   name: "meal-plan",
@@ -149,31 +151,56 @@ export default {
   },
   methods: {
     addRecipetoMeal(recipe) {
-      this.mealPlan.MealList[this.visualParams.dayIndex].recipes.push(recipe);
+      this.mealPlan.mealList[this.visualParams.dayIndex].recipes.push(recipe);
     },
     deleteRecipefromMeal(recipe) {
-      let recipeIndex = this.mealPlan.MealList[
+      let recipeIndex = this.mealPlan.mealList[
         this.visualParams.dayIndex
       ].recipes.indexOf(recipe);
-      this.mealPlan.MealList[this.visualParams.dayIndex].recipes.splice(
+      this.mealPlan.mealList[this.visualParams.dayIndex].recipes.splice(
         recipeIndex,
         1
       );
     },
     saveMealPlan() {
-      services.postMealPlan(this.mealPlan);
+      services.postMealPlan(this.mealPlan).then((response) => {
+        this.mealPlan = response.data;
+      });
     },
     getMealPlan() {
       services.getMealPlan().then((response) => {
-        this.mealPlan = response.data();
+        this.mealPlan = response.data[response.data.length - 1];
       });
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 a {
   padding-left: 15px;
 }
+.entirePage {
+  display:flex;
+  flex-direction: column;
+}
+table{
+  border-collapse: collapse;
+}
+th{
+  border-top: white 2px solid;
+  border-left: white 2px solid;
+  border-right: white 2px solid;
+
+}
+td{
+  border-left: white 2px solid;
+  border-right: white 2px solid;
+  border-bottom: white 2px solid;
+  margin: 0px 5px;
+  min-width: 100px;
+
+}
+
+
 </style>
