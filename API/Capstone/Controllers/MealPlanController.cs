@@ -17,37 +17,53 @@ namespace Capstone.Controllers
 
         public readonly IMealPlanDAO mealPlanDAO;
         public readonly IMealDAO mealDAO;
+        public readonly IMealRecipeDAO mealRecipeDAO;
 
-        public MealPlanController(IMealPlanDAO mealplandao, IMealDAO mealdao)
+        public MealPlanController(IMealPlanDAO mealplandao, IMealDAO mealdao, IMealRecipeDAO MealRecipeDAO)
         {
             this.mealPlanDAO = mealplandao;
             this.mealDAO = mealdao;
+            this.mealRecipeDAO = MealRecipeDAO;
         }
 
         [HttpPost]
 
-        public ActionResult AddMealPlan(List<Meal> mealPlan)
+        public ActionResult AddMealPlan(MealPlan mealPlan)
         {
+            // get all meals of the logged in user from the database
             List<Meal> myMeals = mealDAO.GetMyMeals(this.UserId);
+
+            //get all id's from those meals
             List<int> mealIds = new List<int>();
             foreach(Meal meal in myMeals)
             {
                 mealIds.Add(meal.MealId);
             }
+
+            //loop through mealplan's meal list and find meals not in the database
             List<Meal> newMeals = new List<Meal>();
-            foreach (Meal meal in mealPlan)
+            foreach (Meal meal in mealPlan.MealList)
             {
-                if(mealIds.Contains(meal.MealId))
+                if (!mealIds.Contains(meal.MealId))
                 {
-                    newMeals.Add(meal);
+                    if (meal.recipes.Count() != 0)
+                    {
+                        newMeals.Add(meal);
+                    }
                 }
             }
+
+            //add meals that are not in the database
             if (newMeals.Count > 0)
             {
                 mealDAO.AddMeals(newMeals, this.UserId);
             }
 
-            return Ok();
+            //link mealid's with their respecitve recipeid's 
+            mealRecipeDAO.AddMealRecipes(newMeals);
+
+
+            return Ok(mealPlan);
             
         }
 

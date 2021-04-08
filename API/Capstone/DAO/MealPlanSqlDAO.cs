@@ -13,8 +13,5 @@ namespace Capstone.DAO
         {
             connectionString = dbConnectionString;
         }
-
-
-
     }
 }

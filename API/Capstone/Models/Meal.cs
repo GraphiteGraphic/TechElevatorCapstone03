@@ -11,13 +11,7 @@ namespace Capstone.Models
         public string MealName { get; set; }
         public int TimeOfDay { get; set; }
         public int UserId { get; set; }
-
-        public Meal(int mealId, string mealName, int timeofday)
-        {
-            this.MealId = mealId;
-            this.MealName = mealName;
-            this.TimeOfDay = timeofday;
-        }
+        public List<Recipe> recipes { get; set; }
 
         public Meal()
         {
