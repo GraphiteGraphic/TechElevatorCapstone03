@@ -32,9 +32,9 @@ namespace Capstone.Controllers
         {
             //gets all the meals that we need to add into the database
             //link mealid's with their respecitve recipeid's 
+            
             List<Meal> newMeals = UpdateNewMealsIntoDatabase(mealPlan);
             mealPlan = SetIndices(mealPlan);
-
             //post mealPlan to mealPlans to meal_plans table
             mealPlanDAO.AddMealPlan(mealPlan, this.UserId);
 
@@ -42,6 +42,7 @@ namespace Capstone.Controllers
             mealPlanDAO.AddMealstoMealPlan(mealPlan);
 
             //return mealPlan with all new mealPlan id's (only meals with recipes in it got an id)
+            mealPlan.UserId = this.UserId;
             return Created($"/mealplan/{mealPlan.MealPlanId}", mealPlan);
             //meallist[1,2,1,3,1,4,1]
 
@@ -73,8 +74,9 @@ namespace Capstone.Controllers
             }
             if (mealplan.UserId == this.UserId)
             {
-                mealplan = SetIndices(mealplan);
+                
                 List<Meal> newMeals = UpdateNewMealsIntoDatabase(mealplan);
+                mealplan = SetIndices(mealplan);
                 //link mealid's with their respecitve recipeid's 
                 mealRecipeDAO.AddMealRecipes(newMeals);
                 mealPlanDAO.UpdateMealPlan(mealplan);
@@ -87,23 +89,25 @@ namespace Capstone.Controllers
                         if(originalMealPlan.MealList[i].MealId == 0)
                         {
                             // insert meal
-                        } 
+                            mealPlanDAO.AddMealToMealPlan(mealplan.MealList[i], mealplan.MealPlanId);
+                        }
                         else if (mealplan.MealList[i].MealId == 0)
                         {
                             // delete meal
-                        } else
+                            mealPlanDAO.DeleteMealFromMealPlan(mealplan.MealList[i], mealplan.MealPlanId);
+
+                        } 
+                        else
                         {
                             //delete original meal
+                            mealPlanDAO.DeleteMealFromMealPlan(originalMealPlan.MealList[i], mealplan.MealPlanId);
                             //Add new meal 
-                        }
-                        //if they deleted a recipe and changed it to something else, we have to delete the old and then insert the new
-
-                        // or they completely removed a meal from a day and we just have to remove that meal 
+                            mealPlanDAO.AddMealToMealPlan(mealplan.MealList[i], mealplan.MealPlanId);
+                        }                       
 
                     }
                 }
-
-                return Ok();
+                return Ok(mealplan);
             }
             return Forbid();
         }
@@ -114,9 +118,11 @@ namespace Capstone.Controllers
             mealplan.indices = "";
             foreach (Meal meal in mealplan.MealList)
             {
+
                 if (meal.recipes.Count > 0)
                 {
-                    mealplan.indices += '1';
+                    string id = meal.MealId.ToString();
+                    mealplan.indices += id;
                 }
                 else
                 {
@@ -156,6 +162,18 @@ namespace Capstone.Controllers
             {
                 mealDAO.AddMeals(newMeals, this.UserId);
                 mealRecipeDAO.AddMealRecipes(newMeals);
+            }
+            //new meals is a list now of all the new meals we just added, with their meal id's
+
+            //tie these new mealId's to the meal plan
+            int counter = 0;
+            for (int i = 0; i < mealPlan.MealList.Count; i++)
+            {
+                if (mealPlan.MealList[i].MealId == 0 && mealPlan.MealList[i].recipes.Count>0)
+                {
+                    mealPlan.MealList[i].MealId = newMeals[counter].MealId;
+                    counter++;
+                }
             }
 
             return newMeals;

@@ -13,5 +13,7 @@ namespace Capstone.DAO
         List<MealPlan> GetMyMealPlans(int userId);
         List<MealPlan> GetMyMealList(List<MealPlan> myMealPlans, int userId);
         MealPlan UpdateMealPlan(MealPlan mealplan);
+        Meal AddMealToMealPlan(Meal meal, int mealPlanId);
+        Meal DeleteMealFromMealPlan(Meal meal, int mealPlanId);
     }
 }
