@@ -150,7 +150,19 @@ export default {
   },
   methods: {
     addRecipetoMeal(recipe) {
-      this.mealPlan.mealList[this.visualParams.dayIndex].recipes.push(recipe);
+      let chkBool = false;
+      this.mealPlan.mealList[this.visualParams.dayIndex].recipes.forEach(
+        (r) => {
+          if (recipe.recipeId === r.recipeId) {
+            chkBool = true;
+            alert("Recipe Already Exists On This Day");
+          }
+        }
+      );
+
+      if (!chkBool) {
+        this.mealPlan.mealList[this.visualParams.dayIndex].recipes.push(recipe);
+      }
     },
     deleteRecipefromMeal(recipe) {
       let recipeIndex = this.mealPlan.mealList[
@@ -162,6 +174,9 @@ export default {
       );
     },
     saveMealPlan() {
+      this.mealPlan.indices = "";
+      this.mealPlan.mealPlanId = 0;
+      this.mealPlan.userId = 0;
       services.postMealPlan(this.mealPlan).then((response) => {
         this.mealPlan = response.data;
       });
