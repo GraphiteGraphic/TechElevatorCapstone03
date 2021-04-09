@@ -14,6 +14,7 @@ namespace Capstone.DAO
         private const string GET_MY_MEALPLANS = "Select * from meal_plans where user_id=@userid";
         private const string SELECT_MEALS_IN_MEALPLAN = "select meal_id from meal_plans_meals where meal_plan_id = @mealplanId";
         private const string SELECT_RECIPES_IN_MEAL = "select recipe_id from meals_recipes where meal_id = @mealId";
+        private const string UPDATE_MEALPLAN = "UPDATE meal_plans SET name = @name, meal_indices = @indices";
         private readonly string connectionString;
 
         public MealPlanSqlDAO(string dbConnectionString)
@@ -116,31 +117,15 @@ namespace Capstone.DAO
                         SqlCommand cmd = new SqlCommand(SELECT_MEALS_IN_MEALPLAN, conn);
                         cmd.Parameters.AddWithValue("@mealplanId", mealPlan.MealPlanId);
                         SqlDataReader rdr = cmd.ExecuteReader();
-                        
+
                         //indices is a string that holds a 0 where an empty meal is, or a 1 where an actual meal is
                         //loop through the indices and add a meal with its properties depending on if there is 
                         //information in that meal or if it is an empty meal
-                        for (int j = 0; j < mealPlan.indices.Length; j++)
-                        {
-                            if (mealPlan.indices[j] == '1')
-                            {
-                                if (rdr.Read())
-                                {
-                                    Meal meal = new Meal();
-                                    meal.MealId = Convert.ToInt32(rdr["meal_id"]);
-                                    mealPlan.MealList.Add(meal);
-                                }
-                            }
-                            else
-                            {
-                                Meal meal = new Meal();
-                                mealPlan.MealList.Add(meal);
-                            }
-                        }
+                        PopulateMealsIntoMealList(mealPlan, rdr);
                         rdr.Close();
 
                         //LOOP THROUGH ALL MEALS THIS MEALPLAN HAS
-                        foreach(Meal meal in mealPlan.MealList)
+                        foreach (Meal meal in mealPlan.MealList)
                         {
                             //initiate the recipe list to go into this meal
                             meal.recipes = new List<Recipe>();
@@ -160,53 +145,16 @@ namespace Capstone.DAO
                             //get the rest of the recipe info (besides the ingredient list)
                             foreach (Recipe recipe in meal.recipes)
                             {
-                                SqlCommand cmd3 = new SqlCommand("select * from recipes where recipe_id = @recipeId", conn);
-                                cmd3.Parameters.AddWithValue("@recipeId", recipe.RecipeId);
-                                SqlDataReader rdr3 = cmd3.ExecuteReader();
-                                while (rdr3.Read())
-                                {
-                                    recipe.RecipeName = Convert.ToString(rdr3["recipe_name"]);
-                                    recipe.UserId = Convert.ToInt32(rdr3["user_id"]);
-                                    recipe.Instructions = Convert.ToString(rdr3["instructions"]);
-                                    recipe.Type = Convert.ToInt32(rdr3["type_id"]);
-                                    recipe.Servings = Convert.ToInt32(rdr3["num_servings"]);
-                                    recipe.IsShared = Convert.ToBoolean(rdr3["is_shared"]);
-                                }
+                                SqlCommand cmd3;
+                                SqlDataReader rdr3;
+                                SetRecipeDetails(conn, recipe, out cmd3, out rdr3);
                                 rdr3.Close();
-
-                                //get the ingredient list for each recipe
-                                recipe.IngredientList = new List<RecipeIngredient>();
-                                cmd3 = new SqlCommand("select * from recipes_ingredients where recipe_id = @recipeId", conn);
-                                cmd3.Parameters.AddWithValue("@recipeId", recipe.RecipeId);
-                                rdr3 = cmd3.ExecuteReader();
-                                while (rdr3.Read())
-                                {
-                                    RecipeIngredient r = new RecipeIngredient();
-                                    r.IngredientId = Convert.ToInt32(rdr3["ingredient_id"]);
-                                    r.Quantity = Convert.ToDecimal(rdr3["ingredient_qty"]);
-                                    r.Unit = Convert.ToString(rdr3["ingredient_unit"]);
-                                    r.RecipeId = Convert.ToInt32(rdr3["recipe_id"]);
-                                    recipe.IngredientList.Add(r);
-                                }
-                                rdr3.Close();
-
-                                //get the ingredient name for each recipe ingredient
-                                foreach (RecipeIngredient ingredient in recipe.IngredientList)
-                                {
-                                    cmd3 = new SqlCommand("select ingredient_name from ingredients where ingredient_id=@ingredientId", conn);
-                                    cmd3.Parameters.AddWithValue("@ingredientId", ingredient.IngredientId);
-                                    rdr3 = cmd3.ExecuteReader();
-                                    while (rdr3.Read())
-                                    {
-                                        ingredient.IngredientName = Convert.ToString(rdr3["ingredient_name"]);
-                                    }
-                                    rdr3.Close();
-                                }
+                                GetIngredientList(conn, recipe, out cmd3, out rdr3);
                             }
                         }
 
                     }
-                
+
                 }
             }
             catch
@@ -215,5 +163,117 @@ namespace Capstone.DAO
             }
             return myMealPlans;
         }
+        public MealPlan UpdateMealPlan(MealPlan mealplan)
+        {
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(UPDATE_MEALPLAN, conn);
+                    
+                    cmd.Parameters.AddWithValue("@name", mealplan.Name);
+                    cmd.Parameters.AddWithValue("@indices", mealplan.indices);
+                    cmd.ExecuteNonQuery();
+
+                    //do the recipes
+                }
+
+
+
+
+            } 
+            catch
+            {
+
+            }
+            return mealplan;
+        }
+
+        //public Meal AddMealToMealPlan(Meal meal)
+        //{
+        //    try
+        //    {
+
+        //    } 
+        //    catch
+        //    {
+
+        //    }
+        //}
+
+
+        //REFACTOR METHODS
+
+        private static void SetRecipeDetails(SqlConnection conn, Recipe recipe, out SqlCommand cmd3, out SqlDataReader rdr3)
+        {
+            cmd3 = new SqlCommand("select * from recipes where recipe_id = @recipeId", conn);
+            cmd3.Parameters.AddWithValue("@recipeId", recipe.RecipeId);
+            rdr3 = cmd3.ExecuteReader();
+            while (rdr3.Read())
+            {
+                recipe.RecipeName = Convert.ToString(rdr3["recipe_name"]);
+                recipe.UserId = Convert.ToInt32(rdr3["user_id"]);
+                recipe.Instructions = Convert.ToString(rdr3["instructions"]);
+                recipe.Type = Convert.ToInt32(rdr3["type_id"]);
+                recipe.Servings = Convert.ToInt32(rdr3["num_servings"]);
+                recipe.IsShared = Convert.ToBoolean(rdr3["is_shared"]);
+            }
+        }
+
+        private static void GetIngredientList(SqlConnection conn, Recipe recipe, out SqlCommand cmd3, out SqlDataReader rdr3)
+        {
+            //get the ingredient list for each recipe
+            recipe.IngredientList = new List<RecipeIngredient>();
+            cmd3 = new SqlCommand("select * from recipes_ingredients where recipe_id = @recipeId", conn);
+            cmd3.Parameters.AddWithValue("@recipeId", recipe.RecipeId);
+            rdr3 = cmd3.ExecuteReader();
+            while (rdr3.Read())
+            {
+                RecipeIngredient r = new RecipeIngredient();
+                r.IngredientId = Convert.ToInt32(rdr3["ingredient_id"]);
+                r.Quantity = Convert.ToDecimal(rdr3["ingredient_qty"]);
+                r.Unit = Convert.ToString(rdr3["ingredient_unit"]);
+                r.RecipeId = Convert.ToInt32(rdr3["recipe_id"]);
+                recipe.IngredientList.Add(r);
+            }
+            rdr3.Close();
+
+            //get the ingredient name for each recipe ingredient
+            foreach (RecipeIngredient ingredient in recipe.IngredientList)
+            {
+                cmd3 = new SqlCommand("select ingredient_name from ingredients where ingredient_id=@ingredientId", conn);
+                cmd3.Parameters.AddWithValue("@ingredientId", ingredient.IngredientId);
+                rdr3 = cmd3.ExecuteReader();
+                while (rdr3.Read())
+                {
+                    ingredient.IngredientName = Convert.ToString(rdr3["ingredient_name"]);
+                }
+                rdr3.Close();
+            }
+        }
+
+        private static void PopulateMealsIntoMealList(MealPlan mealPlan, SqlDataReader rdr)
+        {
+            for (int j = 0; j < mealPlan.indices.Length; j++)
+            {
+                if (mealPlan.indices[j] == '1')
+                {
+                    if (rdr.Read())
+                    {
+                        Meal meal = new Meal();
+                        meal.MealId = Convert.ToInt32(rdr["meal_id"]);
+                        mealPlan.MealList.Add(meal);
+                    }
+                }
+                else
+                {
+                    Meal meal = new Meal();
+                    mealPlan.MealList.Add(meal);
+                }
+            }
+        }
+
+        
     }
 }
