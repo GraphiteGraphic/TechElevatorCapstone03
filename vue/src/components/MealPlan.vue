@@ -1,7 +1,7 @@
 <template>
   <div class="entirePage">
     <h2>
-      My Meal Plan
+      Current Meal Plan
       <span
         @click="
           visualParams.viewMode = true;
@@ -14,10 +14,43 @@
         v-show="visualParams.viewMode"
         >🖉</span
       >
-      <button type="button" @click.prevent="saveMealPlan()">
-        Save Changes
-      </button>
     </h2>
+    <div>
+      <label
+        for="Meal Plan Name"
+        v-show="!visualParams.name"
+        @click="visualParams.name = true"
+        >{{ mealPlan.name }} 🖉</label
+      >
+      <input
+        v-show="visualParams.name"
+        @blur="visualParams.name = false"
+        type="text"
+        v-model="mealPlan.name"
+        name="Meal Plan Name"
+        required="true"
+      />
+      <button type="button" @click.prevent="saveMealPlan()">
+        Create new meal plan
+      </button>
+    </div>
+    <div>
+      <label for="Saved Meal Plans">Saved Meal Plans: </label>
+      <select
+        v-model="visualParams.selectedText"
+        @change="showSavedMealPlan()"
+        name="Saved Meal Plans"
+        id="Saved Meal Plans"
+      >
+        <option
+          :value="mealplan.mealPlanId"
+          v-for="mealplan in listOfMealPlans"
+          :key="mealplan.mealPlanId"
+        >
+          {{ mealplan.name }}
+        </option>
+      </select>
+    </div>
     <table>
       <thead>
         <th @click="this, (visualParams.dayIndex = 0)">Sunday</th>
@@ -92,6 +125,8 @@ export default {
         viewMode: true,
         addMeal: false,
         dayIndex: 0,
+        selectedText: '',
+        name: false,
         DAYS_OF_WEEK: [
           "Sunday",
           "Monday",
@@ -103,7 +138,7 @@ export default {
         ],
       },
       mealPlan: {
-        name: "MyMealPlan",
+        name: "My Meal Plan",
         mealList: [
           { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
           { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
@@ -117,6 +152,7 @@ export default {
         userId: 0,
         indices: "",
       },
+      listOfMealPlans: [],
     };
   },
   name: "meal-plan",
@@ -149,6 +185,11 @@ export default {
     },
   },
   methods: {
+    showSavedMealPlan() {
+      this.mealPlan = this.listOfMealPlans.find( (mealplan) => {
+        return mealplan.mealPlanId == this.visualParams.selectedText;
+      });
+    },
     addRecipetoMeal(recipe) {
       let chkBool = false;
       this.mealPlan.mealList[this.visualParams.dayIndex].recipes.forEach(
@@ -159,7 +200,6 @@ export default {
           }
         }
       );
-
       if (!chkBool) {
         this.mealPlan.mealList[this.visualParams.dayIndex].recipes.push(recipe);
       }
@@ -177,15 +217,19 @@ export default {
       this.mealPlan.indices = "";
       this.mealPlan.mealPlanId = 0;
       this.mealPlan.userId = 0;
-      this.mealPlan.mealList.forEach( (meal) => {
+      this.mealPlan.mealList.forEach((meal) => {
         meal.mealId = 0;
-        meal.mealName = '';
+        meal.mealName = "";
         meal.timeOfDay = 0;
         meal.userId = 0;
-      })
-      services.postMealPlan(this.mealPlan).then((response) => {
-        this.mealPlan = response.data;
       });
+      if (this.mealPlan.name.trim().length > 0) {
+        services.postMealPlan(this.mealPlan).then((response) => {
+          this.mealPlan = response.data;
+        });
+      } else {
+        alert("Invalid meal plan name");
+      }
     },
   },
   created() {
@@ -193,6 +237,7 @@ export default {
       if (response.data.length > 0) {
         this.mealPlan = response.data[response.data.length - 1];
       }
+      this.listOfMealPlans = response.data;
     });
   },
 };
@@ -220,5 +265,8 @@ td {
   border-bottom: white 2px solid;
   margin: 0px 5px;
   min-width: 100px;
+}
+button {
+  margin-bottom: 10px;
 }
 </style>
