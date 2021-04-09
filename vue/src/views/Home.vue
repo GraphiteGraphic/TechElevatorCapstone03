@@ -23,6 +23,8 @@ export default {
 
 <style scoped>
 a {
+
   display: block;
+  
 }
 </style>

@@ -33,6 +33,9 @@
       <button type="button" @click.prevent="saveMealPlan()">
         Create new meal plan
       </button>
+      <button type="button" v-show="mealPlan.mealPlanId" @click.prevent="editMealPlan()">
+         Save Changes
+      </button>
     </div>
     <div>
       <label for="Saved Meal Plans">Saved Meal Plans: </label>
@@ -199,10 +202,13 @@ export default {
             alert("Recipe Already Exists On This Day");
           }
         }
+
       );
       if (!chkBool) {
         this.mealPlan.mealList[this.visualParams.dayIndex].recipes.push(recipe);
       }
+      this.mealPlan.mealList[this.visualParams.dayIndex].mealId = 0;
+      
     },
     deleteRecipefromMeal(recipe) {
       let recipeIndex = this.mealPlan.mealList[
@@ -212,6 +218,16 @@ export default {
         recipeIndex,
         1
       );
+       this.mealPlan.mealList[this.visualParams.dayIndex].mealId = 0;
+    },
+    editMealPlan(){
+      if (this.mealPlan.name.trim().length > 0) {
+        services.putMealPlan(this.mealPlan).then((response) => {
+          this.mealPlan = response.data;
+        });
+      } else {
+        alert("Invalid meal plan name");
+      }
     },
     saveMealPlan() {
       this.mealPlan.indices = "";

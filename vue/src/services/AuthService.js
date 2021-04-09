@@ -36,4 +36,7 @@ export default {
   getMealPlan(){
     return axios.get('/mealplan');
   },
+  putMealPlan(mealplan){
+    return axios.put('/mealplan', mealplan)
+  }
 }
