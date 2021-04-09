@@ -177,6 +177,12 @@ export default {
       this.mealPlan.indices = "";
       this.mealPlan.mealPlanId = 0;
       this.mealPlan.userId = 0;
+      this.mealPlan.mealList.forEach( (meal) => {
+        meal.mealId = 0;
+        meal.mealName = '';
+        meal.timeOfDay = 0;
+        meal.userId = 0;
+      })
       services.postMealPlan(this.mealPlan).then((response) => {
         this.mealPlan = response.data;
       });
