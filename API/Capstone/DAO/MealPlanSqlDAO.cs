@@ -14,7 +14,7 @@ namespace Capstone.DAO
         private const string GET_MY_MEALPLANS = "Select * from meal_plans where user_id=@userid";
         private const string SELECT_MEALS_IN_MEALPLAN = "select meal_id from meal_plans_meals where meal_plan_id = @mealplanId";
         private const string SELECT_RECIPES_IN_MEAL = "select recipe_id from meals_recipes where meal_id = @mealId";
-        private const string UPDATE_MEALPLAN = "UPDATE meal_plans SET name = @name, meal_indices = @indices";
+        private const string UPDATE_MEALPLAN = "UPDATE meal_plans SET name = @name, meal_indices = @indices where meal_plan_id = @mealPlanId";
         private const string DELETE_MEAL_FROM_MEALPLAN = "Delete from meal_plans_meals where meal_plan_id = @mealPlanId and meal_id = @mealId";
         private readonly string connectionString;
 
@@ -172,17 +172,11 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(UPDATE_MEALPLAN, conn);
-                    
+                    cmd.Parameters.AddWithValue("@mealPlanId", mealplan.MealPlanId);
                     cmd.Parameters.AddWithValue("@name", mealplan.Name);
                     cmd.Parameters.AddWithValue("@indices", mealplan.indices);
                     cmd.ExecuteNonQuery();
-
-                    //do the recipes
                 }
-
-
-
-
             } 
             catch
             {
@@ -285,34 +279,27 @@ namespace Capstone.DAO
         private static void PopulateMealsIntoMealList(MealPlan mealPlan, SqlDataReader rdr)
         {
             List<int> indexList = new List<int>();
-            for (int j = 0; j < mealPlan.indices.Length; j++)
+            //add meal id's from indices string into indexList
+            string[] indexes = mealPlan.indices.Split(',');
+            for (int j = 0; j < indexes.Length; j++)
             {
-                
-                if (mealPlan.indices[j] != '0')
+                if (indexes[j] != "0")
                 {
                     if (rdr.Read())
                     {
-                        //Meal meal = new Meal();
                         indexList.Add(Convert.ToInt32(rdr["meal_id"]));
-                        //mealPlan.MealList.Add(meal);
                     }
                 }
-                else
-                {
-                    //indexList.Add(0);
-                    //Meal meal = new Meal();
-                    //mealPlan.MealList.Add(meal);
-                }
+                
             }
-            //mealList SHOULD BE 5020300
-            //indexList 235
-            //indices 5020300
-            for (int i = 0; i < mealPlan.indices.Length; i++)
+
+            //make meals and populate them into the mealList using the indexList
+            for (int i = 0; i < indexes.Length; i++)
             {
                 Meal meal = new Meal();
                 for (int j = 0; j < indexList.Count; j++) 
                 {
-                    string index = mealPlan.indices[i].ToString();
+                    string index = indexes[i];
                     if (index == indexList[j].ToString())
                     {
                         meal.MealId = indexList[j];

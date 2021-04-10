@@ -62,6 +62,10 @@ namespace Capstone.DAO
                     {
                         SqlCommand cmd = new SqlCommand(ADD_MEALS, conn);
                         cmd.Parameters.AddWithValue("@userid", userid);
+                        if (meal.MealName == null)
+                        {
+                            meal.MealName = "";
+                        }
                         cmd.Parameters.AddWithValue("@mealname", meal.MealName);
                         meal.MealId = Convert.ToInt32(cmd.ExecuteScalar());
                     }                    

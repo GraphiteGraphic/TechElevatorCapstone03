@@ -59,7 +59,6 @@ namespace Capstone.Controllers
         }
 
         [HttpPut]
-
         public ActionResult UpdateMealPlan(MealPlan mealplan)
         {
             List<MealPlan> myMealPlans = mealPlanDAO.GetMyMealPlans(this.UserId);
@@ -78,7 +77,6 @@ namespace Capstone.Controllers
                 List<Meal> newMeals = UpdateNewMealsIntoDatabase(mealplan);
                 mealplan = SetIndices(mealplan);
                 //link mealid's with their respecitve recipeid's 
-                mealRecipeDAO.AddMealRecipes(newMeals);
                 mealPlanDAO.UpdateMealPlan(mealplan);
 
                 for (int i = 0; i < mealplan.MealList.Count; i++)
@@ -94,7 +92,7 @@ namespace Capstone.Controllers
                         else if (mealplan.MealList[i].MealId == 0)
                         {
                             // delete meal
-                            mealPlanDAO.DeleteMealFromMealPlan(mealplan.MealList[i], mealplan.MealPlanId);
+                            mealPlanDAO.DeleteMealFromMealPlan(originalMealPlan.MealList[i], mealplan.MealPlanId);
 
                         } 
                         else
@@ -116,17 +114,20 @@ namespace Capstone.Controllers
         private MealPlan SetIndices(MealPlan mealplan)
         {
             mealplan.indices = "";
-            foreach (Meal meal in mealplan.MealList)
+            for (int i = 0; i < mealplan.MealList.Count; i++)
             {
-
-                if (meal.recipes.Count > 0)
+                if (mealplan.MealList[i].recipes.Count > 0)
                 {
-                    string id = meal.MealId.ToString();
+                    string id = mealplan.MealList[i].MealId.ToString();
                     mealplan.indices += id;
                 }
                 else
                 {
                     mealplan.indices += '0';
+                }
+                if (i < mealplan.MealList.Count - 1)
+                {
+                    mealplan.indices += ',';
                 }
             }
             return mealplan;
@@ -151,7 +152,7 @@ namespace Capstone.Controllers
 
                 if (!mealIds.Contains(meal.MealId))
                 {
-                    if (meal.recipes.Count() != 0)
+                    if (meal.recipes.Count() != 0 && meal.recipes[0].RecipeId!=0)
                     {
                         newMeals.Add(meal);
                     }
@@ -162,18 +163,7 @@ namespace Capstone.Controllers
             {
                 mealDAO.AddMeals(newMeals, this.UserId);
                 mealRecipeDAO.AddMealRecipes(newMeals);
-            }
-            //new meals is a list now of all the new meals we just added, with their meal id's
-
-            //tie these new mealId's to the meal plan
-            int counter = 0;
-            for (int i = 0; i < mealPlan.MealList.Count; i++)
-            {
-                if (mealPlan.MealList[i].MealId == 0 && mealPlan.MealList[i].recipes.Count>0)
-                {
-                    mealPlan.MealList[i].MealId = newMeals[counter].MealId;
-                    counter++;
-                }
+                //tie these new mealId's to the meal plan
             }
 
             return newMeals;
