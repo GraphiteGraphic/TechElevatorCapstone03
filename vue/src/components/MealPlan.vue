@@ -16,11 +16,11 @@
       >
     </h2>
     <div>
-      <label
-        for="Meal Plan Name"
-        v-show="!visualParams.name"
-        @click="visualParams.name = true"
-        >{{ mealPlan.name }} 🖉</label
+      <label  v-show="!visualParams.name" for="Meal Plan Name"
+        >{{ mealPlan.name }}
+        <span v-show="!visualParams.viewMode" @click="visualParams.name = true"
+          >🖉</span
+        ></label
       >
       <input
         v-show="visualParams.name"
@@ -30,11 +30,19 @@
         name="Meal Plan Name"
         required="true"
       />
-      <button type="button" @click.prevent="saveMealPlan()">
+      <button
+        type="button"
+        v-show="!visualParams.viewMode"
+        @click.prevent="saveMealPlan()"
+      >
         Create new meal plan
       </button>
-      <button type="button" v-show="mealPlan.mealPlanId" @click.prevent="editMealPlan()">
-         Save Changes
+      <button
+        type="button"
+        v-show="mealPlan.mealPlanId && !visualParams.viewMode"
+        @click.prevent="editMealPlan()"
+      >
+        Save Changes
       </button>
     </div>
     <div>
@@ -128,7 +136,7 @@ export default {
         viewMode: true,
         addMeal: false,
         dayIndex: 0,
-        selectedText: '',
+        selectedText: "",
         name: false,
         DAYS_OF_WEEK: [
           "Sunday",
@@ -189,7 +197,7 @@ export default {
   },
   methods: {
     showSavedMealPlan() {
-      this.mealPlan = this.listOfMealPlans.find( (mealplan) => {
+      this.mealPlan = this.listOfMealPlans.find((mealplan) => {
         return mealplan.mealPlanId == this.visualParams.selectedText;
       });
     },
@@ -202,13 +210,11 @@ export default {
             alert("Recipe Already Exists On This Day");
           }
         }
-
       );
       if (!chkBool) {
         this.mealPlan.mealList[this.visualParams.dayIndex].recipes.push(recipe);
       }
       this.mealPlan.mealList[this.visualParams.dayIndex].mealId = 0;
-      
     },
     deleteRecipefromMeal(recipe) {
       let recipeIndex = this.mealPlan.mealList[
@@ -218,9 +224,9 @@ export default {
         recipeIndex,
         1
       );
-       this.mealPlan.mealList[this.visualParams.dayIndex].mealId = 0;
+      this.mealPlan.mealList[this.visualParams.dayIndex].mealId = 0;
     },
-    editMealPlan(){
+    editMealPlan() {
       if (this.mealPlan.name.trim().length > 0) {
         services.putMealPlan(this.mealPlan).then((response) => {
           this.mealPlan = response.data;
@@ -242,6 +248,7 @@ export default {
       if (this.mealPlan.name.trim().length > 0) {
         services.postMealPlan(this.mealPlan).then((response) => {
           this.mealPlan = response.data;
+          this.listOfMealPlans.push(this.mealPlan);
         });
       } else {
         alert("Invalid meal plan name");
