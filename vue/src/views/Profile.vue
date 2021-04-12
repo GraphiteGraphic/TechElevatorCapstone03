@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2>My Recipes</h2>
-    <recipe-list :recipeList="myRecipes" />
-    <router-link v-bind:to="{ name: 'addRecipe' }">+ Add Recipe</router-link>
+    <h2 @click.prevent="collapse = !collapse"><span v-show="!collapse">⮞</span><span v-show="collapse">⮟</span> My Recipes</h2>
+      <router-link v-show="collapse"  v-bind:to="{ name: 'addRecipe' }">+ Add Recipe</router-link>
+    <recipe-list :recipeList="myRecipes" v-show="collapse" />
     <meal-plan />
   </div>
 </template>
@@ -13,6 +13,11 @@ import mealPlan from "../components/MealPlan.vue"
 import authServices from "../services/AuthService";
 
 export default {
+  data(){
+    return {
+      collapse: false,
+    }
+  },
   components: { recipeList, mealPlan },
   computed: {
     currentUser() {
@@ -24,7 +29,7 @@ export default {
   },
   created() {
     authServices.getMyRecipes(this.currentUser).then((resp) => {
-      this.$store.state.myRecipes = resp.data;
+      this.$store.commit('SET_MY_RECIPES', resp.data);
     });
   },
 };

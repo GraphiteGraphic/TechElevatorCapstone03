@@ -4,7 +4,7 @@
       <span v-show="!collapse">⮞</span><span v-show="collapse">⮟</span> Grocery
       List
     </h2>
-    <p v-show="collapse" v-for="ingredient in ingredients" :key="ingredient.ingredientId">{{ingredient.ingredientName}}</p>
+    <p v-show="collapse" v-for="ingredient in ingredients" :key="ingredient">{{ingredient}}</p>
   </div>
 </template>
 
@@ -12,7 +12,7 @@
 export default {
   data() {
     return {
-      collapse: true,
+      collapse: false,
     };
   },
   props: {
@@ -25,13 +25,13 @@ export default {
         meal.recipes.forEach((recipe) => {
           if (recipe.ingredientList) {
             recipe.ingredientList.forEach((ingredient) => {
-              x.push(ingredient);
+              x.push(ingredient.ingredientName);
             });
           }
         });
       });
       x = [...new Set(x)];
-      return x;
+      return x.sort();
     },
   },
 };
