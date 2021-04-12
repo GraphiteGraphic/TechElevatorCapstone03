@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ recipe.recipeName }}</h2>
+    <h2>{{ recipe.recipeName }} <button type="button" v-show="recipe.userId === $store.state.user.userId" @click="editRecipe()">Edit Recipe</button></h2>
     <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">{{ingredient.quantity}} {{ingredient.unit}} {{ ingredient.ingredientName }}</p>
     <p v-for="num of instructions.length" :key="num"><span>{{num}}.</span> {{ instructions[num - 1] }}</p>
   </div>
@@ -17,7 +17,16 @@ export default {
       ingredients: [{}],
     };
   },
+
+  methods: {
+    editRecipe(){
+      this.$router.push(`/recipes/edit/${this.recipe.recipeId}`)
+    }
+  },
   computed: {
+    
+
+
     instructions() {
       return this.recipe.instructions.split('|||');
     }

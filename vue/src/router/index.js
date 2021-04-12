@@ -73,6 +73,14 @@ const router = new Router({
       }
     },
     {
+      path: '/recipes/edit/:id',
+      name: 'editRecipe',
+      component: AddRecipe,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/recipes/add',
       name: 'addRecipe',
       component: AddRecipe,
