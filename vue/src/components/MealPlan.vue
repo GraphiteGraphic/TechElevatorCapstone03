@@ -121,15 +121,17 @@
         >👁</router-link
       >
     </div>
+    <grocery-list v-if="visualParams.viewMode" :mealPlan="mealPlan" />
   </div>
 </template>
 
 <script>
 import RecipeList from "./recipeList.vue";
 import services from "../services/AuthService.js";
+import GroceryList from "./GroceryList.vue";
 
 export default {
-  components: { RecipeList },
+  components: { RecipeList, GroceryList },
   data() {
     return {
       //Container for all variables for adjusting/modifying user view
@@ -231,6 +233,10 @@ export default {
       if (this.mealPlan.name.trim().length > 0) {
         services.putMealPlan(this.mealPlan).then((response) => {
           this.mealPlan = response.data;
+          services.getMealPlan().then((resp) => {
+            this.listOfMealPlans = resp.data;
+            this.visualParams.selectedText = response.data.mealPlanId;
+          });
         });
       } else {
         alert("Invalid meal plan name");
@@ -251,6 +257,7 @@ export default {
           this.mealPlan = response.data;
           services.getMealPlan().then((resp) => {
             this.listOfMealPlans = resp.data;
+            this.visualParams.selectedText = response.data.mealPlanId;
           });
         });
       } else {
