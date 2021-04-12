@@ -138,5 +138,67 @@ namespace Capstone.DAO
             }
             return ingredient;
         }
+
+        public RecipeIngredient UpdateQuantity(RecipeIngredient ingredient)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("UPDATE recipes_ingredients SET ingredient_qty = @ingredient_qty where recipe_id = @recipe_id and ingredient_id = @ingredient_id", conn);
+                    cmd.Parameters.AddWithValue("@recipe_id", ingredient.RecipeId);
+                    cmd.Parameters.AddWithValue("@ingredient_id", ingredient.IngredientId);
+                    cmd.Parameters.AddWithValue("@ingredient_qty", ingredient.Quantity);
+                    cmd.ExecuteScalar();
+                }
+            }
+            catch
+            {
+
+            }
+            return ingredient;
+        }
+
+        public RecipeIngredient UpdateUnit(RecipeIngredient ingredient)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("UPDATE recipes_ingredients SET ingredient_unit = @ingredient_unit where recipe_id = @recipe_id and ingredient_id = @ingredient_id", conn);
+                    cmd.Parameters.AddWithValue("@recipe_id", ingredient.RecipeId);
+                    cmd.Parameters.AddWithValue("@ingredient_id", ingredient.IngredientId);
+                    cmd.Parameters.AddWithValue("@ingredient_unit", ingredient.Unit);
+                    cmd.ExecuteScalar();
+                }
+            }
+            catch
+            {
+
+            }
+            return ingredient;
+        }
+
+        public RecipeIngredient DeleteIngredient(RecipeIngredient ingredient)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("DELETE from Recipes_Ingredients where recipe_id = @recipe_id and ingredient_id = @ingredient_id", conn);
+                    cmd.Parameters.AddWithValue("@recipe_id", ingredient.RecipeId);
+                    cmd.Parameters.AddWithValue("@ingredient_id", ingredient.IngredientId);
+                    cmd.ExecuteScalar();
+                }
+            }
+            catch
+            {
+
+            }
+            return ingredient;
+        }
     }
 }

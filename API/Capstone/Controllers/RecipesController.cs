@@ -70,17 +70,17 @@ namespace Capstone.Controllers
         {
             // get my original recipe with no updates
             List<Recipe> myRecipes = recipeDAO.GetPrivateRecipes(this.UserId);
-            //GetMyRecipeIngredients
             Recipe originalRecipe = new Recipe();
             foreach (Recipe recipe in myRecipes)
             {
                 if (recipe.RecipeId == editRecipe.RecipeId)
                 {
-                    originalRecipe = recipe; // meal plan with no edits
+                    originalRecipe = recipe;
                 }
             }
             originalRecipe.IngredientList = recipeIngredientDAO.GetMyRecipeIngredients(originalRecipe.RecipeId, this.UserId);
 
+            //original ingredient Id's
             List<int> originalIngredientIds = new List<int>();
             foreach(RecipeIngredient ingredient in originalRecipe.IngredientList)
             {
@@ -96,35 +96,41 @@ namespace Capstone.Controllers
                 ingredientDAO.AddIngredients(editRecipe.NewIngredients);
             }
 
-            //orignal recipe: pbnj has ingredient list [5,6,7].   [5 2oz, 6 2oz, 7 2slices]
-            // edit recipe:                                     [5 1oz, 6 2oz, 7 2slices, 8 2oz] [6 2oz, 7 2slices]
-
-            //loop through new recipe ingredient list
-            //i check if the old ingredients are in the new list by id's
-            //if the old ingredient is in the new list, check to see what needs to be updated on the properties
-            //if the old ingredient is not in the new list, we need to delete that item from the recipes_ingredients
+            //insert the new ingredients into recipes_ingredients
             foreach (RecipeIngredient eIngredient in editRecipe.IngredientList)
             {
-                //insert the new ingredients into recipes_ingredients
-                if (editRecipe.NewIngredients.Contains(eIngredient.IngredientName))
+                if (editRecipe.NewIngredients.Contains(eIngredient.IngredientName) || !originalIngredientIds.Contains(eIngredient.IngredientId))
                 {
                     recipeIngredientDAO.AddIngredient(eIngredient, editRecipe.RecipeId);
-                }
-                else
-                {
-                    foreach (RecipeIngredient oIngredient in originalRecipe.IngredientList)
+                }          
+            }
+
+            //edit quantity, unit, or delete ingredients
+            foreach (RecipeIngredient oIngredient in originalRecipe.IngredientList)
+            {
+                bool notFound = true;
+                for (int i = 0; i < editRecipe.IngredientList.Count; i++)
+                {                    
+                    if (editRecipe.IngredientList[i].IngredientId == oIngredient.IngredientId)
                     {
-                        if (eIngredient.IngredientId == oIngredient.IngredientId)
+                        notFound = false;
+                        if (editRecipe.IngredientList[i].Quantity != oIngredient.Quantity)
                         {
-                            //check qty, check unit.  update if necessary
+                            //update quantity
+                            recipeIngredientDAO.UpdateQuantity(editRecipe.IngredientList[i]);
                         }
-                        // id's didn't match. old was deleted
-                        else
+                        if (editRecipe.IngredientList[i].Unit != oIngredient.Unit)
                         {
-                            //delete the old ingredient from the recipes_ingredients list
+                            //update unit
+                            recipeIngredientDAO.UpdateUnit(editRecipe.IngredientList[i]);
                         }
                     }
-                }
+                    if (i == editRecipe.IngredientList.Count - 1 && notFound)
+                    {
+                        // delete the ingredient
+                        recipeIngredientDAO.DeleteIngredient(oIngredient);
+                    }                   
+                }          
             }
 
             return Ok(editRecipe);

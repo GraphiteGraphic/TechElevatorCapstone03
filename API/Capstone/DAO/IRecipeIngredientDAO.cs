@@ -9,5 +9,9 @@ namespace Capstone.DAO
         List<RecipeIngredient> GetPublicRecipeIngredients(int recipeId);
         List<RecipeIngredient> AddIngredients(List<RecipeIngredient> ingredients, int recipeId);
         RecipeIngredient AddIngredient(RecipeIngredient ingredient, int recipeId);
+        RecipeIngredient DeleteIngredient(RecipeIngredient ingredient);
+        RecipeIngredient UpdateUnit(RecipeIngredient ingredient);
+        RecipeIngredient UpdateQuantity(RecipeIngredient ingredient);
+
     }
 }
