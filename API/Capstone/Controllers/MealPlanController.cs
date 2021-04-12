@@ -1,5 +1,6 @@
 ﻿using Capstone.DAO;
 using Capstone.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,7 +28,7 @@ namespace Capstone.Controllers
         }
 
         [HttpPost]
-
+        [Authorize]
         public ActionResult AddMealPlan(MealPlan mealPlan)
         {
             //gets all the meals that we need to add into the database
@@ -59,6 +60,7 @@ namespace Capstone.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public ActionResult UpdateMealPlan(MealPlan mealplan)
         {
             List<MealPlan> myMealPlans = mealPlanDAO.GetMyMealPlans(this.UserId);
@@ -163,7 +165,6 @@ namespace Capstone.Controllers
             {
                 mealDAO.AddMeals(newMeals, this.UserId);
                 mealRecipeDAO.AddMealRecipes(newMeals);
-                //tie these new mealId's to the meal plan
             }
 
             return newMeals;

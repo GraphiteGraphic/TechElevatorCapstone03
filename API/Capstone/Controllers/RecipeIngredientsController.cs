@@ -28,7 +28,7 @@ namespace Capstone.Controllers
         {
             // call recipeDAO to get list of recipes, get recipe, then check parameters
 
-             List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(this.UserId);
+            List<Recipe> privateListOfRecipe = recipeDAO.GetPrivateRecipes(this.UserId);
 
             List<RecipeIngredient> listOfRecipeIngredients = new List<RecipeIngredient>();
 
@@ -39,8 +39,7 @@ namespace Capstone.Controllers
             {
                 if (recipe.UserId == this.UserId && recipe.RecipeId == recipeId)
                 {
-                     listOfRecipeIngredients = recipeIngredientsDAO.GetMyRecipeIngredients(recipe.RecipeId, this.UserId);
-
+                    listOfRecipeIngredients = recipeIngredientsDAO.GetMyRecipeIngredients(recipe.RecipeId, this.UserId);
                     return Ok(listOfRecipeIngredients);
                 }
             }

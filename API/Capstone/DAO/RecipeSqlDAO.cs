@@ -116,5 +116,30 @@ namespace Capstone.DAO
             return recipe;
         }
 
+        public Recipe UpdateRecipe(Recipe recipe)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("UPDATE Recipes SET recipe_name = @name, instructions = @instructions, type_id = @type, num_servings = @servings, is_shared = @shared where recipe_id = @recipeId", conn);
+                    cmd.Parameters.AddWithValue("@recipeId", recipe.RecipeId);
+                    cmd.Parameters.AddWithValue("@name", recipe.RecipeName);
+                    cmd.Parameters.AddWithValue("@instructions", recipe.Instructions);
+                    cmd.Parameters.AddWithValue("@type", recipe.Type);
+                    cmd.Parameters.AddWithValue("@servings", recipe.Servings);
+                    cmd.Parameters.AddWithValue("@shared", recipe.IsShared);
+                    cmd.ExecuteScalar();
+                }
+            }
+
+            catch (SqlException)
+            {
+
+            }
+            return recipe;
+        }
+
     }
 }
