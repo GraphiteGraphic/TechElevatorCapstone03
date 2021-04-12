@@ -50,6 +50,12 @@ export default new Vuex.Store({
     },
     ADD_RECIPE(state, recipe){
       state.myRecipes.push(recipe);
+    },
+    EDIT_RECIPE(state, recipe){
+      let old = state.myRecipes.find( (r) => {
+        return r.recipeId == recipe.recipeId;
+      })
+      state.myRecipes[state.myRecipes.indexOf(old)] = recipe;
     }
   }
 })

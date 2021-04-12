@@ -19,7 +19,11 @@ export default {
   },
 
   addRecipe(recipe) {
-    return axios.post('/recipes',recipe);
+    return axios.post('/recipes', recipe);
+  },
+
+  putRecipe(recipe) {
+    return axios.put('/recipes', recipe);
   },
 
   getIngredients(recipe) {
@@ -33,10 +37,10 @@ export default {
   postMealPlan(mealPlan) {
     return axios.post('/mealplan', mealPlan);
   },
-  getMealPlan(){
+  getMealPlan() {
     return axios.get('/mealplan');
   },
-  putMealPlan(mealplan){
+  putMealPlan(mealplan) {
     return axios.put('/mealplan', mealplan)
   }
 }

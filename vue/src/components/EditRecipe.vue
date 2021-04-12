@@ -183,38 +183,38 @@ export default {
   },
   methods: {
     saveRecipe() {
-      //this parses numservings into a number
-      //this.recipe.numServings = parseInt(this.recipe.numServings);
+      // this parses numservings into a number
+      this.recipe.numServings = parseInt(this.recipe.numServings);
 
-      //this changes recipe type from string into its respective type #
-      // if (this.recipe.type === "Main Dish") {
-      //   this.recipe.type = 1;
-      // } else if (this.recipe.type === "Side Dish") {
-      //   this.recipe.type = 2;
-      // } else if (this.recipe.type === "Beverage") {
-      //   this.recipe.type = 3;
-      // } else if (this.recipe.type === "Dessert") {
-      //   this.recipe.type = 4;
-      // } else if (this.recipe.type === "Appetizer") {
-      //   this.recipe.type = 5;
-      // }
+      // this changes recipe type from string into its respective type #
+      if (this.recipe.type === "Main Dish") {
+        this.recipe.type = 1;
+      } else if (this.recipe.type === "Side Dish") {
+        this.recipe.type = 2;
+      } else if (this.recipe.type === "Beverage") {
+        this.recipe.type = 3;
+      } else if (this.recipe.type === "Dessert") {
+        this.recipe.type = 4;
+      } else if (this.recipe.type === "Appetizer") {
+        this.recipe.type = 5;
+      }
 
-      // //this joins all instructions to have all the breaking charater (|||) in the database
-      // this.recipe.instructions = this.instructionSteps.join("|||");
+      //this joins all instructions to have all the breaking charater (|||) in the database
+      this.recipe.instructions = this.instructionSteps.join("|||");
 
-      // service
-      //   .addRecipe(this.recipe)
-      //   .then((response) => {
-      //     if (response.status === 201) {
-      //       this.$store.commit("ADD_RECIPE", response.data);
-      //       this.$router.push({ name: "profile" });
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     this.errorMsg =
-      //       "was not reponse.status of 201. " + error.response.statusText;
-      //     alert("Error");
-      //   });
+      service
+        .putRecipe(this.recipe)
+        .then((response) => {
+          if (response.status === 200) {
+            this.$store.commit("EDIT_RECIPE", response.data);
+            this.$router.push({ name: "profile" });
+          }
+        })
+        .catch((error) => {
+          this.errorMsg =
+            "was not reponse.status of 200. " + error.response.statusText;
+          alert("Error");
+        });
     },
 
     addStep() {
