@@ -10,8 +10,9 @@
       <router-link
         v-bind:to="{ name: 'profile' }"
         v-if="$store.state.token !== ''"
-        >{{ currentUser.username }} |</router-link
-      >
+        >{{ currentUser.username }} </router-link 
+        
+      > |
       <router-link
         v-bind:to="{ name: 'logout' }"
         v-if="$store.state.token != ''"
@@ -55,10 +56,13 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Sriracha&display=swap');
+
 body {
   text-align: center;
   color: white;
   background-color: rgb(0, 175, 240);
+  font-family: 'Sriracha', Arial;
 }
 
 #nav {
@@ -69,7 +73,9 @@ a {
   color: white;
   text-decoration: none;
 }
-
+a:hover, a:visited:hover {
+  color: blue;
+}
 a:visited {
   color: white;
 }

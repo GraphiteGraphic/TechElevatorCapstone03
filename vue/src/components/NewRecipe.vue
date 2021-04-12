@@ -5,7 +5,7 @@
         for="Recipe Name"
         v-show="!visualParam.name"
         @click="visualParam.name = true"
-        >{{ recipe.recipeName }} 🖉</label
+        >{{ recipe.recipeName }} <span>🖉</span></label
       >
       <input
         v-show="visualParam.name"
@@ -19,7 +19,7 @@
     </div>
     <div class="RecipeType">
       <label for="type" v-show="!visualParam.type" @click="visualParam.type = true"
-        >{{ recipe.type }} 🖉</label
+        >{{ recipe.type }} <span>🖉</span></label
       >
       <select
         v-show="visualParam.type"
@@ -252,6 +252,9 @@ export default {
 </script>
 
 <style scoped>
+span:hover{
+  color:blue;
+}
 form {
   display: flex;
   flex-direction: column;

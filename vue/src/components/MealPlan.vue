@@ -5,6 +5,7 @@
       <span
         @click="
           visualParams.viewMode = true;
+          visualParams.name = false;
           visualParams.addMeal = false;
         "
         v-show="!visualParams.viewMode"
@@ -12,6 +13,7 @@
       ><span
         @click="visualParams.viewMode = false"
         v-show="visualParams.viewMode"
+
         >🖉</span
       >
     </h2>
@@ -267,6 +269,9 @@ export default {
 </script>
 
 <style scoped>
+span:hover{
+  color: blue;
+}
 a {
   padding-left: 15px;
 }

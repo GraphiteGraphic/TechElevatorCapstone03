@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <h1>Home</h1>
+    <h1>Munch Munch, Yum!</h1>
+    <h2>(^-^)</h2>
     <recipe-list :recipeList="recipeList" />
   </div>
 </template>
