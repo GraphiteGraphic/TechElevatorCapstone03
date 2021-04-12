@@ -240,16 +240,27 @@ export default {
       this.recipe.ingredientList.splice(index, 1);
     },
     addIngredient() {
-      this.recipe.ingredientList.push(this.ingredient);
-      if (
-        !this.allIngredients.find((x) => {
-          return x.ingredientName === this.ingredient.ingredientName;
-        })
-      ) {
-        this.recipe.newIngredients.push(this.ingredient.ingredientName);
+      let chkBool = false;
+      this.recipe.ingredientList.forEach(
+        (i) => {
+          if (i.ingredientName === this.ingredient.ingredientName) {
+            chkBool = true;
+            alert("Ingredient Already Exists In This Recipe");
+          }
+        }
+      );
+      if (!chkBool) {
+        //when we click the button add what's in the text fields to ingredient list as an object, if name is not in the options add it to the ingredient array
+        this.recipe.ingredientList.push(this.ingredient);
+        if (
+          !this.allIngredients.find((x) => {
+            return x.ingredientName === this.ingredient.ingredientName;
+          })
+        ) {
+          this.recipe.newIngredients.push(this.ingredient.ingredientName);
+        }
+        this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
       }
-      this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
-      //when we click the button add what's in the text fields to ingredient list as an object, if name is not in the options add it to the ingredient array
     },
     editIngredient() {
       this.recipe.ingredientList[this.visualParam.ingIndex] = this.ingredient;

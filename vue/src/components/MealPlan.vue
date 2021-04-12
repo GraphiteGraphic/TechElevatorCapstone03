@@ -13,12 +13,11 @@
       ><span
         @click="visualParams.viewMode = false"
         v-show="visualParams.viewMode"
-
         >🖉</span
       >
     </h2>
     <div>
-      <label  v-show="!visualParams.name" for="Meal Plan Name"
+      <label v-show="!visualParams.name" for="Meal Plan Name"
         >{{ mealPlan.name }}
         <span v-show="!visualParams.viewMode" @click="visualParams.name = true"
           >🖉</span
@@ -250,7 +249,9 @@ export default {
       if (this.mealPlan.name.trim().length > 0) {
         services.postMealPlan(this.mealPlan).then((response) => {
           this.mealPlan = response.data;
-          this.listOfMealPlans.push(this.mealPlan);
+          services.getMealPlan().then((resp) => {
+            this.listOfMealPlans = resp.data;
+          });
         });
       } else {
         alert("Invalid meal plan name");
@@ -269,7 +270,7 @@ export default {
 </script>
 
 <style scoped>
-span:hover{
+span:hover {
   color: blue;
 }
 a {

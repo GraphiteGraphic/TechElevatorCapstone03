@@ -18,7 +18,10 @@
       />
     </div>
     <div class="RecipeType">
-      <label for="type" v-show="!visualParam.type" @click="visualParam.type = true"
+      <label
+        for="type"
+        v-show="!visualParam.type"
+        @click="visualParam.type = true"
         >{{ recipe.type }} <span>🖉</span></label
       >
       <select
@@ -49,12 +52,22 @@
     </div>
     <div>
       <div>Ingredients:</div>
-      <div v-for="ingredient of recipe.ingredientList" v-bind:key="ingredient.ingredientName"> 
-        {{ingredient.quantity}}
-        {{ingredient.unit}}
-        {{ingredient.ingredientName}}.
-            <span @click="setupIngredient(recipe.ingredientList.indexOf(ingredient))">🖉</span>
-        <span v-show="visualParam.ingredient" @click="deleteIngredient(recipe.ingredientList.indexOf(ingredient))">🗑</span>
+      <div
+        v-for="ingredient of recipe.ingredientList"
+        v-bind:key="ingredient.ingredientName"
+      >
+        {{ ingredient.quantity }}
+        {{ ingredient.unit }}
+        {{ ingredient.ingredientName }}.
+        <span
+          @click="setupIngredient(recipe.ingredientList.indexOf(ingredient))"
+          >🖉</span
+        >
+        <span
+          v-show="visualParam.ingredient"
+          @click="deleteIngredient(recipe.ingredientList.indexOf(ingredient))"
+          >🗑</span
+        >
       </div>
       <label for="Ingredient Quantity">Quantity: </label>
       <input
@@ -77,8 +90,20 @@
         id="ingredientList"
         v-model="ingredient.ingredientName"
       />
-      <button type="button" @click="addIngredient()" v-show="visualParam.ingredient">Add Ingredient</button>
-      <button type="button" @click="editIngredient()" v-show="!visualParam.ingredient">Save Edit</button>
+      <button
+        type="button"
+        @click="addIngredient()"
+        v-show="visualParam.ingredient"
+      >
+        Add Ingredient
+      </button>
+      <button
+        type="button"
+        @click="editIngredient()"
+        v-show="!visualParam.ingredient"
+      >
+        Save Edit
+      </button>
 
       <datalist name="ingredients" id="ingredients">
         <option
@@ -135,7 +160,7 @@ export default {
         addStep: true,
         stepNum: Number,
         ingredient: true,
-        ingIndex: Number
+        ingIndex: Number,
       },
       recipe: {
         recipeName: "Untitled",
@@ -202,42 +227,60 @@ export default {
       this.visualParam.stepNum = index;
     },
     editStep() {
-      this.instructionSteps[this.visualParam.stepNum] = this.recipe.instructions;
+      this.instructionSteps[
+        this.visualParam.stepNum
+      ] = this.recipe.instructions;
       this.visualParam.addStep = true;
       this.recipe.instructions = "";
     },
     deleteStep(index) {
       this.instructionSteps.splice(index, 1);
     },
-    deleteIngredient(index)
-    {
+    deleteIngredient(index) {
       this.recipe.ingredientList.splice(index, 1);
     },
     addIngredient() {
-      this.recipe.ingredientList.push(this.ingredient);
-      if(!this.allIngredients.find( (x) => { return x.ingredientName === this.ingredient.ingredientName })){
-        this.recipe.newIngredients.push(this.ingredient.ingredientName)
+      let chkBool = false;
+      this.recipe.ingredientList.forEach(
+        (i) => {
+          if (i.ingredientName === this.ingredient.ingredientName) {
+            chkBool = true;
+            alert("Ingredient Already Exists In This Recipe");
+          }
+        }
+      );
+      if (!chkBool) {
+        //when we click the button add what's in the text fields to ingredient list as an object, if name is not in the options add it to the ingredient array
+        this.recipe.ingredientList.push(this.ingredient);
+        if (
+          !this.allIngredients.find((x) => {
+            return x.ingredientName === this.ingredient.ingredientName;
+          })
+        ) {
+          this.recipe.newIngredients.push(this.ingredient.ingredientName);
+        }
+        this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
       }
-      this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
-      //when we click the button add what's in the text fields to ingredient list as an object, if name is not in the options add it to the ingredient array
     },
-    editIngredient()
-    {
+    editIngredient() {
       this.recipe.ingredientList[this.visualParam.ingIndex] = this.ingredient;
-      
+
       //Reset newIngredient list and repopulate with potential new ingredients
       this.recipe.newIngredients = [];
-      for(let i of this.recipe.ingredientList){
-        if(!this.allIngredients.find( (x) => { return x.ingredientName === i.ingredientName })){
-          this.recipe.newIngredients.push(i.ingredientName)
+      for (let i of this.recipe.ingredientList) {
+        if (
+          !this.allIngredients.find((x) => {
+            return x.ingredientName === i.ingredientName;
+          })
+        ) {
+          this.recipe.newIngredients.push(i.ingredientName);
         }
       }
 
       this.ingredient = { quantity: 1, unit: "", ingredientName: "" };
       this.visualParam.ingredient = true;
     },
-    setupIngredient(index)
-    {
+    setupIngredient(index) {
       this.visualParam.ingIndex = index;
       this.visualParam.ingredient = false;
       this.ingredient = this.recipe.ingredientList[index];
@@ -252,8 +295,8 @@ export default {
 </script>
 
 <style scoped>
-span:hover{
-  color:blue;
+span:hover {
+  color: blue;
 }
 form {
   display: flex;
