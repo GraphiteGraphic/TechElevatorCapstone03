@@ -1,173 +1,195 @@
 <template>
-  <form v-on:submit.prevent="saveRecipe()">
-    <div class="RecipeName">
-      <label
-        for="Recipe Name"
-        v-show="!visualParam.name"
-        @click="visualParam.name = true"
-        >{{ recipe.recipeName }} <span>🖉</span></label
-      >
-      <input
-        v-show="visualParam.name"
-        @blur="visualParam.name = false"
-        type="text"
-        placeholder="Recipe Name"
-        v-model="recipe.recipeName"
-        name="Recipe Name"
-        required="true"
-      />
-    </div>
-    <div class="RecipeType">
-      <label
-        for="type"
-        v-show="!visualParam.type"
-        @click="visualParam.type = true"
-        >{{ recipe.type }} <span>🖉</span></label
-      >
-      <select
-        v-show="visualParam.type"
-        v-model="recipe.type"
-        @change="visualParam.type = false"
-        @blur="visualParam.type = false"
-        name="type"
-        required="true"
-      >
-        <option>Main Dish</option>
-        <option>Side Dish</option>
-        <option>Beverage</option>
-        <option>Dessert</option>
-        <option>Appetizer</option>
-      </select>
-    </div>
-    <div class="RecipeServings">
-      <label for="numServings">Number of Servings: </label>
-      <input
-        type="number"
-        placeholder="Number of Servings"
-        name="numServings"
-        v-model="recipe.servings"
-        required="true"
-        min="1"
-      />
-    </div>
-    <div>
-      <div>Ingredients:</div>
-      <div
-        v-for="ingredient of recipe.ingredientList"
-        v-bind:key="ingredient.ingredientName"
-      >
-        {{ ingredient.quantity }}
-        {{ ingredient.unit }}
-        {{ ingredient.ingredientName }}.
-        <span
-          @click="setupIngredient(recipe.ingredientList.indexOf(ingredient))"
-          >🖉</span
+  <div>
+    <form v-on:submit.prevent="saveRecipe()">
+      <div class="RecipeName">
+        <label
+          for="Recipe Name"
+          v-show="!visualParam.name"
+          @click="visualParam.name = true"
+          >{{ recipe.recipeName }} <span>🖉</span></label
         >
-        <span
-          v-show="visualParam.ingredient"
-          @click="deleteIngredient(recipe.ingredientList.indexOf(ingredient))"
-          >🗑</span
-        >
-      </div>
-      <label for="Ingredient Quantity">Quantity: </label>
-      <input
-        type="number"
-        name="Ingredient Quantity"
-        min="1"
-        v-model="ingredient.quantity"
-      />
-      <label for="Ingredient Unit">Unit: </label>
-      <select
-        name="Ingredient Unit"
-        id = "Ingredient_Unit"
-        class="unit"
-        v-model="ingredient.unit"
-      >
-      <option value=''>no units</option>
-      <option value='tsp'>teaspoons</option>
-      <option value='tbsp'>tablespoons</option>
-      <option value='cup'>cups</option>
-      <option value='pint'>pints</option>
-      <option value='quart'>quarts</option>
-      <option value='gal'>gallons</option>
-      <option value='oz'>ounces</option>
-      <option value='lb'>pounds</option>
-      <option value='g'>grams</option>
-      <option value='kg'>kilograms</option>
-      <option value='ml'>milliliters</option>
-      <option value='L'>liters</option>
-      <option value='pinch'>pinch</option>
-      <option value='dash'>dash</option>
-      </select>
-      <label for="ingredientList">Ingredient: </label>
-      <input
-        list="ingredients"
-        name="ingredientList"
-        id="ingredientList"
-        v-model="ingredient.ingredientName"
-      />
-      <button
-        type="button"
-        @click="addIngredient()"
-        v-show="visualParam.ingredient"
-      >
-        Add Ingredient
-      </button>
-      <button
-        type="button"
-        @click="editIngredient()"
-        v-show="!visualParam.ingredient"
-      >
-        Save Edit
-      </button>
-
-      <datalist name="ingredients" id="ingredients">
-        <option
-          v-for="ingredient in allIngredients"
-          :key="ingredient.ingredientId"
-          :value="ingredient.ingredientName"
+        <input
+          v-show="visualParam.name"
+          @blur="visualParam.name = false"
+          type="text"
+          placeholder="Recipe Name"
+          v-model="recipe.recipeName"
+          name="Recipe Name"
+          required="true"
         />
-      </datalist>
-    </div>
-    <div class="RecipeInstructions">
-      <div>Instructions:</div>
-      <div v-for="i of instructionSteps.length" :key="i">
-        {{ i }}. {{ instructionSteps[i - 1] }}
-        <span @click="editSetup(i - 1)">🖉</span>
-        <span @click="deleteStep(i - 1)" v-show="visualParam.addStep">🗑</span>
       </div>
-      <input
-        type="text"
-        name="instructions"
-        placeholder="Recipe Instructions"
-        v-model="recipe.instructions"
-      />
-      <button
-        v-show="visualParam.addStep"
-        type="button"
-        v-on:click.prevent="addStep()"
-      >
-        Add Instruction Step
-      </button>
-      <button
-        v-show="!visualParam.addStep"
-        type="button"
-        @click.prevent="editStep()"
-      >
-        Edit Instruction Step
-      </button>
-    </div>
-    <div class="RecipeShare">
-      <label for="shared">Set as Public</label>
-      <input type="checkbox" v-model="recipe.isShared" name="shared" />
-    </div>
-    <button type="submit" class="submitBtn">Save Recipe</button>
-  </form>
+      <div class="RecipeType">
+        <label
+          for="type"
+          v-show="!visualParam.type"
+          @click="visualParam.type = true"
+          >{{ recipe.type }} <span>🖉</span></label
+        >
+        <select
+          v-show="visualParam.type"
+          v-model="recipe.type"
+          @change="visualParam.type = false"
+          @blur="visualParam.type = false"
+          name="type"
+          required="true"
+        >
+          <option>Main Dish</option>
+          <option>Side Dish</option>
+          <option>Beverage</option>
+          <option>Dessert</option>
+          <option>Appetizer</option>
+        </select>
+      </div>
+      <div class="RecipeServings">
+        <label for="numServings">Number of Servings: </label>
+        <input
+          type="number"
+          placeholder="Number of Servings"
+          name="numServings"
+          v-model="recipe.servings"
+          required="true"
+          min="1"
+        />
+      </div>
+      <div>
+        <div>Ingredients:</div>
+        <div
+          v-for="ingredient of recipe.ingredientList"
+          v-bind:key="ingredient.ingredientName"
+        >
+          {{ ingredient.quantity }}
+          {{ ingredient.unit }}
+          {{ ingredient.ingredientName }}.
+          <span
+            @click="setupIngredient(recipe.ingredientList.indexOf(ingredient))"
+            >🖉</span
+          >
+          <span
+            v-show="visualParam.ingredient"
+            @click="deleteIngredient(recipe.ingredientList.indexOf(ingredient))"
+            >🗑</span
+          >
+        </div>
+        <label for="Ingredient Quantity">Quantity: </label>
+        <input
+          type="number"
+          name="Ingredient Quantity"
+          min="1"
+          v-model="ingredient.quantity"
+        />
+        <label for="Ingredient Unit">Unit: </label>
+        <select
+          name="Ingredient Unit"
+          id="Ingredient_Unit"
+          class="unit"
+          v-model="ingredient.unit"
+        >
+          <option value="">no units</option>
+          <option value="tsp">teaspoons</option>
+          <option value="tbsp">tablespoons</option>
+          <option value="cup">cups</option>
+          <option value="pint">pints</option>
+          <option value="quart">quarts</option>
+          <option value="gal">gallons</option>
+          <option value="oz">ounces</option>
+          <option value="lb">pounds</option>
+          <option value="g">grams</option>
+          <option value="kg">kilograms</option>
+          <option value="ml">milliliters</option>
+          <option value="L">liters</option>
+          <option value="pinch">pinch</option>
+          <option value="dash">dash</option>
+        </select>
+        <label for="ingredientList">Ingredient: </label>
+        <input
+          list="ingredients"
+          name="ingredientList"
+          id="ingredientList"
+          v-model="ingredient.ingredientName"
+        />
+        <button
+          type="button"
+          @click="addIngredient()"
+          v-show="visualParam.ingredient"
+        >
+          Add Ingredient
+        </button>
+        <button
+          type="button"
+          @click="editIngredient()"
+          v-show="!visualParam.ingredient"
+        >
+          Save Edit
+        </button>
+
+        <datalist name="ingredients" id="ingredients">
+          <option
+            v-for="ingredient in allIngredients"
+            :key="ingredient.ingredientId"
+            :value="ingredient.ingredientName"
+          />
+        </datalist>
+      </div>
+      <div class="RecipeInstructions">
+        <div>Instructions:</div>
+        <div v-for="i of instructionSteps.length" :key="i">
+          {{ i }}. {{ instructionSteps[i - 1] }}
+          <span @click="editSetup(i - 1)">🖉</span>
+          <span @click="deleteStep(i - 1)" v-show="visualParam.addStep">🗑</span>
+        </div>
+        <input
+          type="text"
+          name="instructions"
+          placeholder="Recipe Instructions"
+          v-model="recipe.instructions"
+        />
+        <button
+          v-show="visualParam.addStep"
+          type="button"
+          v-on:click.prevent="addStep()"
+        >
+          Add Instruction Step
+        </button>
+        <button
+          v-show="!visualParam.addStep"
+          type="button"
+          @click.prevent="editStep()"
+        >
+          Edit Instruction Step
+        </button>
+      </div>
+      <div class="RecipeShare">
+        <label for="shared">Set as Public</label>
+        <input type="checkbox" v-model="recipe.isShared" name="shared" />
+      </div>
+      <button type="submit" class="submitBtn">Save Recipe</button>
+    </form>
+    <!-- eslint-disable -->
+    <!-- This disables annoying eslink warning messages in the html       -->
+    <!-- This is the dropzone component that will give a place to drop the image to be uploaded -->
+    <!-- there are two custom events the component listens for:                                 -->
+    <!--       the vdropzone-sending event which is fired when dropzone is sending an image     -->
+    <!--       the vdropzone-success event which is fired when dropzone upload is successful    -->
+    <vue-dropzone
+      id="dropzone"
+      class="mt-3"
+      v-bind:options="dropzoneOptions"
+      v-on:vdropzone-sending="addFormData"
+      v-on:vdropzone-success="getSuccess"
+      :useCustomDropzoneOptions="true"
+    ></vue-dropzone>
+  </div>
 </template>
 
 <script>
+import vue2Dropzone from "vue2-dropzone";
+import "vue2-dropzone/dist/vue2Dropzone.min.css";
 import service from "../services/AuthService.js";
 export default {
+  name: "upload-photo",
+  components: {
+    vueDropzone: vue2Dropzone,
+  },
   data() {
     return {
       visualParam: {
@@ -187,6 +209,19 @@ export default {
         servings: 1,
         ingredientList: [],
         newIngredients: [],
+        imgUrl: "",
+        cookTime: Number,
+      },
+      dropzoneOptions: {
+        url: "https://api.cloudinary.com/v1_1/dy5vryv7m/image/upload",
+        thumbnailWidth: 250,
+        thumbnailHeight: 250,
+        maxFilesize: 2.0,
+        acceptedFiles: ".jpg, .jpeg, .png, .gif",
+        uploadMultiple: false,
+        addRemoveLinks: true,
+        dictDefaultMessage:
+          "Add a photo for your recipe. </br> Drop files here to upload or click to select a file for upload.",
       },
       ingredient: {
         quantity: 1,
@@ -198,6 +233,23 @@ export default {
     };
   },
   methods: {
+    /******************************************************************************************
+     * The addFormData method is called when vdropzone-sending event is fired
+     * it adds additional headers to the request
+     ******************************************************************************************/
+    addFormData(file, xhr, formData) {
+      formData.append("api_key", "654255138794743"); // substitute your api key
+      formData.append("upload_preset", "av5w3cm0"); // substitute your upload preset
+      formData.append("timestamp", (Date.now() / 1000) | 0);
+      formData.append("tags", "vue-app");
+    },
+    /******************************************************************************************
+     * The getSuccess method is called when vdropzone-success event is fired
+     ******************************************************************************************/
+    getSuccess(file, response) {
+      this.recipe.imgUrl = response.secure_url; // store the url for the uploaded image
+      this.$emit("image-upload", this.recipe.imgUrl);
+    }, // fire custom event with image url in case someone cares
     saveRecipe() {
       // this parses numservings into a number
       this.recipe.numServings = parseInt(this.recipe.numServings);
@@ -257,14 +309,12 @@ export default {
     },
     addIngredient() {
       let chkBool = false;
-      this.recipe.ingredientList.forEach(
-        (i) => {
-          if (i.ingredientName === this.ingredient.ingredientName) {
-            chkBool = true;
-            alert("Ingredient Already Exists In This Recipe");
-          }
+      this.recipe.ingredientList.forEach((i) => {
+        if (i.ingredientName === this.ingredient.ingredientName) {
+          chkBool = true;
+          alert("Ingredient Already Exists In This Recipe");
         }
-      );
+      });
       if (!chkBool) {
         //when we click the button add what's in the text fields to ingredient list as an object, if name is not in the options add it to the ingredient array
         this.recipe.ingredientList.push(this.ingredient);
@@ -324,18 +374,18 @@ export default {
         : tempRecipe.type === 4
         ? "Dessert"
         : "Appetizer";
-        this.recipe.userId = tempRecipe.userId;
+    this.recipe.userId = tempRecipe.userId;
+    this.recipe.imgUrl = tempRecipe.imgUrl;
 
-        service.getIngredients(this.recipe).then( (resp) => {
+    service.getIngredients(this.recipe).then((resp) => {
       this.recipe.ingredientList = resp.data;
     });
-
   },
 };
 </script>
 
 <style scoped>
-span:hover{
+span:hover {
   color: blue;
 }
 form {
@@ -352,5 +402,17 @@ form {
 }
 input[type="number"] {
   width: 50px;
+}
+#dropzone{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 12px;
+}
+
+#dropzone:hover{
+    background: rgb(253, 189, 69);
+    transition-delay: 0.2s;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 </style>

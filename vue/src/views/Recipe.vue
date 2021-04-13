@@ -10,6 +10,9 @@
         Edit Recipe
       </button>
     </h2>
+    <div>
+      <img v-bind:src="recipe.imgUrl" >
+    </div>
     <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">
       {{ ingredient.quantity }} {{ ingredient.unit }}
       {{ ingredient.ingredientName }}
@@ -61,6 +64,10 @@ export default {
 </script>
 
 <style scoped>
+img {
+  max-width: 15%;
+  border: 10px solid darkblue
+}
 span {
   font-size: 500%;
 }
