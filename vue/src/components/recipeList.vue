@@ -23,12 +23,14 @@ export default {
 div {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: space-around;
 }
 section{
   width: 300px;
   height: 400px;
   background-color: blue;
-  margin: 2px;
+  margin: 10px;
 }
 a {
   display: inline-block;

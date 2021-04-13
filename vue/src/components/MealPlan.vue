@@ -105,11 +105,11 @@
         </tr>
       </tbody>
     </table>
-    <h3 v-show="visualParams.addMeal">
+    <h3 v-show="!visualParams.viewMode">
       {{ visualParams.DAYS_OF_WEEK[visualParams.dayIndex] }}
     </h3>
     <div
-      v-show="visualParams.addMeal"
+      v-show="!visualParams.viewMode"
       v-for="recipe in availableRecipes"
       :key="recipe.recipeId"
     >

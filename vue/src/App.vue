@@ -62,6 +62,8 @@ body {
   text-align: center;
   color: white;
   background-color: rgb(0, 175, 240);
+  background-image: url("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2398x1600/9195f991e5dcaddec7c4e677ec7a4bcf/photo-1591189863430-ab87e120f312.jpg");
+  background-repeat: no-repeat;
   font-family: 'Sriracha', Arial;
 }
 
