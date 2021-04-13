@@ -65,7 +65,7 @@ export default {
 
 <style scoped>
 img {
-  max-width: 15%;
+  max-width: 30%;
   border: 10px solid darkblue
 }
 span {

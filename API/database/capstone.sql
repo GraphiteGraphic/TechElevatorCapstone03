@@ -55,7 +55,8 @@ CREATE TABLE recipes (
 	type_id int NOT NULL,
 	num_servings int NOT NULL,
 	is_shared bit DEFAULT 0 NOT NULL, --CHECK (is_shared = 0 or is_shared = 1),
-	cook_time int NOT NULL
+	cook_time int NOT NULL,
+	img_url varchar(200) null, 
 	CONSTRAINT PK_recipes PRIMARY KEY (recipe_id),
 	CONSTRAINT FK_recipes_userid FOREIGN KEY (user_id) REFERENCES users (user_id),
 	CONSTRAINT FK_recipes_type FOREIGN KEY (type_id) REFERENCES types (type_id),
@@ -132,8 +133,8 @@ INSERT INTO types (type) VALUES ('Main Dish'), ('Side Dish'), ('Beverage'), ('De
 --INSERT INTO time_of_day (time_of_day_name) VALUES ('Breakfast'), ('Lunch'), ('Dinner'),('Snack');
 
 --Insert Shared Recipes / Ingredients
-INSERT INTO recipes (user_id, recipe_name, instructions, type_id, num_servings, is_shared, cook_time) VALUES 
-	(1, 'Peanut Butter and Jelly', 'Open peanut butter jar. |||Put peanut butter on one slice of bread. |||Open jelly jar, put jelly on another slice of bread. |||Put them together.', 3, 2, 1, 3),
+INSERT INTO recipes (user_id, recipe_name, instructions, type_id, num_servings, is_shared, cook_time, img_url) VALUES 
+	(1, 'Peanut Butter and Jelly', 'Open peanut butter jar. |||Put peanut butter on one slice of bread. |||Open jelly jar, put jelly on another slice of bread. |||Put them together.', 3, 2, 1, 3, 'https://res.cloudinary.com/dy5vryv7m/image/upload/v1618339372/CapstoneImages/pbppuun61qbhzlpgnoas.jpg'),
 	(1, 'Brown Sugar Oatmeal Cookies', 'Preheat the oven to 350 degrees F. |||In the bowl of an electric mixer (or using a hand mixer), beat together the brown sugar and butter until fluffy. Beat in the vanilla. Add the eggs one at a time, scraping the bowl after each one. |||Mix together the flour, salt and baking soda in a medium bowl. Add it into the creamed mixture in 2 to 3 batches, mixing until just combined. Mix in the oats until just combined. |||Use your preferred size cookie scoop (or a regular spoon) to drop portions of dough onto baking sheets, spacing them a couple inches apart. Bake until dark and chewy, 12 to 13 minutes. If you''d like a crispier cookie, just cook a little longer! |||Let the cookies cool slightly on the baking sheets, then transfer onto a plate for serving.  |||Cook''s Note: Add 1/2 cup finely chopped nuts to the flour mixture if you''d like a nutty flavor and crunch.', 4, 24, 1, 30),
 	(1, 'Cinnamon Baked French Toast', 'For the French toast: Grease the baking pan with butter. Tear the bread into chunks, or cut into cubes, and evenly distribute in the pan. Crack the eggs in a big bowl. Whisk together the eggs, milk, cream, granulated sugar, first 1/2 cup of brown sugar, and vanilla. Pour evenly over the bread. Cover the pan tightly and store in the fridge until needed (overnight preferably). |||For the topping: Mix the flour, brown sugar, cinnamon, salt and some nutmeg in a separate bowl. Stir together using a fork. Add the butter and with a pastry cutter, and mix it all together until the mixture resembles fine pebbles. Store in a re-sealable plastic bag in the fridge. |||When you''re ready to bake the casserole, preheat the oven to 350 degrees F. Remove the casserole from the fridge and sprinkle the topping over the top. Bake for 45 minutes for a softer, more bread pudding texture or for 1 hour or more for a firmer, crisper texture. |||Scoop out individual portions. Top with butter and drizzle with warm pancake syrup and sprinkle with blueberries.', 1, 12, 1, 45),
 	(3, 'Wafflemaker Hash Browns', 'Preheat a waffle iron on the regular setting and spray both sides with cooking spray. |||Squeeze out any excess moisture from the hash browns and put in a bowl. Pour the melted butter over the hash browns, sprinkle with the salt and pepper and stir. Scoop a heaping 1/2 cup of the seasoned hash browns into each waffle section, then top with a generous 2 tablespoons Cheddar followed by a sprinkling of chopped ham. Top the cheese and ham in each section with another 1/4 cup hash browns. Close the waffle iron and cook for 15 minutes on the regular setting. |||Repeat with the remaining hash browns, cheese and ham, filling one section of the waffle iron.', 1, 5, 1, 35),
