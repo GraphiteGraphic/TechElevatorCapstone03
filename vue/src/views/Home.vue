@@ -8,7 +8,7 @@
       v-if="$store.state.token !== ''"
       ><h2>My Meal Plans</h2>
     </router-link>
-    <div v-if="$store.state.token===''">
+    <div class="newUX" v-if="$store.state.token===''">
     <router-link v-bind:to="{ name: 'login' }">
       <h2>Create Meal Plan</h2>
     </router-link>
@@ -70,9 +70,10 @@ export default {
 span:hover {
   color: blue;
 }
-.entirePage {
+.newUX {
   display: flex;
   flex-direction: column;
+  align-content: center;
 }
 a {
   padding-left: 15px;
@@ -88,7 +89,7 @@ th {
   border-right: white 2px solid;
   border-top: white 2px solid;
   justify-content: center;
-  width: 200px;
+  flex-grow: 1;
   min-width: 100px;
 }
 td {
@@ -96,7 +97,7 @@ td {
   border-right: white 2px solid;
   border-bottom: white 2px solid;
   min-width: 100px;
-  width: 200px;
+  flex-grow: 1;
   justify-content: center;
   margin: 0px 5px;
 }
