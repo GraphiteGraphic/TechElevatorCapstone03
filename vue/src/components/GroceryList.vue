@@ -27,7 +27,7 @@
         ><span v-show="ingredient.mass && ingredient.volume">, </span
         ><span v-show="ingredient.mass && ingredient.volume && !ingredient.qty">and</span>
         <span v-show="ingredient.volume"
-          >{{ ingredient.volume }}{{ volume[selectedVolume] }}</span
+          > {{ ingredient.volume }}{{ volume[selectedVolume] }}</span
         ><span v-show="ingredient.qty && (ingredient.mass || ingredient.volume)"
           >, and</span
         ><span v-show="ingredient.qty"> {{ ingredient.qty }}</span>
