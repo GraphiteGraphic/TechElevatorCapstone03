@@ -68,7 +68,7 @@ export default {
 
 <style scoped>
 span:hover {
-  color: blue;
+  color: white;
 }
 a {
   padding-left: 15px;
@@ -92,4 +92,10 @@ td {
 button {
   margin-bottom: 10px;
 }
+
+h1, h2 {
+  color: black;
+}
+
+
 </style>

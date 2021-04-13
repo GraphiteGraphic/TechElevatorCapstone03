@@ -4,8 +4,9 @@
       <router-link
         :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
         :class="recipe.recipeName"
-        >{{ recipe.recipeName }}</router-link
-      >
+        >{{ recipe.recipeName }}
+        <img :src="recipe.imgUrl">
+        </router-link>
     </section>
   </div>
 </template>
@@ -29,14 +30,16 @@ div {
 section{
   width: 300px;
   height: 400px;
-  background-color: blue;
+  background-color: rgba(0,0,0,0.5);
   margin: 10px;
 }
 a {
   display: inline-block;
   width: 300px;
   height: 400px;
-  background-color: rgb(125, 125, 255);
+  background-color: rgba(255,255,255,0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   position: relative;
   left: -1px;
   top: -1px;

@@ -45,7 +45,7 @@ namespace Capstone.DAO
                         recipe.Servings = Convert.ToInt32(reader["num_servings"]);
                         recipe.IsShared = Convert.ToBoolean(reader["is_shared"]);
                         recipe.CookTime = Convert.ToInt32(reader["cook_time"]);
-                        recipe.ImgUrl = Convert.ToString(reader["img_url"]);
+                        //recipe.ImgUrl = Convert.ToString(reader["img_url"]);
                         listOfRecipes.Add(recipe);
                     }
                     return listOfRecipes;
