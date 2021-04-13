@@ -4,7 +4,35 @@
       <span v-show="!collapse">⮞</span><span v-show="collapse">⮟</span> Grocery
       List
     </h2>
-    <p v-show="collapse" v-for="ingredient in ingredients" :key="ingredient">{{ingredient}}</p>
+    <section v-show="collapse">
+      <label for="mass">Unit of Mass: </label>
+      <select name="mass" id="mass" v-model="selectedMass">
+        <option v-for="unit of mass" :key="unit" :value="mass.indexOf(unit)">
+          {{ unit }}
+        </option>
+      </select>&nbsp;
+      <label for="volume">Unit of Volume: </label>
+      <select name="volume" id="volume" v-model="selectedVolume">
+        <option
+          v-for="unit of volume"
+          :key="unit"
+          :value="volume.indexOf(unit)"
+        >
+          {{ unit }}
+        </option>
+      </select>
+      <p v-for="ingredient in ingredients" :key="ingredient.ingredientName">
+        <span v-show="ingredient.mass"
+          >{{ ingredient.mass }}{{ mass[selectedMass] }}</span
+        ><span v-show="ingredient.mass && ingredient.volume">, </span
+        ><span v-show="ingredient.volume"
+          >{{ ingredient.volume }}{{ volume[selectedVolume] }}</span
+        ><span v-show="ingredient.qty && (ingredient.mass || ingredient.volume)"
+          >, and</span
+        ><span v-show="ingredient.qty"> {{ ingredient.qty }}</span>
+        {{ ingredient.name }}
+      </p>
+    </section>
   </div>
 </template>
 
@@ -13,6 +41,23 @@ export default {
   data() {
     return {
       collapse: false,
+      mass: ["oz", "lb", "g", "kg"],
+      massConversion: [1, 16, 30, 30000],
+      volume: [
+        "tsp",
+        "tbsp",
+        "cup",
+        "pint",
+        "quart",
+        "gal",
+        "ml",
+        "L",
+        "pinch",
+        "dash",
+      ],
+      volumeConversion: [1, 3, 48, 96, 192, 768, 5, 5000, 0.0625, 0.125],
+      selectedMass: 0,
+      selectedVolume: 0,
     };
   },
   props: {
@@ -25,13 +70,79 @@ export default {
         meal.recipes.forEach((recipe) => {
           if (recipe.ingredientList) {
             recipe.ingredientList.forEach((ingredient) => {
-              x.push(ingredient.ingredientName);
+              let chkBool = false;
+              x.forEach((i) => {
+                if (i.name == ingredient.ingredientName) {
+                  chkBool = !chkBool;
+                }
+              });
+              if (chkBool) {
+                if (this.mass.includes(ingredient.unit)) {
+                  x[
+                    x.findIndex((j) => {
+                      return j.name == ingredient.ingredientName;
+                    })
+                  ].mass +=
+                    (ingredient.quantity *
+                      this.massConversion[this.mass.indexOf(ingredient.unit)]) /
+                    this.massConversion[this.selectedMass];
+                } else if (this.volume.includes(ingredient.unit)) {
+                  x[
+                    x.findIndex((j) => {
+                      return j.name == ingredient.ingredientName;
+                    })
+                  ].volume +=
+                    (ingredient.quantity *
+                      this.volumeConversion[
+                        this.volume.indexOf(ingredient.unit)
+                      ]) /
+                    this.volumeConversion[this.selectedVolume];
+                } else {
+                  x[
+                    x.findIndex((j) => {
+                      return j.name == ingredient.ingredientName;
+                    })
+                  ].qty += ingredient.quantity;
+                }
+              } else {
+                if (this.mass.includes(ingredient.unit)) {
+                  x.push({
+                    name: ingredient.ingredientName,
+                    qty: 0,
+                    mass:
+                      (ingredient.quantity *
+                        this.massConversion[
+                          this.mass.indexOf(ingredient.unit)
+                        ]) /
+                      this.massConversion[this.selectedMass],
+                    volume: 0,
+                  });
+                } else if (this.volume.includes(ingredient.unit)) {
+                  x.push({
+                    name: ingredient.ingredientName,
+                    qty: 0,
+                    mass: 0,
+                    volume:
+                      (ingredient.quantity *
+                        this.volumeConversion[
+                          this.volume.indexOf(ingredient.unit)
+                        ]) /
+                      this.volumeConversion[this.selectedVolume],
+                  });
+                } else {
+                  x.push({
+                    name: ingredient.ingredientName,
+                    qty: ingredient.quantity,
+                    mass: 0,
+                    volume: 0,
+                  });
+                }
+              }
             });
           }
         });
       });
-      x = [...new Set(x)];
-      return x.sort();
+      return x;
     },
   },
 };

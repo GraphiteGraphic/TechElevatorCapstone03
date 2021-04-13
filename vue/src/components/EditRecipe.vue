@@ -77,12 +77,28 @@
         v-model="ingredient.quantity"
       />
       <label for="Ingredient Unit">Unit: </label>
-      <input
-        type="text"
+      <select
         name="Ingredient Unit"
+        id = "Ingredient_Unit"
         class="unit"
         v-model="ingredient.unit"
-      />
+      >
+      <option value=''>no units</option>
+      <option value='tsp'>teaspoons</option>
+      <option value='tbsp'>tablespoons</option>
+      <option value='cup'>cups</option>
+      <option value='pint'>pints</option>
+      <option value='quart'>quarts</option>
+      <option value='gal'>gallons</option>
+      <option value='oz'>ounces</option>
+      <option value='lb'>pounds</option>
+      <option value='g'>grams</option>
+      <option value='kg'>kilograms</option>
+      <option value='ml'>milliliters</option>
+      <option value='L'>liters</option>
+      <option value='pinch'>pinch</option>
+      <option value='dash'>dash</option>
+      </select>
       <label for="ingredientList">Ingredient: </label>
       <input
         list="ingredients"
@@ -335,9 +351,6 @@ form {
   text-align: center;
 }
 input[type="number"] {
-  width: 50px;
-}
-.unit {
   width: 50px;
 }
 </style>

@@ -1,13 +1,27 @@
 <template>
   <div>
-    <h2>{{ recipe.recipeName }} <button type="button" v-show="recipe.userId === $store.state.user.userId" @click="editRecipe()">Edit Recipe</button></h2>
-    <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">{{ingredient.quantity}} {{ingredient.unit}} {{ ingredient.ingredientName }}</p>
-    <p v-for="num of instructions.length" :key="num"><span>{{num}}.</span> {{ instructions[num - 1] }}</p>
+    <h2>
+      {{ recipe.recipeName }}
+      <button
+        type="button"
+        v-show="recipe.userId === $store.state.user.userId"
+        @click="editRecipe()"
+      >
+        Edit Recipe
+      </button>
+    </h2>
+    <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">
+      {{ ingredient.quantity }} {{ ingredient.unit }}
+      {{ ingredient.ingredientName }}
+    </p>
+    <p v-for="num of instructions.length" :key="num">
+      <span>{{ num }}.</span> {{ instructions[num - 1] }}
+    </p>
   </div>
 </template>
 
 <script>
-import authServices from '../services/AuthService.js'
+import authServices from "../services/AuthService.js";
 
 export default {
   data() {
@@ -19,29 +33,27 @@ export default {
   },
 
   methods: {
-    editRecipe(){
-      this.$router.push(`/recipes/edit/${this.recipe.recipeId}`)
-    }
+    editRecipe() {
+      this.$router.push(`/recipes/edit/${this.recipe.recipeId}`);
+    },
   },
   computed: {
-    
-
-
     instructions() {
-      return this.recipe.instructions.split('|||');
-    }
+      return this.recipe.instructions.split("|||");
+    },
   },
   created() {
-    this.recipe = this.$store.state.recipes.find( (recipe) => {
-        return this.$route.params.id == recipe.recipeId;});
-    if (!this.recipe){
-      this.recipe = this.$store.state.myRecipes.find((recipe)=>{
+    this.recipe = this.$store.state.recipes.find((recipe) => {
+      return this.$route.params.id == recipe.recipeId;
+    });
+    if (!this.recipe) {
+      this.recipe = this.$store.state.myRecipes.find((recipe) => {
         return this.$route.params.id == recipe.recipeId;
       });
     }
 
     //TODO: Replace following code with api call to get ingredients
-    authServices.getIngredients(this.recipe).then( (resp) => {
+    authServices.getIngredients(this.recipe).then((resp) => {
       this.ingredients = resp.data;
     });
   },
@@ -49,8 +61,7 @@ export default {
 </script>
 
 <style scoped>
-
-  span {
-    font-size: 500%;
-  }
+span {
+  font-size: 500%;
+}
 </style>
