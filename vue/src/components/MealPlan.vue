@@ -286,6 +286,10 @@ a {
 .entirePage {
   display: flex;
   flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
 }
 table {
   border-collapse: collapse;

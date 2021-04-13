@@ -1,25 +1,31 @@
 <template>
-  <div>
+  <div class="recipe">
     <h2>
       {{ recipe.recipeName }}
-      <button
-        type="button"
-        v-show="recipe.userId === $store.state.user.userId"
-        @click="editRecipe()"
-      >
-        Edit Recipe
-      </button>
+      <div>
+        <button
+          type="button"
+          v-show="recipe.userId === $store.state.user.userId"
+          @click="editRecipe()"
+        >
+          Edit Recipe
+        </button>
+      </div>
+      <img v-bind:src="recipe.imgUrl" />
     </h2>
-    <div>
-      <img v-bind:src="recipe.imgUrl" >
-    </div>
-    <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">
-      {{ ingredient.quantity }} {{ ingredient.unit }}
-      {{ ingredient.ingredientName }}
-    </p>
-    <p v-for="num of instructions.length" :key="num">
-      <span>{{ num }}.</span> {{ instructions[num - 1] }}
-    </p>
+    <section class="ingredients">
+      <h4>Ingredients:</h4>
+      <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">
+        {{ ingredient.quantity }} {{ ingredient.unit }}
+        {{ ingredient.ingredientName }}
+      </p>
+    </section>
+    <section class="instructions">
+      <h4>Instructions:</h4>
+      <p v-for="num of instructions.length" :key="num">
+        <span>{{ num }}.</span> {{ instructions[num - 1] }}
+      </p>
+    </section>
   </div>
 </template>
 
@@ -65,10 +71,40 @@ export default {
 
 <style scoped>
 img {
-  max-width: 30%;
-  border: 10px solid darkblue
+  max-width: 50vw;
 }
 span {
-  font-size: 500%;
+  font-size: 125%;
+}
+.recipe {
+  display: grid;
+  grid-template-areas:
+    "title title"
+    "ingredients instructions";
+}
+h2 {
+  grid-area: title;
+}
+.ingredients {
+  grid-area: ingredients;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  padding: 0px 20px;
+  margin-right: 1vw;
+  border-radius: 15px;
+  width: 15vw;
+}
+.instructions {
+  grid-area: instructions;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  padding: 0px 20px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
 }
 </style>
