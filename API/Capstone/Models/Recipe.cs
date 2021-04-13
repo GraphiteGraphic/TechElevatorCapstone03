@@ -17,6 +17,7 @@ namespace Capstone.Models
         public bool IsShared { get; set; }
         public List<RecipeIngredient> IngredientList { get; set; }
         public List<string> NewIngredients { get; set; }
+        public int CookTime { get; set; }
 
         public Recipe(int recipeId, string recipeName, int userId, string instructions, int type, int servings, bool isshared, List<RecipeIngredient> ingredientList, List<string> newIngredients)
         {
