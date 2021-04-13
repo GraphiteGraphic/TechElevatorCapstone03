@@ -27,9 +27,8 @@ export default {
     },
     data(){
         return {
-            //-------------------------------------------------------------------------------------
-            // TODO: substitute your actual Cloudinary cloud-name where indicated in the URL
-            //-------------------------------------------------------------------------------------
+            // TODO: Add imgUrl to Recipe object
+            imgUrl: '',
             dropzoneOptions: {
                 url: "https://api.cloudinary.com/v1_1/dy5vryv7m/image/upload",  
                 thumbnailWidth: 250,
@@ -38,7 +37,7 @@ export default {
                 acceptedFiles: ".jpg, .jpeg, .png, .gif",
                 uploadMultiple: false,
                 addRemoveLinks: true,
-                dictDefaultMessage: 'Drop files here to upload. </br> Alternatively, click to select a file for upload.',                
+                dictDefaultMessage: 'Add a photo for your recipe. </br> Drop files here to upload or click to select a file for upload.',                
             },      
         }
     },
@@ -48,10 +47,6 @@ export default {
          * The addFormData method is called when vdropzone-sending event is fired
          * it adds additional headers to the request
          ******************************************************************************************/
-        //--------------------------------------------------------------------------------------------
-        // TODO: substitute your actual Cloudinary api-key where indicated in the following code
-        // TODO: substitute your actual Cloudinary upload preset where indicated in the following code
-        //----------------------------------------------------------------------------==---------------   
         addFormData(file, xhr, formData) {
             formData.append("api_key", "654255138794743");  // substitute your api key
             formData.append("upload_preset", "av5w3cm0");   // substitute your upload preset
@@ -62,11 +57,27 @@ export default {
          * The getSuccess method is called when vdropzone-success event is fired
          ******************************************************************************************/
         getSuccess(file, response) {
-            const imgUrl = response.secure_url;   // store the url for the uploaded image
+            this.imgUrl = response.secure_url;   // store the url for the uploaded image
             this.$emit("image-upload", imgUrl);   // fire custom event with image url in case someone cares
         },
     }
 }
 </script>
+
+<style scoped>
+#dropzone{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 12px;
+}
+
+#dropzone:hover{
+    background: rgb(253, 189, 69);
+    transition-delay: 0.2s;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+</style>
 
 

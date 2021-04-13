@@ -2,6 +2,8 @@
   <div>
     <new-recipe v-if="!recipeId"/>
     <edit-recipe v-if="recipeId"/>
+    <!-- TODO: Have to check to see if photo already exists.
+     If photo already exists, uploading a new image will replace the existing image.-->
     <photos />
   </div>
 </template>
