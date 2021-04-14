@@ -21,7 +21,7 @@
           {{ unit }}
         </option>
       </select>
-      <p @click="toggleChecked($event.target)" v-for="ingredient in ingredients" :key="ingredient.ingredientName">
+      <p @click="toggleChecked($event.currentTarget)" v-for="ingredient in ingredients" :key="ingredient.ingredientName">
         <span v-show="ingredient.mass"
           >{{ ingredient.mass }}{{ mass[selectedMass] }}</span
         ><span v-show="ingredient.mass && ingredient.volume">, </span
@@ -165,8 +165,8 @@ h2:hover {
   color: gray;
 }
 
-.checked:hover {
-  cursor:pointer;
+p:hover {
+  cursor: pointer;
   color: gray;
 }
 </style>

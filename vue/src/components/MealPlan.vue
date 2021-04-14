@@ -39,7 +39,9 @@
     <div>
       <label v-show="!visualParams.name" for="Meal Plan Name"
         >{{ mealPlan.name }}
-        <span v-show="!visualParams.viewMode && mealPlan.name" @click="visualParams.name = true"
+        <span
+          v-show="!visualParams.viewMode && mealPlan.name"
+          @click="visualParams.name = true"
           >🖉</span
         ></label
       >
@@ -57,11 +59,18 @@
     <div>
       <button
         type="button"
-        v-show="!visualParams.viewMode"
+        v-show="!visualParams.viewMode && mealPlan.mealPlanId"
         @click.prevent="resetMealPlan()"
       >
-        Reset
+        Create New
       </button>
+      <button
+        type="button"
+        v-show="mealPlan.mealPlanId && !visualParams.viewMode"
+        @click.prevent="clearMealPlan()"
+      >
+        Clear
+      </button>&nbsp;
       <button
         type="button"
         v-show="!visualParams.viewMode"
@@ -129,7 +138,8 @@
       </tbody>
     </table>
     <h4 v-show="!visualParams.viewMode">
-      Select recipes below to add to {{ visualParams.DAYS_OF_WEEK[visualParams.dayIndex] }}
+      Select recipes below to add to
+      {{ visualParams.DAYS_OF_WEEK[visualParams.dayIndex] }}
     </h4>
     <div
       v-show="!visualParams.viewMode"
@@ -281,6 +291,24 @@ export default {
       }
     },
     resetMealPlan() {
+      this.mealPlan = {
+        name: "",
+        mealList: [
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+          { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+        ],
+        mealPlanId: 0,
+        userId: 0,
+        indices: "",
+      };
+      this.visualParams.selectedText = "";
+    },
+    clearMealPlan() {
       this.mealPlan.mealList = [
         { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
         { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
@@ -321,7 +349,7 @@ export default {
           };
           services.getMealPlan().then((resp) => {
             this.listOfMealPlans = resp.data;
-            this.visualParams.selectedText = '';
+            this.visualParams.selectedText = "";
           });
         });
       } else {
