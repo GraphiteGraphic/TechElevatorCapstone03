@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>Munch Munch, Yum!</h1>
-    <h2>(^-^)</h2>
+    <h2 v-show="currentUser.userId">Welcome {{currentUser.username}}! (^-^)</h2>
     <recipe-list :recipeList="recipeList" />
     <router-link
       v-bind:to="{ name: 'profile' }"

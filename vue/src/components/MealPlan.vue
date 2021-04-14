@@ -131,12 +131,11 @@
 </template>
 
 <script>
-import RecipeList from "./recipeList.vue";
 import services from "../services/AuthService.js";
 import GroceryList from "./GroceryList.vue";
 
 export default {
-  components: { RecipeList, GroceryList },
+  components: { GroceryList },
   data() {
     return {
       //Container for all variables for adjusting/modifying user view
