@@ -51,6 +51,17 @@
         min="1"
       />
     </div>
+    <div class="CookTime">
+      <label for="cookTime">Cook Time (Minutes):  </label>
+      <input
+        type="number"
+        placeholder=""
+        name="cookTime"
+        v-model="recipe.cookTime"
+        required="true"
+        min="0"
+      />
+    </div>
     <div>
       <div>Ingredients:</div>
       <div
@@ -210,7 +221,7 @@ export default {
         ingredientList: [],
         newIngredients: [],
         imgUrl: '',
-        cookTime: Number,
+        cookTime: 0,
       },
       defaultImages: {
        mainDish: "https://s.clipartkey.com/mpngs/s/145-1459545_dish-hot-dish-black-and-white.png", 

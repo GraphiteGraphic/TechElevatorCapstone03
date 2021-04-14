@@ -13,6 +13,12 @@
       </div>
       <img v-bind:src="recipe.imgUrl" />
     </h2>
+    <div class="Details">
+      <span class="detailSpan">{{dishType[recipe.type - 1]}} &emsp;</span><br class="lineBreak">
+      
+      <span class="detailSpan">Servings: </span>{{recipe.servings}}&emsp; <br class="lineBreak">
+      <span class="detailSpan">Cook Time: </span>{{recipe.cookTime}} Minutes
+    </div>
     <section class="ingredients">
       <h4>Ingredients:</h4>
       <p v-for="ingredient of ingredients" :key="ingredient.ingredientId">
@@ -38,6 +44,7 @@ export default {
       recipe: {},
       // contains name, quantity, and unit of each ingredient
       ingredients: [{}],
+      dishType: ["Main Dish", "Side Dish", "Beverage", "Dessert", "Appetizer"],
     };
   },
 
@@ -80,6 +87,7 @@ span {
   display: grid;
   grid-template-areas:
     "title title"
+    "Detail Detail"
     "ingredients instructions";
 }
 h2 {
@@ -106,6 +114,44 @@ h2 {
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  min-width: 78vw;
+  min-width: 78%;
+}
+.Details {
+  grid-area: Detail;
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  width: 50vw;
+  margin-bottom: 1vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+.detailSpan {
+  font-size: 100%;
+  font-weight: bold;
+}
+.lineBreak {
+  display: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .recipe {
+  display: grid;
+  grid-template-areas:
+    "title"
+    "Detail"
+    "ingredients"
+    "instructions";
+ } 
+ .ingredients {
+   width: 50%;
+   margin: 0px auto 10px auto;
+ }
+ .lineBreak {
+   display: inline;
+ }
+ 
+
 }
 </style>
