@@ -21,7 +21,7 @@
           {{ unit }}
         </option>
       </select>
-      <p v-for="ingredient in ingredients" :key="ingredient.ingredientName">
+      <p @click="toggleChecked($event.target)" v-for="ingredient in ingredients" :key="ingredient.ingredientName">
         <span v-show="ingredient.mass"
           >{{ ingredient.mass }}{{ mass[selectedMass] }}</span
         ><span v-show="ingredient.mass && ingredient.volume">, </span
@@ -63,6 +63,11 @@ export default {
   },
   props: {
     mealPlan: Object,
+  },
+  methods: {
+    toggleChecked(ingredient){
+      ingredient.classList.toggle("checked");
+    }
   },
   computed: {
     ingredients() {
@@ -149,5 +154,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.checked{
+  text-decoration: line-through;
+  color: gray;
+}
 </style>

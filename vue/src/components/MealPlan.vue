@@ -76,10 +76,15 @@
       <tbody>
         <tr>
           <td v-for="i of 7" :key="i">
-            <recipe-list
-              v-show="visualParams.viewMode"
-              :recipeList="mealPlan.mealList[i - 1].recipes"
-            />
+            <!-- Display view mode recipes -->
+            <section v-show="visualParams.viewMode" v-for="recipe in mealPlan.mealList[i - 1].recipes" :key="recipe.recipeId">
+              <router-link
+                :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
+                :class="recipe.recipeName"
+                ><span class="recipe-name">{{ recipe.recipeName }}</span>
+              </router-link>
+            </section>
+            <!-- Display edit mode recipes -->
             <div
               v-show="!visualParams.viewMode"
               v-for="recipe in mealPlan.mealList[i - 1].recipes"
