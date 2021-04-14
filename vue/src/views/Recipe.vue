@@ -86,9 +86,9 @@ span {
 .recipe {
   display: grid;
   grid-template-areas:
-    "title title"
-    "Detail Detail"
-    "ingredients instructions";
+    "title title title title title title title title"
+    "Detail Detail Detail Detail Detail Detail Detail Detail"
+    "ingredients instructions instructions instructions instructions instructions instructions instructions";
 }
 h2 {
   grid-area: title;
@@ -102,7 +102,6 @@ h2 {
   padding: 0px 20px;
   margin-right: 1vw;
   border-radius: 15px;
-  width: 15vw;
 }
 .instructions {
   grid-area: instructions;
@@ -145,7 +144,7 @@ h2 {
     "instructions";
  } 
  .ingredients {
-   width: 50%;
+   width: 47%;
    margin: 0px auto 10px auto;
  }
  .lineBreak {

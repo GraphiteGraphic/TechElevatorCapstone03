@@ -100,7 +100,7 @@
             <router-link
               :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
               :class="recipe.recipeName"
-              ><span class="recipe-name">{{ recipe.recipeName }}</span>
+              ><span class="recipe-name">&bullet; {{ recipe.recipeName }}</span>
             </router-link>
           </section>
           <!-- Display edit mode recipes -->
@@ -114,7 +114,7 @@
                 this, (visualParams.dayIndex = i - 1);
                 deleteRecipefromMeal(recipe);
               "
-              >{{ recipe.recipeName }} 🗑</span
+              >&bullet; {{ recipe.recipeName }} 🗑</span
             >
           </section>
           <span
@@ -363,9 +363,6 @@ span:hover {
   color: gray;
   cursor: pointer;
 }
-a {
-  padding-left: 15px;
-}
 .entirePage {
   display: flex;
   flex-direction: column;
@@ -384,6 +381,10 @@ a {
   border: black 1px solid;
   padding: 2px;
   flex: 1;
+}
+#plan-table #group section {
+  text-align: left;
+  padding-left: 5px;
 }
 button {
   margin-bottom: 10px;
