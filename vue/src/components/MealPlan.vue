@@ -69,8 +69,8 @@
         v-show="mealPlan.mealPlanId && !visualParams.viewMode"
         @click.prevent="clearMealPlan()"
       >
-        Clear
-      </button>&nbsp;
+        Clear</button
+      >&nbsp;
       <button
         type="button"
         v-show="!visualParams.viewMode"
@@ -86,57 +86,47 @@
         Save Changes
       </button>
     </div>
-    <table>
-      <thead>
-        <th @click="this, (visualParams.dayIndex = 0)">Sunday</th>
-        <th @click="this, (visualParams.dayIndex = 1)">Monday</th>
-        <th @click="this, (visualParams.dayIndex = 2)">Tuesday</th>
-        <th @click="this, (visualParams.dayIndex = 3)">Wednesday</th>
-        <th @click="this, (visualParams.dayIndex = 4)">Thursday</th>
-        <th @click="this, (visualParams.dayIndex = 5)">Friday</th>
-        <th @click="this, (visualParams.dayIndex = 6)">Saturday</th>
-      </thead>
-      <tbody>
-        <tr>
-          <td v-for="i of 7" :key="i">
-            <!-- Display view mode recipes -->
-            <section
-              v-show="visualParams.viewMode"
-              v-for="recipe in mealPlan.mealList[i - 1].recipes"
-              :key="recipe.recipeId"
-            >
-              <router-link
-                :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
-                :class="recipe.recipeName"
-                ><span class="recipe-name">{{ recipe.recipeName }}</span>
-              </router-link>
-            </section>
-            <!-- Display edit mode recipes -->
-            <div
-              v-show="!visualParams.viewMode"
-              v-for="recipe in mealPlan.mealList[i - 1].recipes"
-              :key="recipe.recipeId"
-            >
-              <span
-                @click="
-                  this, (visualParams.dayIndex = i - 1);
-                  deleteRecipefromMeal(recipe);
-                "
-                >{{ recipe.recipeName }} 🗑</span
-              >
-            </div>
+    <section id="plan-table">
+        <section id="group" v-for="i of 7" :key="i">
+          <p @click="this, (visualParams.dayIndex = i)">
+            {{ visualParams.DAYS_OF_WEEK[i - 1] }}
+          </p>
+          <!-- Display view mode recipes -->
+          <section
+            v-show="visualParams.viewMode"
+            v-for="recipe in mealPlan.mealList[i - 1].recipes"
+            :key="recipe.recipeId"
+          >
+            <router-link
+              :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
+              :class="recipe.recipeName"
+              ><span class="recipe-name">{{ recipe.recipeName }}</span>
+            </router-link>
+          </section>
+          <!-- Display edit mode recipes -->
+          <section
+            v-show="!visualParams.viewMode"
+            v-for="recipe in mealPlan.mealList[i - 1].recipes"
+            :key="recipe.recipeId"
+          >
             <span
               @click="
-                visualParams.addMeal = true;
-                visualParams.dayIndex = i - 1;
+                this, (visualParams.dayIndex = i - 1);
+                deleteRecipefromMeal(recipe);
               "
-              v-show="!visualParams.viewMode"
-              >+ Add Recipes</span
+              >{{ recipe.recipeName }} 🗑</span
             >
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </section>
+          <span
+            @click="
+              visualParams.addMeal = true;
+              visualParams.dayIndex = i - 1;
+            "
+            v-show="!visualParams.viewMode"
+            >+ Add Recipes</span
+          >
+        </section>
+    </section>
     <h4 v-show="!visualParams.viewMode">
       Select recipes below to add to
       {{ visualParams.DAYS_OF_WEEK[visualParams.dayIndex] }}
@@ -384,22 +374,28 @@ a {
   backdrop-filter: blur(10px);
   border-radius: 25px;
 }
-table {
-  border-collapse: collapse;
+#plan-table {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
-th {
-  border-top: white 2px solid;
-  border-left: white 2px solid;
-  border-right: white 2px solid;
-}
-td {
-  border-left: white 2px solid;
-  border-right: white 2px solid;
-  border-bottom: white 2px solid;
-  margin: 0px 5px;
-  min-width: 100px;
+#plan-table #group {
+  display: inline-block;
+  border: black 1px solid;
+  padding: 2px;
+  flex: 1;
 }
 button {
   margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 800px) {
+#plan-table{
+  flex-direction: column;
+  align-items: center;
+}
+#plan-table #group{
+  width: 80vw;
+}
 }
 </style>
