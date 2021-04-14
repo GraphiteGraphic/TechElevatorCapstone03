@@ -254,10 +254,10 @@ export default {
     },
     editMealPlan() {
       if (this.mealPlan.name.trim().length > 0) {
-        services.putMealPlan(this.mealPlan).then((response) => {
+        services.putMealPlan(this.mealPlan).then(() => {
           this.visualParams.viewMode = true;
           this.mealPlan = {
-            name: "My Meal Plan",
+            name: "",
             mealList: [
               { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
               { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
@@ -273,7 +273,7 @@ export default {
           };
           services.getMealPlan().then((resp) => {
             this.listOfMealPlans = resp.data;
-            this.visualParams.selectedText = response.data.mealPlanId;
+            this.visualParams.selectedText = "";
           });
         });
       } else {
@@ -302,10 +302,10 @@ export default {
         meal.userId = 0;
       });
       if (this.mealPlan.name.trim().length > 0) {
-        services.postMealPlan(this.mealPlan).then((response) => {
+        services.postMealPlan(this.mealPlan).then(() => {
           this.visualParams.viewMode = true;
           this.mealPlan = {
-            name: "My Meal Plan",
+            name: "",
             mealList: [
               { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
               { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
@@ -321,7 +321,7 @@ export default {
           };
           services.getMealPlan().then((resp) => {
             this.listOfMealPlans = resp.data;
-            this.visualParams.selectedText = response.data.mealPlanId;
+            this.visualParams.selectedText = '';
           });
         });
       } else {
