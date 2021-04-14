@@ -210,7 +210,14 @@ export default {
         ingredientList: [],
         newIngredients: [],
         imgUrl: '',
-        cookTime: Number
+        cookTime: Number,
+      },
+      defaultImages: {
+        mainDish: "https://images.unsplash.com/photo-1579366948929-444eb79881eb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        sideDish: "https://images.unsplash.com/photo-1568179738029-b883d67f10d2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+        dessert: "https://images.unsplash.com/photo-1508737804141-4c3b688e2546?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZGVzc2VydHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60",
+        beverage: "https://images.unsplash.com/photo-1501199532894-9449c0a85a77?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTM2fHxncmVlbiUyMGRyaW5rfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60",
+        appetizer: "https://images.unsplash.com/photo-1485921198582-a55119c97421?ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwxMzA1MDc1fHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60"
       },
         dropzoneOptions: {
                 url: "https://api.cloudinary.com/v1_1/dy5vryv7m/image/upload",  
@@ -253,7 +260,8 @@ export default {
     saveRecipe() {
       //this parses numservings into a number
       this.recipe.numServings = parseInt(this.recipe.numServings);
-
+      // this inserts generic image if user doesn't upload an image
+      this.checkRecipeForPhoto();
       //this changes recipe type from string into its respective type #
       if (this.recipe.type === "Main Dish") {
         this.recipe.type = 1;
@@ -306,6 +314,31 @@ export default {
     },
     deleteIngredient(index) {
       this.recipe.ingredientList.splice(index, 1);
+    },
+    checkRecipeForPhoto(){
+      if (this.recipe.imgUrl === '') 
+      {
+        if (this.recipe.type === "Main Dish")
+        {
+          this.recipe.imgUrl = this.defaultImages.mainDish;
+        }
+        else if (this.recipe.type === "Side Dish")
+        {
+          this.recipe.imgUrl = this.defaultImages.sideDish;
+        }
+        else if (this.recipe.type === "Beverage")
+        {
+          this.recipe.imgUrl = this.defaultImages.beverage;
+        }
+        else if (this.recipe.type === "Dessert")
+        {
+          this.recipe.imgUrl = this.defaultImages.dessert;
+        }
+        else if (this.recipe.type === "Appetizer")
+        {
+          this.recipe.imgUrl = this.defaultImages.appetizer;
+        }
+      }
     },
     addIngredient() {
       let chkBool = false;
@@ -393,6 +426,14 @@ input[type="number"] {
     background: rgb(253, 189, 69);
     transition-delay: 0.2s;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+form{
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  margin-bottom: 20px;
 }
 
 </style>

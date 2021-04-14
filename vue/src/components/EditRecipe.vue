@@ -223,7 +223,14 @@ export default {
         dictDefaultMessage:
           "Add a photo for your recipe. </br> Drop files here to upload or click to select a file for upload.",
       },
-      ingredient: {
+      defaultImages: {
+        mainDish: "https://images.unsplash.com/photo-1579366948929-444eb79881eb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+        sideDish: "https://images.unsplash.com/photo-1568179738029-b883d67f10d2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+        dessert: "https://images.unsplash.com/photo-1508737804141-4c3b688e2546?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZGVzc2VydHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60",
+        beverage: "https://images.unsplash.com/photo-1501199532894-9449c0a85a77?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTM2fHxncmVlbiUyMGRyaW5rfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60",
+        appetizer: "https://images.unsplash.com/photo-1485921198582-a55119c97421?ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwxMzA1MDc1fHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60",
+     }, 
+     ingredient: {
         quantity: 1,
         unit: "",
         ingredientName: "",
@@ -253,6 +260,9 @@ export default {
     saveRecipe() {
       // this parses numservings into a number
       this.recipe.numServings = parseInt(this.recipe.numServings);
+
+      this.checkRecipeForPhoto();
+      //this changes recipe type from string into its respective type #
 
       // this changes recipe type from string into its respective type #
       if (this.recipe.type === "Main Dish") {
@@ -301,6 +311,31 @@ export default {
       this.visualParam.addStep = true;
       this.recipe.instructions = "";
     },
+      checkRecipeForPhoto(){
+      if ( (this.recipe.imgUrl === '') || (this.recipe.imgUrl === this.defaultImages.beverage) || (this.recipe.imgUrl === this.defaultImages.mainDish) || (this.recipe.imgUrl === this.defaultImages.sideDish) || (this.recipe.imgUrl === this.defaultImages.dessert) || (this.recipe.imgUrl === this.defaultImages.appetizer))
+      {
+        if (this.recipe.type === "Main Dish")
+        {
+          this.recipe.imgUrl = this.defaultImages.mainDish;
+        }
+        else if (this.recipe.type === "Side Dish")
+        {
+          this.recipe.imgUrl = this.defaultImages.sideDish;
+        }
+        else if (this.recipe.type === "Beverage")
+        {
+          this.recipe.imgUrl = this.defaultImages.beverage;
+        }
+        else if (this.recipe.type === "Dessert")
+        {
+          this.recipe.imgUrl = this.defaultImages.dessert;
+        }
+        else if (this.recipe.type === "Appetizer")
+        {
+          this.recipe.imgUrl = this.defaultImages.appetizer;
+        }
+      }
+      },
     deleteStep(index) {
       this.instructionSteps.splice(index, 1);
     },
