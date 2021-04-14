@@ -159,4 +159,14 @@ export default {
   text-decoration: line-through;
   color: gray;
 }
+
+h2:hover {
+  cursor: pointer;
+  color: gray;
+}
+
+.checked:hover {
+  cursor:pointer;
+  color: gray;
+}
 </style>

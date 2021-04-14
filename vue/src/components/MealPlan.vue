@@ -31,6 +31,8 @@
         name="Meal Plan Name"
         required="true"
       />
+    </div>
+    <div>
       <button
         type="button"
         v-show="!visualParams.viewMode"
@@ -235,6 +237,7 @@ export default {
     },
     editMealPlan() {
       if (this.mealPlan.name.trim().length > 0) {
+        this.visualParams.viewMode=true;
         services.putMealPlan(this.mealPlan).then((response) => {
           this.mealPlan = response.data;
           services.getMealPlan().then((resp) => {
@@ -257,6 +260,7 @@ export default {
         meal.userId = 0;
       });
       if (this.mealPlan.name.trim().length > 0) {
+        this.visualParams.viewMode=true;
         services.postMealPlan(this.mealPlan).then((response) => {
           this.mealPlan = response.data;
           services.getMealPlan().then((resp) => {
@@ -282,7 +286,8 @@ export default {
 
 <style scoped>
 span:hover {
-  color: blue;
+  color: gray;
+  cursor:pointer;
 }
 a {
   padding-left: 15px;

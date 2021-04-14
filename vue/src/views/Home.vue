@@ -6,11 +6,11 @@
     <router-link
       v-bind:to="{ name: 'profile' }"
       v-if="$store.state.token !== ''"
-      ><h2>My Meal Plans</h2>
+      ><h2 class="createmealplan">My Meal Plans</h2>
     </router-link>
     <div class="mealplan" v-if="$store.state.token===''">
     <router-link v-bind:to="{ name: 'login' }">
-      <h2>Create Meal Plan</h2>
+      <h2 class="createmealplan">Create Meal Plan</h2>
     </router-link>
     <table>
       <thead>
@@ -78,6 +78,10 @@ table {
   width:80%; 
   margin-left:10%; 
   margin-right:10%;
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+
 }
 th {
   border-left: white 2px solid;
@@ -95,6 +99,11 @@ button {
 
 h1, h2 {
   color: black;
+}
+
+.createmealplan:hover {
+  cursor: pointer;
+  color: gray;
 }
 
 

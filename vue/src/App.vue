@@ -77,7 +77,7 @@ a {
   text-decoration: none;
 }
 a:hover, a:visited:hover {
-  color: white;
+  color: gray;
 }
 a:visited {
   color: black;

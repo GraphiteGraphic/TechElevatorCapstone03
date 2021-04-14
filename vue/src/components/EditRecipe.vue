@@ -386,7 +386,8 @@ export default {
 
 <style scoped>
 span:hover {
-  color: blue;
+  color: gray;
+  cursor:pointer;
 }
 form {
   display: flex;

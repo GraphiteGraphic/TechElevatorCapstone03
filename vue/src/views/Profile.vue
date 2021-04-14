@@ -43,5 +43,8 @@ export default {
 </script>
 
 <style scoped>
-
+h2:hover {
+  cursor:pointer;
+  color: gray;
+}
 </style>
