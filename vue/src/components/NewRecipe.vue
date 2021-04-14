@@ -148,12 +148,13 @@
         <span @click="editSetup(i - 1)">🖉</span>
         <span @click="deleteStep(i - 1)" v-show="visualParam.addStep">🗑</span>
       </div>
-      <input
+      <input 
         type="text"
         name="instructions"
-        placeholder="Recipe Instructions"
+        placeholder="Add step"
         v-model="recipe.instructions"
       />
+      <div>
       <button
         v-show="visualParam.addStep"
         type="button"
@@ -161,6 +162,7 @@
       >
         Add Instruction Step
       </button>
+      </div>
       <button
         v-show="!visualParam.addStep"
         type="button"
@@ -269,6 +271,22 @@ export default {
             this.$emit("image-upload", this.recipe.imgUrl);
             },   // fire custom event with image url in case someone cares
     saveRecipe() {
+
+      if (this.recipe.ingredientList.length === 0 && this.instructionSteps.length === 0)
+      {
+        alert("Must fill out ingredients and instructions");
+      }
+      else if (this.recipe.ingredientList.length === 0)
+      {
+        alert("Must fill out ingredients");
+      }
+      else if (this.instructionSteps.length === 0)
+      {
+        alert("Must enter instructions")
+      }
+      else 
+      {
+
       //this parses numservings into a number
       this.recipe.numServings = parseInt(this.recipe.numServings);
       // this inserts generic image if user doesn't upload an image
@@ -302,6 +320,7 @@ export default {
             "was not reponse.status of 201. " + error.response.statusText;
           alert("Error");
         });
+      }
     },
 
     addStep() {
@@ -424,8 +443,25 @@ form {
   text-align: center;
 }
 input[type="number"] {
-  width: 50px;
+  width: 80px;
 }
+
+.RecipeInstructions input[type="text"]{
+  width: 80%;
+}
+
+button[type="submit"]{
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 7vh;
+  font-size: 1.2em;
+}
+
+button[type="submit"]:hover{
+  cursor: pointer;
+}
+
 #dropzone{
     width: 60%;
     margin-left: auto;
