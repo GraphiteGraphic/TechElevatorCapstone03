@@ -139,6 +139,7 @@
       <span @click="addRecipetoMeal(recipe)">{{ recipe.recipeName }}</span>
       <router-link
         :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
+        target="_blank"
         :name="recipe.recipeName"
         :instructions="recipe.instructions"
         >👁</router-link
