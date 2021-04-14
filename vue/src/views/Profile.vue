@@ -47,4 +47,7 @@ h2:hover {
   cursor:pointer;
   color: gray;
 }
+h2 {
+  text-transform: capitalize;
+}
 </style>

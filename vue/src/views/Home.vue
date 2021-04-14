@@ -99,6 +99,7 @@ button {
 
 h1, h2 {
   color: black;
+  text-transform: capitalize;
 }
 
 .createmealplan:hover {

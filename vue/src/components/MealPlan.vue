@@ -16,38 +16,7 @@
         >🖉</span
       >
     </h2>
-    <div>
-      <label v-show="!visualParams.name" for="Meal Plan Name"
-        >{{ mealPlan.name }}
-        <span v-show="!visualParams.viewMode" @click="visualParams.name = true"
-          >🖉</span
-        ></label
-      >
-      <input
-        v-show="visualParams.name"
-        @blur="visualParams.name = false"
-        type="text"
-        v-model="mealPlan.name"
-        name="Meal Plan Name"
-        required="true"
-      />
-    </div>
-    <div>
-      <button
-        type="button"
-        v-show="!visualParams.viewMode"
-        @click.prevent="saveMealPlan()"
-      >
-        Create new meal plan
-      </button>
-      <button
-        type="button"
-        v-show="mealPlan.mealPlanId && !visualParams.viewMode"
-        @click.prevent="editMealPlan()"
-      >
-        Save Changes
-      </button>
-    </div>
+    <!-- Dropdown to select meal plans -->
     <div>
       <label for="Saved Meal Plans">Saved Meal Plans: </label>
       <select
@@ -65,6 +34,49 @@
         </option>
       </select>
     </div>
+
+    <!-- Meal Plan Name Display -->
+    <div>
+      <label v-show="!visualParams.name" for="Meal Plan Name"
+        >{{ mealPlan.name }}
+        <span v-show="!visualParams.viewMode && mealPlan.name" @click="visualParams.name = true"
+          >🖉</span
+        ></label
+      >
+      <input
+        v-show="visualParams.name || (!visualParams.viewMode && !mealPlan.name)"
+        @blur="visualParams.name = false"
+        type="text"
+        placeholder="My Meal Plan"
+        v-model="mealPlan.name"
+        name="Meal Plan Name"
+        required="true"
+      />
+    </div>
+    <!-- Editing Buttons -->
+    <div>
+      <button
+        type="button"
+        v-show="!visualParams.viewMode"
+        @click.prevent="resetMealPlan()"
+      >
+        Reset
+      </button>
+      <button
+        type="button"
+        v-show="!visualParams.viewMode"
+        @click.prevent="saveMealPlan()"
+      >
+        Save As New Meal Plan
+      </button>
+      <button
+        type="button"
+        v-show="mealPlan.mealPlanId && !visualParams.viewMode"
+        @click.prevent="editMealPlan()"
+      >
+        Save Changes
+      </button>
+    </div>
     <table>
       <thead>
         <th @click="this, (visualParams.dayIndex = 0)">Sunday</th>
@@ -79,7 +91,11 @@
         <tr>
           <td v-for="i of 7" :key="i">
             <!-- Display view mode recipes -->
-            <section v-show="visualParams.viewMode" v-for="recipe in mealPlan.mealList[i - 1].recipes" :key="recipe.recipeId">
+            <section
+              v-show="visualParams.viewMode"
+              v-for="recipe in mealPlan.mealList[i - 1].recipes"
+              :key="recipe.recipeId"
+            >
               <router-link
                 :to="{ name: 'recipe', params: { id: recipe.recipeId } }"
                 :class="recipe.recipeName"
@@ -112,9 +128,9 @@
         </tr>
       </tbody>
     </table>
-    <h3 v-show="!visualParams.viewMode">
-      {{ visualParams.DAYS_OF_WEEK[visualParams.dayIndex] }}
-    </h3>
+    <h4 v-show="!visualParams.viewMode">
+      Select recipes below to add to {{ visualParams.DAYS_OF_WEEK[visualParams.dayIndex] }}
+    </h4>
     <div
       v-show="!visualParams.viewMode"
       v-for="recipe in availableRecipes"
@@ -158,7 +174,7 @@ export default {
         ],
       },
       mealPlan: {
-        name: "My Meal Plan",
+        name: "",
         mealList: [
           { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
           { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
@@ -237,9 +253,23 @@ export default {
     },
     editMealPlan() {
       if (this.mealPlan.name.trim().length > 0) {
-        this.visualParams.viewMode=true;
         services.putMealPlan(this.mealPlan).then((response) => {
-          this.mealPlan = response.data;
+          this.visualParams.viewMode = true;
+          this.mealPlan = {
+            name: "My Meal Plan",
+            mealList: [
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+            ],
+            mealPlanId: 0,
+            userId: 0,
+            indices: "",
+          };
           services.getMealPlan().then((resp) => {
             this.listOfMealPlans = resp.data;
             this.visualParams.selectedText = response.data.mealPlanId;
@@ -248,6 +278,17 @@ export default {
       } else {
         alert("Invalid meal plan name");
       }
+    },
+    resetMealPlan() {
+      this.mealPlan.mealList = [
+        { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+        { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+        { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+        { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+        { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+        { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+        { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+      ];
     },
     saveMealPlan() {
       this.mealPlan.indices = "";
@@ -260,9 +301,23 @@ export default {
         meal.userId = 0;
       });
       if (this.mealPlan.name.trim().length > 0) {
-        this.visualParams.viewMode=true;
         services.postMealPlan(this.mealPlan).then((response) => {
-          this.mealPlan = response.data;
+          this.visualParams.viewMode = true;
+          this.mealPlan = {
+            name: "My Meal Plan",
+            mealList: [
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+              { recipes: [], mealId: 0, mealName: "", timeOfDay: 0, userId: 0 },
+            ],
+            mealPlanId: 0,
+            userId: 0,
+            indices: "",
+          };
           services.getMealPlan().then((resp) => {
             this.listOfMealPlans = resp.data;
             this.visualParams.selectedText = response.data.mealPlanId;
@@ -275,9 +330,9 @@ export default {
   },
   created() {
     services.getMealPlan().then((response) => {
-      if (response.data.length > 0) {
-        this.mealPlan = response.data[response.data.length - 1];
-      }
+      // if (response.data.length > 0) {
+      //   this.mealPlan = response.data[response.data.length - 1];
+      // }
       this.listOfMealPlans = response.data;
     });
   },
@@ -287,7 +342,7 @@ export default {
 <style scoped>
 span:hover {
   color: gray;
-  cursor:pointer;
+  cursor: pointer;
 }
 a {
   padding-left: 15px;
