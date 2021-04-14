@@ -213,11 +213,11 @@ export default {
         cookTime: Number,
       },
       defaultImages: {
-        mainDish: "https://images.unsplash.com/photo-1579366948929-444eb79881eb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sideDish: "https://images.unsplash.com/photo-1568179738029-b883d67f10d2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-        dessert: "https://images.unsplash.com/photo-1508737804141-4c3b688e2546?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8ZGVzc2VydHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60",
-        beverage: "https://images.unsplash.com/photo-1501199532894-9449c0a85a77?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTM2fHxncmVlbiUyMGRyaW5rfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60",
-        appetizer: "https://images.unsplash.com/photo-1485921198582-a55119c97421?ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwxMzA1MDc1fHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60"
+       mainDish: "https://s.clipartkey.com/mpngs/s/145-1459545_dish-hot-dish-black-and-white.png", 
+        sideDish: "http://clipart-library.com/img1/1434060.png",
+        dessert: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwkpPXe2ARH8rL20z5KrltGNt6nagYNIQpz87cLZ1ntxheJN8&s",
+        beverage: "https://s.clipartkey.com/mpngs/s/164-1646965_transparent-noun-clipart-beverages-image-png-black-and.png",
+        appetizer: "http://clipart-library.com/img1/1120655.jpg",
       },
         dropzoneOptions: {
                 url: "https://api.cloudinary.com/v1_1/dy5vryv7m/image/upload",  
