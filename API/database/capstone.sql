@@ -66,7 +66,7 @@ CREATE TABLE recipes (
 CREATE TABLE recipes_ingredients(
 	recipe_id int NOT NULL,
 	ingredient_id int NOT NULL,
-	ingredient_qty decimal NOT NULL,
+	ingredient_qty decimal(38, 10) NOT NULL,
 	ingredient_unit varchar(50) NOT NULL,
 	CONSTRAINT PK_recipes_ingredients PRIMARY KEY (recipe_id, ingredient_id),
 	CONSTRAINT FK_recipes_ingredients_ingredients FOREIGN KEY (ingredient_id) REFERENCES ingredients (ingredient_id),
