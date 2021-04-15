@@ -62,22 +62,20 @@ export default new Vuex.Store({
         return r.recipeId == recipe.recipeId;
       }))] = recipe;
 
-      state.recipes.filter((r) => {
-        return r.isShared;
-      });
-
+      //If recipe is no longer shared, remove from the store's public list
       if(!recipe.isShared){
-
         state.recipes.splice(state.recipes.indexOf(state.recipes.find((r) => {
           return r.recipeId == recipe.recipeId;
         })),1);
-
       }
       
-
-
-
-
+      //If recipe is set to shared and not in store's public list, add it in
+      let search = (state.recipes.find( (r) => {
+        return r.recipeId == recipe.recipeId;
+      }));
+      if(recipe.isShared && !search){
+        state.recipes.unshift(recipe);
+      }
     }
   }
 })
