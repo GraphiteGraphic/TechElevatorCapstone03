@@ -12,7 +12,7 @@ Vue.use(Vuex)
 const currentToken = localStorage.getItem('token')
 const currentUser = JSON.parse(localStorage.getItem('user'));
 
-if(currentToken != null) {
+if (currentToken != null) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`;
 }
 
@@ -22,7 +22,7 @@ export default new Vuex.Store({
     user: currentUser || {},
     recipes: [],
     myRecipes: [],
-    recipeIngredients: [{name: 'Carrot', quantity: 2, unit: 'cup'}] 
+    recipeIngredients: [{ name: 'Carrot', quantity: 2, unit: 'cup' }]
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -32,7 +32,7 @@ export default new Vuex.Store({
     },
     SET_USER(state, user) {
       state.user = user;
-      localStorage.setItem('user',JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
     },
     LOGOUT(state) {
       localStorage.removeItem('token');
@@ -42,22 +42,42 @@ export default new Vuex.Store({
       state.myRecipes = [];
       axios.defaults.headers.common = {};
     },
-    SET_PUBLIC_RECIPES(state, list){
-      state.recipes=list;
+    SET_PUBLIC_RECIPES(state, list) {
+      state.recipes = list;
     },
-    SET_MY_RECIPES(state, list){
-      state.myRecipes=list;
+    SET_MY_RECIPES(state, list) {
+      state.myRecipes = list;
     },
-    ADD_RECIPE(state, recipe){
+    ADD_RECIPE(state, recipe) {
       state.myRecipes.push(recipe);
+      if (recipe.isShared) {
+        state.recipes.push(recipe);
+      }
     },
-    EDIT_RECIPE(state, recipe){
-      state.myRecipes[state.myRecipes.indexOf(state.myRecipes.find( (r) => {
+    EDIT_RECIPE(state, recipe) {
+      state.myRecipes[state.myRecipes.indexOf(state.myRecipes.find((r) => {
         return r.recipeId == recipe.recipeId;
       }))] = recipe;
-      state.recipes[state.recipes.indexOf(state.recipes.find( (r) => {
+      state.recipes[state.recipes.indexOf(state.recipes.find((r) => {
         return r.recipeId == recipe.recipeId;
       }))] = recipe;
+
+      state.recipes.filter((r) => {
+        return r.isShared;
+      });
+
+      if(!recipe.isShared){
+
+        state.recipes.splice(state.recipes.indexOf(state.recipes.find((r) => {
+          return r.recipeId == recipe.recipeId;
+        })),1);
+
+      }
+      
+
+
+
+
     }
   }
 })

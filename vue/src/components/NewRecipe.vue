@@ -230,7 +230,7 @@ export default {
         sideDish: "http://clipart-library.com/img1/1434060.png",
         dessert: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwkpPXe2ARH8rL20z5KrltGNt6nagYNIQpz87cLZ1ntxheJN8&s",
         beverage: "https://s.clipartkey.com/mpngs/s/164-1646965_transparent-noun-clipart-beverages-image-png-black-and.png",
-        appetizer: "http://clipart-library.com/img1/1120655.jpg",
+        appetizer: "https://s.clipartkey.com/mpngs/s/268-2686737_appetizer-finger-food-vector-hors-d-oeuvres-clipart.png",
       },
         dropzoneOptions: {
                 url: "https://api.cloudinary.com/v1_1/dy5vryv7m/image/upload",  
