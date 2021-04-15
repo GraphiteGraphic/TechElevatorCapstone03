@@ -82,6 +82,7 @@ table {
   background-color: rgba(255, 255, 255, 0.7);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+  
 
 }
 th {
