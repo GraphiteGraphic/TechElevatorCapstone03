@@ -51,6 +51,17 @@
           min="1"
         />
       </div>
+      <div class="CookTime">
+      <label for="cookTime">Cook Time (Minutes):  </label>
+      <input
+        type="number"
+        placeholder="cookTime"
+        name="cookTime"
+        v-model="recipe.cookTime"
+        required="true"
+        min="0"
+      />
+      </div>
       <div>
         <div>Ingredients:</div>
         <div
@@ -278,6 +289,7 @@ export default {
 
       // this parses numservings into a number
       this.recipe.numServings = parseInt(this.recipe.numServings);
+      this.recipe.cookTime = parseInt(this.recipe.cookTime);
 
       this.checkRecipeForPhoto();
       //this changes recipe type from string into its respective type #

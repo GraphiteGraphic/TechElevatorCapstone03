@@ -52,10 +52,9 @@ export default new Vuex.Store({
       state.myRecipes.push(recipe);
     },
     EDIT_RECIPE(state, recipe){
-      let old = state.myRecipes.find( (r) => {
+      state.myRecipes[state.myRecipes.indexOf(state.myRecipes.find( (r) => {
         return r.recipeId == recipe.recipeId;
-      })
-      state.myRecipes[state.myRecipes.indexOf(old)] = recipe;
+      }))] = recipe;
     }
   }
 })

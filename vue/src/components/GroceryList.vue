@@ -23,11 +23,11 @@
       </select>
       <p @click="toggleChecked($event.currentTarget)" v-for="ingredient in ingredients" :key="ingredient.ingredientName">
         <span v-show="ingredient.mass"
-          >{{ ingredient.mass }}{{ mass[selectedMass] }}</span
+          >{{ ingredient.mass.toFixed(2) }}{{ mass[selectedMass] }}</span
         ><span v-show="ingredient.mass && ingredient.volume">, </span
         ><span v-show="ingredient.mass && ingredient.volume && !ingredient.qty">and</span>
         <span v-show="ingredient.volume"
-          > {{ ingredient.volume }}{{ volume[selectedVolume] }}</span
+          > {{ ingredient.volume.toFixed(2) }}{{ volume[selectedVolume] }}</span
         ><span v-show="ingredient.qty && (ingredient.mass || ingredient.volume)"
           >, and</span
         ><span v-show="ingredient.qty"> {{ ingredient.qty }}</span>
@@ -89,9 +89,9 @@ export default {
                       return j.name == ingredient.ingredientName;
                     })
                   ].mass +=
-                    (ingredient.quantity *
+                    ((ingredient.quantity *
                       this.massConversion[this.mass.indexOf(ingredient.unit)]) /
-                    this.massConversion[this.selectedMass];
+                    this.massConversion[this.selectedMass]);
                 } else if (this.volume.includes(ingredient.unit)) {
                   x[
                     x.findIndex((j) => {

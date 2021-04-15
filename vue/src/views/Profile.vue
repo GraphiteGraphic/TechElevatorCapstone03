@@ -6,7 +6,7 @@
         Recipes
       </h2>
       <router-link v-show="collapse" v-bind:to="{ name: 'addRecipe' }"
-        >+ Add Recipe</router-link
+        ><h3>+ Add Recipe</h3></router-link
       >
       <recipe-list :recipeList="myRecipes" v-show="collapse" />
     </section>
