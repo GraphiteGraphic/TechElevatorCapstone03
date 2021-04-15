@@ -223,7 +223,7 @@ export default {
         ingredientList: [],
         newIngredients: [],
         imgUrl: "",
-        cookTime: Number,
+        cookTime: Number
       },
       dropzoneOptions: {
         url: "https://api.cloudinary.com/v1_1/dy5vryv7m/image/upload",
@@ -430,6 +430,7 @@ export default {
     this.recipe.isShared = tempRecipe.isShared;
     this.recipe.recipeName = tempRecipe.recipeName;
     this.recipe.servings = tempRecipe.servings;
+    this.recipe.cookTime = tempRecipe.cookTime;
     this.recipe.type =
       tempRecipe.type === 1
         ? "Main Dish"

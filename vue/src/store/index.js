@@ -55,6 +55,9 @@ export default new Vuex.Store({
       state.myRecipes[state.myRecipes.indexOf(state.myRecipes.find( (r) => {
         return r.recipeId == recipe.recipeId;
       }))] = recipe;
+      state.recipes[state.recipes.indexOf(state.recipes.find( (r) => {
+        return r.recipeId == recipe.recipeId;
+      }))] = recipe;
     }
   }
 })
