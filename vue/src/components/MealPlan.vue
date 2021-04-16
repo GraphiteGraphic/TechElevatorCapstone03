@@ -5,7 +5,6 @@
       <span
         @click="
           visualParams.viewMode = true;
-          visualParams.name = false;
           visualParams.addMeal = false;
         "
         v-show="!visualParams.viewMode"
@@ -46,7 +45,7 @@
         ></label
       >
       <input
-        v-show="(!visualParams.viewMode && !mealPlan.name) || visualParams.name"
+        v-show="!visualParams.viewMode && (!mealPlan.name || visualParams.name)"
         @blur="visualParams.name = false"
         type="text"
         placeholder="My Meal Plan"
@@ -256,6 +255,7 @@ export default {
       if (this.mealPlan.name.trim().length > 0) {
         services.putMealPlan(this.mealPlan).then(() => {
           this.visualParams.viewMode = true;
+          this.visualParams.name = true;
           this.mealPlan = {
             name: "",
             mealList: [
@@ -297,6 +297,7 @@ export default {
         indices: "",
       };
       this.visualParams.selectedText = "";
+      this.visualParams.name = true;
     },
     clearMealPlan() {
       this.mealPlan.mealList = [
@@ -322,6 +323,7 @@ export default {
       if (this.mealPlan.name.trim().length > 0) {
         services.postMealPlan(this.mealPlan).then(() => {
           this.visualParams.viewMode = true;
+          this.visualParams.name = true;
           this.mealPlan = {
             name: "",
             mealList: [
