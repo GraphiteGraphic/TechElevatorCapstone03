@@ -46,7 +46,7 @@
         ></label
       >
       <input
-        v-show="visualParams.name || (!visualParams.viewMode && !mealPlan.name)"
+        v-show="(!visualParams.viewMode && !mealPlan.name) || visualParams.name"
         @blur="visualParams.name = false"
         type="text"
         placeholder="My Meal Plan"
@@ -163,7 +163,7 @@ export default {
         addMeal: false,
         dayIndex: 0,
         selectedText: "",
-        name: false,
+        name: true,
         DAYS_OF_WEEK: [
           "Sunday",
           "Monday",
